@@ -1,0 +1,42 @@
+{
+  "mode": "DEMO ONLY",
+  "synthetic": true,
+  "diagnostics": [],
+  "opportunities": [
+    {
+      "opportunity_id": "opp_demo_pizza",
+      "title": "Engineering Club Pizza Meetup \u2014 DEMO ONLY",
+      "campus": "Tempe",
+      "start_at": "2026-10-26T12:00:00-07:00",
+      "end_at": "2026-10-26T13:00:00-07:00",
+      "source_url": "https://example.org/crewbie-demo/pizza",
+      "checked_at": "2026-10-24T18:00:00Z",
+      "synthetic": true,
+      "food_status": "listed",
+      "access_status": "unknown",
+      "dietary_suitability": "unknown",
+      "location_label": "Sample public campus venue \u2014 NOT A REAL LISTING",
+      "organizer": null,
+      "access_restrictions": null,
+      "rsvp_required": null,
+      "food_detail": "Demo listing mentions pizza; actual free-food availability unknown",
+      "evidence": {},
+      "free_food_evidence": false,
+      "food_availability": "unknown",
+      "provenance": {
+        "provider": "demo_fixture",
+        "source_url": "https://example.org/crewbie-demo/pizza",
+        "checked_at": "2026-10-24T18:00:00Z",
+        "access": "fixture"
+      },
+      "stale": false,
+      "expired": false,
+      "warnings": [
+        "Food remaining and dietary safety are not guaranteed.",
+        "DEMO ONLY: fictional listing; no actual event or inventory.",
+        "Verify RSVP and entry requirements with organizer."
+      ],
+      "distance_m": null
+    }
+  ]
+}

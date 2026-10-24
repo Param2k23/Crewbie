@@ -1,0 +1,29 @@
+{
+  "notice": "Manual public observation, not a live feed or food availability guarantee. Organizer audience and private venue retained conservatively.",
+  "access": "public_or_authorized",
+  "http_status": 200,
+  "opportunities": [
+    {
+      "opportunity_id": "asu_central_412803",
+      "title": "Student Officers/Advisor Snack Session",
+      "organizer": "Student Organizations and Leadership",
+      "campus": "Tempe",
+      "start_at": "2026-10-29T12:30:00-07:00",
+      "end_at": "2026-10-29T14:00:00-07:00",
+      "location_label": null,
+      "location_private": true,
+      "food_status": "listed",
+      "food_detail": "Listing mentions snacks. Quantity, ingredients and free-food policy unverified; outer event range includes two shorter session options.",
+      "dietary_suitability": "unknown",
+      "access_status": "restricted",
+      "access_restrictions": "Description targets club officers; eligibility needs organizer verification. Venue requires sign-in.",
+      "rsvp_required": null,
+      "source_url": "https://sundevilcentral.eoss.asu.edu/admin/rsvp_boot?id=412803",
+      "checked_at": "2026-10-24T22:20:54Z",
+      "synthetic": false,
+      "evidence": {
+        "food_quote": "Plus, there are snacks!"
+      }
+    }
+  ]
+}
