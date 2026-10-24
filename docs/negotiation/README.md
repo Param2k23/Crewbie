@@ -23,6 +23,51 @@ python -m services.negotiation.demo --change-budget --jsonl  # only the group-sa
 regenerates it from the live engine and fails if it drifts; regenerate with
 `python -m services.negotiation.demo --change-budget --jsonl > docs/negotiation/trace_flagstaff_budget_change.jsonl`.
 
+## General social planning (time-first and intent-first)
+
+The engine plans any shared activity: dinner, games, sports, hiking, local events, day trips, multi-day travel.
+Duration is a property of an activity template, never the thing that selects the category.
+
+| `mode` | Meaning | Candidate source |
+|---|---|---|
+| `time_first` | The group has free time and wants suggestions | `ActivityCatalog.seeds`: every template whose whole interval fits the planning window, round-robin across kinds |
+| `intent_first` | The group chose an activity (`intent.kind`, optional `intent.title`) | only that kind, enumerated over the window's days and start hours; unknown kind => `INVALID_REQUEST` |
+| `seeded` | The caller supplies `seed_plans` (the original Flagstaff flow) | the supplied plans |
+
+`group_origin` is `existing` or `matched`. A matched group is only negotiated when `consent_context.introduction_consent_refs`
+covers every member; otherwise the session fails `CONSENT_REQUIRED` before any private probe. Private agents never receive other
+members' cost lines (data minimisation), so a matched stranger's agent learns nothing about the others' profiles.
+
+Plan fields added (all optional for callers; derived ones are recomputed by the engine and never trusted):
+`activity_kind`, `overnight`, `nights` (computed from the dates), `logistics{transport,lodging}`, `venue_hours{opens_at,closes_at}`,
+`requires_transport`, `venue_bound`, `unverified_items`.
+
+Deterministic general-feasibility rules (`validator.validate_plan`), in addition to the earlier ones:
+
+* the entire interval must fit the window and every member's availability (multi-day trips are checked end to end);
+* transport is never assumed: `booked`/`confirmed` or `not_needed` for an activity that needs travel is rejected (`LOGISTICS_ASSUMED`, `TRANSPORT_ASSUMED`);
+* an overnight plan cannot claim lodging is unnecessary (`LODGING_ASSUMED`); `overnight`/`nights` come from the dates;
+* known venue hours must cover the interval (`VENUE_CLOSED`);
+* anything unknown is listed in `unverified_items` (`transport`, `lodging`, `venue_hours`) in the public snapshot so the
+  group host can tell humans what still needs checking. Every cost is an estimate (`estimate_disclaimer`), never a booking.
+
+Counteroffer operators (coarse hints): `prefer_shorter_trip` (drops the overnight stay, scales the estimate), `prefer_different_day`,
+`prefer_lower_cost` (variant 0 = one price tier down, variant 1 = two), `prefer_later_start`. On a revision, counteroffers to the
+previously published plan are tried first; fresh catalog options are only considered once those dry up.
+
+## Verification scenarios
+
+```bash
+python -m services.negotiation.demo --scenario dinner                       # A: early slots fail, valid alternative found
+python -m services.negotiation.demo --scenario trip                         # B: full-length dates fail; counteroffers reach a valid version
+python -m services.negotiation.demo --scenario trip --impossible            # B: honest NO_FEASIBLE_PLAN
+python -m services.negotiation.demo --scenario dinner --change-availability # C: hard constraint changes mid-plan => real replan
+python -m services.negotiation.demo --scenario trip --change-budget         # C: lowered cap => shorter/cheaper version
+```
+
+Replay fixtures (drift-tested against the live engine): `trace_dinner_game_availability_change.jsonl`,
+`trace_two_day_trip_budget_change.jsonl`, `trace_flagstaff_budget_change.jsonl`.
+
 ## How a negotiation works
 
 ```
@@ -109,7 +154,7 @@ Implemented as `typing.Protocol`s in `protocols.py`; payloads follow `CONTRACTS.
 
 | Interface | Direction | Notes |
 |---|---|---|
-| `start_negotiation(session_request) -> session_id` | caller -> A4 | dict or `SessionRequest`; idempotent on `request_id`. Fields: `request_id, member_refs, window_start, window_end, seed_plans[], session_id?, plan_slug?, title?, rules{min_attendees, essential_member_refs, member_roles, required_roles, max_duration_hours, earliest_start_local_hour, latest_end_local_hour, group_max_cost_per_person_cents, requires_verified_public_access}, opportunity?` |
+| `start_negotiation(session_request) -> session_id` | caller -> A4 | dict or `SessionRequest`; idempotent on `request_id`. Fields: `request_id, member_refs, window_start, window_end, mode, intent?, group_origin?, consent_context?, cost_tiers_cents?, slot_limit?, seed_plans[], session_id?, plan_slug?, title?, rules{min_attendees, essential_member_refs, member_roles, required_roles, max_duration_hours, earliest_start_local_hour, latest_end_local_hour, group_max_cost_per_person_cents, requires_verified_public_access}, opportunity?` |
 | `revise_negotiation(session_id, {kind, student_ref?, request_id?})` | caller -> A4 | `kind` in `budget|availability|preference|itinerary|other`. The new **value is never sent**; it lives with A3. |
 | `withdraw_participant(session_id, member_ref)` | caller -> A4 | extension; fails honestly if attendance/essential/role rules cannot hold |
 | `record_member_decline(session_id, member_ref)` | A5 -> A4 | extension; vetoes the declined content, re-validates ranked runners-up at a new version, invalidates approvals |
@@ -139,7 +184,7 @@ Implemented as `typing.Protocol`s in `protocols.py`; payloads follow `CONTRACTS.
    mismatch, `required_count != current member count`, or any decline/withdrawal as not confirmed. Please freeze this.
 2. New **optional** payload fields not in the fixtures: `derived_from_version` on `counteroffer_proposed`; `previous_plan_id`,
    `previous_version`, `version`, `reason_category`, `approvals_reset` on `proposal_revised`; `rank`, `feasible_count`, `balance`
-   on `fairness_evaluated`; `reason_category` and counters on `negotiation_failed`. New `reason_category` values:
+   on `fairness_evaluated`; `reason_category` and counters on `negotiation_failed`; `activity_kind` and `overnight` on `candidate_proposed` / `counteroffer_proposed`. New `reason_category` values:
    `group_rule_violation`, `attendance_requirement`, `search_exhausted`, `search_bounds_reached`, `exception_declined`,
    `participant_change`, `member_declined`, `exception_expired`, `constraint_changed`, `itinerary_changed`. Older clients can ignore them.
 3. Event ids are per session (`ev_0001`, ...), matching the fixture. If A6 de-duplicates globally it must key on `(session_id, event_id)`.
@@ -153,5 +198,8 @@ Implemented as `typing.Protocol`s in `protocols.py`; payloads follow `CONTRACTS.
 * The coordinator cannot detect an evaluator that lies about `feasible: true`; it can only reject malformed/inconsistent replies.
 * Even coarse public signals (a rejection, a "reduced estimated cost" summary) leak that *some* constraint bound. Per-member attribution is never published.
 * Plan windows are checked in each plan's own UTC offset; there is no timezone database (fixture offsets are used as given).
+* The catalog, price ladders and template hours are synthetic demonstration data; real venues, prices and transport are out of scope.
+* Catalog slots are enumerated on the planning window's whole days at fixed start hours; the window itself is public and coarse.
+* The default lifetime probe cap (40 per member) is deliberately tight: after about three full re-plans a session ends with `search_bounds_reached` unless the integrator raises it.
 * All costs are synthetic tier estimates (`NegotiationConfig.cost_tiers_cents`), not quotes. `LOCAL_HOURS` and other group rules are demo defaults.
 * Mock evaluators use fixed illustrative penalty formulas (`mocks.MockParticipantAgent._assess`); A3's real scoring will differ.

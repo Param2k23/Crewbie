@@ -23,7 +23,11 @@ PLAN_KEYS = (
     "plan_id", "session_id", "version", "opportunity_id", "title", "member_refs",
     "start_at", "end_at", "estimated_cost_cents_by_ref", "activities",
     "estimate_disclaimer", "synthetic",
+    "activity_kind", "overnight", "nights", "logistics", "venue_hours", "requires_transport", "venue_bound",
+    "unverified_items",
 )
+TRANSPORT_VALUES = ("unverified", "self_arranged", "not_needed")  # never "booked" / "confirmed"
+LODGING_VALUES = ("unverified", "not_needed")
 DEFAULT_DISCLAIMER = "Synthetic estimates only; not live prices or travel quotes"
 
 
@@ -42,6 +46,29 @@ def normalize_candidate(
     plan.setdefault("activities", [])
     plan.setdefault("estimate_disclaimer", DEFAULT_DISCLAIMER)
     plan["synthetic"] = request.synthetic
+    plan.setdefault("activity_kind", "group_activity")
+    plan.setdefault("requires_transport", True)  # transportation is never assumed
+    plan.setdefault("venue_bound", False)
+    # derived facts are recomputed from the dates; claims from untrusted sources are discarded
+    nights = 0
+    try:
+        s, e = parse_ts(plan["start_at"]), parse_ts(plan["end_at"])
+        nights = max(0, (e.astimezone(s.tzinfo).date() - s.date()).days)
+    except (KeyError, ValueError, TypeError, AttributeError):
+        pass
+    plan["nights"], plan["overnight"] = nights, nights > 0
+    logistics = dict(plan["logistics"]) if isinstance(plan.get("logistics"), dict) else {}
+    logistics.setdefault("transport", "unverified" if plan["requires_transport"] else "not_needed")
+    logistics.setdefault("lodging", "unverified" if nights else "not_needed")
+    plan["logistics"] = logistics
+    items: List[str] = []
+    if plan["requires_transport"]:
+        items.append("transport")
+    if nights:
+        items.append("lodging")
+    if plan["venue_bound"] and not plan.get("venue_hours"):
+        items.append("venue_hours")
+    plan["unverified_items"] = items  # what a human must confirm before treating this as bookable
     return plan
 
 
@@ -54,6 +81,8 @@ def signature(plan: Mapping[str, Any]) -> str:
         "c": sorted((plan.get("estimated_cost_cents_by_ref") or {}).items()),
         "a": list(plan.get("activities", [])),
         "o": plan.get("opportunity_id"),
+        "k": plan.get("activity_kind"),
+        "n": plan.get("nights"),
     }
     return hashlib.sha256(json.dumps(material, sort_keys=True, default=str).encode()).hexdigest()[:16]
 
@@ -120,6 +149,25 @@ def validate_plan(plan: Mapping[str, Any], request: SessionRequest, roster: Sequ
                 out.append("OPPORTUNITY_TIME")
         if rules.requires_verified_public_access and opp.get("access_status") != "public":
             out.append("ACCESS_UNVERIFIED")  # unknown/restricted is never assumed open
+
+    log = plan.get("logistics") if isinstance(plan.get("logistics"), dict) else {}
+    if log.get("transport") not in TRANSPORT_VALUES or log.get("lodging") not in LODGING_VALUES:
+        out.append("LOGISTICS_ASSUMED")  # e.g. "booked": we have no booking capability
+    if plan.get("requires_transport", True) and log.get("transport") == "not_needed":
+        out.append("TRANSPORT_ASSUMED")
+    if end > start:
+        span = (end.astimezone(start.tzinfo).date() - start.date()).days
+        if plan.get("nights") != span or plan.get("overnight") is not (span > 0):
+            out.append("OVERNIGHT_INCONSISTENT")
+        if span > 0 and log.get("lodging") != "unverified":
+            out.append("LODGING_ASSUMED")
+    vh = plan.get("venue_hours")
+    if vh:
+        try:
+            if start < parse_ts(vh["opens_at"]) or end > parse_ts(vh["closes_at"]):
+                out.append("VENUE_CLOSED")
+        except (KeyError, ValueError, TypeError):
+            out.append("STRUCTURE")
 
     if plan.get("synthetic") is not request.synthetic:
         out.append("STRUCTURE")

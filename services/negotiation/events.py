@@ -17,9 +17,11 @@ ACTOR = "coordination_engine"
 
 PAYLOAD_KEYS: Mapping[str, frozenset] = {
     "negotiation_started": frozenset({"group_size"}),
-    "candidate_proposed": frozenset({"plan_id", "version"}),
+    "candidate_proposed": frozenset({"plan_id", "version", "activity_kind", "overnight"}),
     "proposal_rejected": frozenset({"plan_id", "version", "reason_category"}),
-    "counteroffer_proposed": frozenset({"plan_id", "version", "derived_from_version", "summary"}),
+    "counteroffer_proposed": frozenset(
+        {"plan_id", "version", "derived_from_version", "summary", "activity_kind", "overnight"}
+    ),
     "fairness_evaluated": frozenset({"plan_id", "version", "rank", "feasible_count", "balance"}),
     "proposal_ready": frozenset({"plan_id", "version", "approval_state"}),
     "approval_requested": frozenset({"plan_id", "version", "required_count"}),

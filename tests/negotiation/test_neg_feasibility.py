@@ -8,7 +8,7 @@ from neg_helpers import FuncEvaluator, Rig, evaluation, plan_at
 from services.negotiation import GroupRules, NegotiationConfig, SessionRequest
 from services.negotiation.mocks import flagstaff_request
 from services.negotiation.models import CandidateStatus, SessionState
-from services.negotiation.validator import parse_evaluation, validate_plan
+from services.negotiation.validator import normalize_candidate, parse_evaluation, validate_plan
 
 MEMBERS = ["stu_alex", "stu_maya", "stu_jordan", "stu_taylor"]
 
@@ -23,7 +23,7 @@ def plan(**over):
     p.update(session_id="s", plan_id="p", version=1, opportunity_id=None, member_refs=list(MEMBERS),
              estimate_disclaimer="x", synthetic=True)
     p.update(over)
-    return p
+    return normalize_candidate(p, session_id="s", plan_id="p", version=1, request=request(), roster=MEMBERS)         if not over.get("_raw") else p
 
 
 class PublicRuleValidation(unittest.TestCase):

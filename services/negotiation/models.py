@@ -25,7 +25,11 @@ PROVIDER_UNAVAILABLE = "PROVIDER_UNAVAILABLE"
 HINT_LOWER_COST = "prefer_lower_cost"
 HINT_DIFFERENT_DAY = "prefer_different_day"
 HINT_LATER_START = "prefer_later_start"
-ALLOWED_HINTS = (HINT_DIFFERENT_DAY, HINT_LOWER_COST, HINT_LATER_START)  # application order
+HINT_SHORTER = "prefer_shorter_trip"
+ALLOWED_HINTS = (HINT_SHORTER, HINT_DIFFERENT_DAY, HINT_LOWER_COST, HINT_LATER_START)  # application order
+
+REQUEST_MODES = ("seeded", "time_first", "intent_first")
+GROUP_ORIGINS = ("existing", "matched")
 
 ISSUE_PREFIX_HARD = "HARD_"
 
@@ -129,6 +133,12 @@ class SessionRequest:
     rules: GroupRules = field(default_factory=GroupRules)
     opportunity: Optional[Mapping[str, Any]] = None
     synthetic: bool = True
+    mode: str = "seeded"  # seeded | time_first (free time, suggest activities) | intent_first (activity chosen)
+    intent: Optional[Mapping[str, Any]] = None  # intent_first: {"kind": ..., "title"?: ...}
+    cost_tiers_cents: Optional[Tuple[int, ...]] = None  # per-request synthetic price ladder
+    group_origin: str = "existing"  # existing | matched (matched needs introduction consent for everyone)
+    consent_context: Mapping[str, Any] = field(default_factory=dict)
+    slot_limit: int = 8  # max catalog-generated starting candidates
 
     @staticmethod
     def from_mapping(raw: Mapping[str, Any]) -> "SessionRequest":
@@ -148,6 +158,14 @@ class SessionRequest:
         members = tuple(r["member_refs"])
         if not members or len(set(members)) != len(members):
             raise NegotiationError("INVALID_REQUEST", "member_refs must be non-empty and unique")
+        seeds = tuple(r.get("seed_plans", ()))
+        mode = r.get("mode") or ("seeded" if seeds else "time_first")
+        origin = r.get("group_origin", "existing")
+        if mode not in REQUEST_MODES or origin not in GROUP_ORIGINS:
+            raise NegotiationError("INVALID_REQUEST", "unknown mode or group_origin")
+        if mode == "intent_first" and not (r.get("intent") or {}).get("kind"):
+            raise NegotiationError("INVALID_REQUEST", "intent_first needs intent.kind")
+        tiers = r.get("cost_tiers_cents")
         return SessionRequest(
             request_id=str(r["request_id"]),
             member_refs=members,
@@ -161,6 +179,12 @@ class SessionRequest:
             rules=rules,
             opportunity=r.get("opportunity"),
             synthetic=bool(r.get("synthetic", True)),
+            mode=mode,
+            intent=r.get("intent"),
+            cost_tiers_cents=tuple(sorted(tiers)) if tiers else None,
+            group_origin=origin,
+            consent_context=dict(r.get("consent_context") or {}),
+            slot_limit=int(r.get("slot_limit", 8)),
         )
 
 

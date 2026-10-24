@@ -10,6 +10,7 @@ Authority model
 from __future__ import annotations
 
 import copy
+import re
 import threading
 from dataclasses import replace
 from typing import Any, Callable, Dict, List, Mapping, Optional, Tuple, Union
@@ -95,6 +96,8 @@ class NegotiationCoordinator:
         req = session_request if isinstance(session_request, SessionRequest) else SessionRequest.from_mapping(session_request)
         if req.request_id in self._by_request:  # idempotent
             return self._by_request[req.request_id]
+        if req.mode == "intent_first" and (req.intent or {}).get("kind") not in self.generator.catalog.kinds():
+            raise NegotiationError("INVALID_REQUEST", "unknown activity kind")
         sid = req.session_id or f"session_{req.request_id}"
         if sid in self._sessions:
             raise NegotiationError("DUPLICATE_SESSION", sid)
@@ -104,6 +107,11 @@ class NegotiationCoordinator:
         self._transition(s, S.NEGOTIATING)
         self._emit(s, "negotiation_started", group_size=len(s.roster))
 
+        if req.group_origin == "matched":  # strangers are only introduced with everyone's consent
+            consented = set(req.consent_context.get("introduction_consent_refs", ()))
+            if not set(s.roster) <= consented:
+                self._fail(s, CONSENT_REQUIRED, "consent_missing")
+                return sid
         code = check_roster(s.roster, req.rules, s.initial_size)
         if code:
             self._fail(s, NO_FEASIBLE_PLAN, "attendance_requirement")
@@ -350,12 +358,15 @@ class NegotiationCoordinator:
         s.error_code = s.reason_category = None
         s.stats["revisions"] += 1
         self._transition(s, S.RENEGOTIATING)
-        seeds: List[Mapping[str, Any]] = list(runners_up or [])
+        first: List[Mapping[str, Any]] = list(runners_up or [])
         if base and runners_up is None:
-            seeds.append(base)
-        seeds += self.generator.seeds(s.request, s.roster) if s.request.seed_plans else []
-        seeds = [self._for_roster(p, s.roster) for p in seeds]
-        self._search(s, [(p, "seed", None, None) for p in seeds])
+            first.append(base)
+        extra = self.generator.seeds(s.request, s.roster)
+        first = [self._for_roster(p, s.roster) for p in first]
+        extra = [self._for_roster(p, s.roster) for p in extra]
+        if not first:  # nothing known to re-check: start from the fresh options
+            first, extra = extra, []
+        self._search(s, [(p, "seed", None, None) for p in first], [(p, "seed", None, None) for p in extra])
 
     @staticmethod
     def _strip_member(plan: Dict[str, Any], ref: str) -> None:
@@ -376,7 +387,8 @@ class NegotiationCoordinator:
     # ==================================================================================
     Item = Tuple[Mapping[str, Any], str, Optional[int], Optional[str]]
 
-    def _search(self, s: Session, queue: List["NegotiationCoordinator.Item"]) -> None:
+    def _search(self, s: Session, queue: List["NegotiationCoordinator.Item"],
+                deferred: Optional[List["NegotiationCoordinator.Item"]] = None) -> None:
         cfg = self.config
         s.records, s.ranked, s.seen_signatures = [], [], set(s.vetoed)
         s.stop_reason = None
@@ -403,6 +415,8 @@ class NegotiationCoordinator:
                 if sum(r.status is CandidateStatus.FEASIBLE for r in s.records) >= cfg.target_feasible:
                     raise _Stop("target_reached")
                 queue = self._expand(s, batch_records)
+                if not queue and deferred:  # repair of the known plan dried up: consider fresh options
+                    queue, deferred = deferred, None
             s.stop_reason = "no_new_candidates"
         except _Stop as stop:
             s.stop_reason = stop.reason
@@ -433,9 +447,11 @@ class NegotiationCoordinator:
         s.stats["candidates"] += 1
         if origin in ("counteroffer", "refinement"):
             self._emit(s, "counteroffer_proposed", plan_id=plan["plan_id"], version=version,
-                       derived_from_version=derived, summary=summary or "Adjusted itinerary")
+                       derived_from_version=derived, summary=summary or "Adjusted itinerary",
+                       activity_kind=self._safe_kind(plan), overnight=bool(plan.get("overnight")))
         else:
-            self._emit(s, "candidate_proposed", plan_id=plan["plan_id"], version=version)
+            self._emit(s, "candidate_proposed", plan_id=plan["plan_id"], version=version,
+                       activity_kind=self._safe_kind(plan), overnight=bool(plan.get("overnight")))
 
         violations = validate_plan(plan, s.request, s.roster)
         rec = CandidateRecord(plan, CandidateStatus.INVALID, origin, derived, rule_violations=tuple(violations))
@@ -449,6 +465,11 @@ class NegotiationCoordinator:
             self._emit(s, "proposal_rejected", plan_id=plan["plan_id"], version=version,
                        reason_category="constraint_conflict")
         return rec
+
+    @staticmethod
+    def _safe_kind(plan: Mapping[str, Any]) -> str:
+        kind = plan.get("activity_kind")
+        return kind if isinstance(kind, str) and re.fullmatch(r"[a-z_]{1,32}", kind) else "group_activity"
 
     # -- private evaluations -----------------------------------------------------------
     def _call(self, fn: Callable[..., Any], *args: Any) -> Any:
@@ -614,7 +635,9 @@ class NegotiationCoordinator:
         out: Dict[str, Any] = {
             k: copy.deepcopy(plan[k])
             for k in ("plan_id", "session_id", "version", "opportunity_id", "title", "member_refs",
-                      "start_at", "end_at", "activities", "estimate_disclaimer", "synthetic")
+                      "start_at", "end_at", "activities", "estimate_disclaimer", "synthetic",
+                      "activity_kind", "overnight", "nights", "logistics", "venue_hours", "unverified_items")
+            if k in plan
         }
         out["estimated_total_cents"] = sum(costs.values())  # aggregate only
         if set(s.roster) <= s.cost_disclosure:  # every member consented to per-person figures

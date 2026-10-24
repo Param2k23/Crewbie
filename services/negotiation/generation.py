@@ -16,16 +16,19 @@ from .models import (
     HINT_DIFFERENT_DAY,
     HINT_LATER_START,
     HINT_LOWER_COST,
+    HINT_SHORTER,
     NegotiationConfig,
     SessionRequest,
     parse_ts,
 )
-from .validator import DEFAULT_DISCLAIMER, signature, validate_plan
+from .catalog import ActivityCatalog
+from .validator import normalize_candidate, signature, validate_plan
 
 SUMMARY_PHRASES = {
     HINT_DIFFERENT_DAY: "alternative day",
     HINT_LOWER_COST: "reduced estimated cost",
     HINT_LATER_START: "later start",
+    HINT_SHORTER: "shorter trip",
 }
 
 
@@ -38,29 +41,18 @@ def summarize(hints: Sequence[str]) -> str:
 
 
 class DeterministicCandidateGenerator:
-    def __init__(self, config: NegotiationConfig) -> None:
+    def __init__(self, config: NegotiationConfig, catalog: Optional[ActivityCatalog] = None) -> None:
         self.config = config
+        self.catalog = catalog or ActivityCatalog()
 
     # -- seeds ------------------------------------------------------------------------
     def seeds(self, request: SessionRequest, roster: Sequence[str]) -> List[Dict[str, Any]]:
         if request.seed_plans:
             return [copy.deepcopy(dict(p)) for p in request.seed_plans]
-        start = parse_ts(request.window_start).replace(hour=10, minute=0)
-        tiers = self.config.cost_tiers_cents
-        mid = tiers[len(tiers) // 2]
-        return [
-            {
-                "title": request.title,
-                "start_at": start.isoformat(),
-                "end_at": (start + timedelta(hours=9)).isoformat(),
-                "estimated_cost_cents_by_ref": {m: mid for m in roster},
-                "activities": ["Outbound trip", "Main activity", "Return trip"],
-                "estimate_disclaimer": DEFAULT_DISCLAIMER,
-            }
-        ]
+        return self.catalog.seeds(request, roster)
 
     # -- operators --------------------------------------------------------------------
-    def _apply(self, plan: Mapping[str, Any], op: str, idx: int) -> Optional[Dict[str, Any]]:
+    def _apply(self, plan: Mapping[str, Any], op: str, idx: int, tiers: Sequence[int]) -> Optional[Dict[str, Any]]:
         out = copy.deepcopy(dict(plan))
         start, end = parse_ts(plan["start_at"]), parse_ts(plan["end_at"])
         if op == HINT_DIFFERENT_DAY:
@@ -72,14 +64,32 @@ class DeterministicCandidateGenerator:
             delta = timedelta(hours=opts[min(idx, len(opts) - 1)])
             out["start_at"], out["end_at"] = (start + delta).isoformat(), (end + delta).isoformat()
         elif op == HINT_LOWER_COST:
-            tiers = sorted(self.config.cost_tiers_cents)
             new: Dict[str, int] = {}
             for ref, cost in plan["estimated_cost_cents_by_ref"].items():
                 lower = [t for t in tiers if t < cost]
-                new[ref] = lower[-1] if lower else cost
+                step = min(len(lower), idx + 1)  # variant 0: one tier down; variant 1: two tiers down
+                new[ref] = lower[-step] if lower else cost
             if new == plan["estimated_cost_cents_by_ref"]:
                 return None  # cheapest tier already: operator not applicable
             out["estimated_cost_cents_by_ref"] = new
+        elif op == HINT_SHORTER:
+            nights = int(plan.get("nights", 0))
+            if nights < 1:
+                return None  # nothing to shorten
+            end_local = start.replace(hour=21, minute=0)
+            hours = min(9.0, (end_local - start).total_seconds() / 3600)
+            if hours < 3:
+                return None
+            out["end_at"] = (start + timedelta(hours=hours)).isoformat()
+            out["estimated_cost_cents_by_ref"] = {  # lodging and the extra day drop out
+                r: -(-c // (nights + 1) // 100) * 100 for r, c in plan["estimated_cost_cents_by_ref"].items()
+            }
+            out["activities"] = [a for a in plan.get("activities", []) if not a.lower().startswith("overnight")]
+            out["activity_kind"] = "day_trip"
+            out["title"] = f"{plan.get('title', 'Trip')} (single-day version)"
+            out.pop("logistics", None)  # re-derived: no lodging needed any more
+            out.pop("nights", None)
+            out.pop("overnight", None)
         return out
 
     def derive(
@@ -96,16 +106,19 @@ class DeterministicCandidateGenerator:
             plans_ops += [((o,), 0) for o in ops]
             if len(ops) > 2:
                 plans_ops += [(c, 0) for c in combinations(ops, 2)]
+        tiers = sorted(request.cost_tiers_cents or self.config.cost_tiers_cents)
         seen_sigs = set(seen) | {signature(plan)}
         results: List[Tuple[Dict[str, Any], str]] = []
         for combo, idx in plans_ops:
             cand: Optional[Dict[str, Any]] = copy.deepcopy(dict(plan))
             for op in combo:
-                cand = self._apply(cand, op, idx) if cand is not None else None
+                cand = self._apply(cand, op, idx, tiers) if cand is not None else None
             if cand is None:
                 continue
+            cand = normalize_candidate(cand, session_id=plan.get("session_id", ""), plan_id=plan.get("plan_id", ""),
+                                       version=plan.get("version", 1), request=request, roster=roster)
             sig = signature(cand)
-            if sig in seen_sigs or validate_plan({**cand, "synthetic": request.synthetic}, request, roster):
+            if sig in seen_sigs or validate_plan(cand, request, roster):
                 continue  # duplicate, or would fail public rules: do not spend a private probe
             seen_sigs.add(sig)
             results.append((cand, summarize(combo)))

@@ -13,6 +13,7 @@ from .models import (
     HINT_DIFFERENT_DAY,
     HINT_LATER_START,
     HINT_LOWER_COST,
+    HINT_SHORTER,
     ConsentRequired,
     parse_ts,
 )
@@ -64,11 +65,19 @@ class MockParticipantAgent:
                 issues.append("HARD_BUDGET")
                 exception_possible = cost <= cap + self._margin
                 hints.append(HINT_LOWER_COST)
+                if plan.get("overnight"):
+                    hints.append(HINT_SHORTER)
+        max_nights = self._p.get("hard_max_nights")
+        if max_nights is not None and plan.get("nights", 0) > max_nights:
+            issues.append("HARD_DURATION")
+            hints.append(HINT_SHORTER)
         for w in self._p.get("blocked_windows", []):
             if start < parse_ts(w["end_at"]) and end > parse_ts(w["start_at"]):
                 issues.append("HARD_AVAILABILITY")
                 exception_possible = False  # time conflicts are never waived by this mock
                 hints.append(HINT_DIFFERENT_DAY)
+                if plan.get("overnight"):
+                    hints.append(HINT_SHORTER)
                 break
 
         soft = self._p.get("soft_preferences", {})
@@ -77,6 +86,9 @@ class MockParticipantAgent:
         if early:
             penalty += 0.1 * early
             hints.append(HINT_LATER_START)
+        liked = soft.get("prefers_kinds")
+        if liked and plan.get("activity_kind") not in liked:
+            penalty += 0.15
         if soft.get("prefers_low_cost"):
             cost_pen = min(1.0, max(0.0, cost - 3000) / 10000)
             penalty += cost_pen
