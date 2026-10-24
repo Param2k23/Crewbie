@@ -51,6 +51,20 @@ def parse_preferences(message, context):
     return {"campus": campus, "dietary_preferences": diet, "cadence": cadence}
 
 
+def classify_intent(message):
+    """Bounded local routing; preserves the three canonical intent values."""
+    if not isinstance(message, str) or not message.strip():
+        raise PulseError("VALIDATION_ERROR", "A request is required")
+    text = message.lower()
+    if re.search(r"\b(company|companions?|friends?|someone to go|find a crew|find people|people to join)\b", text):
+        return "find_companion"
+    if re.search(r"\b(food|pizza|tacos|lunch)\b", text) and not re.search(r"\b(plan|organize)\b", text):
+        return "find_campus_food"
+    if re.search(r"\b(trip|travel|weekend|group activity|dinner|coffee|badminton|hiking|events?|activities|hours? free|free hours?|what can i do)\b", text):
+        return "plan_group_activity"
+    raise PulseError("VALIDATION_ERROR", "Unrecognized Crewbie planning intent")
+
+
 def parse_student_intent(message, consent_context):
     """Return the frozen OpportunityBrief; raise rather than guess a time gap."""
     c = consent_context
@@ -59,19 +73,16 @@ def parse_student_intent(message, consent_context):
     if not isinstance(message, str) or not message.strip():
         raise PulseError("VALIDATION_ERROR", "A request is required")
     text = message.lower()
-    companion = bool(re.search(r"\b(company|companion|friend|someone to go)\b", text))
-    if companion:
-        intent = "find_companion"
-    elif re.search(r"\b(food|pizza|tacos|lunch)\b", text):
-        intent = "find_campus_food"
-    elif re.search(r"\b(trip|group activity)\b", text):
-        intent = "plan_group_activity"
-    else:
-        raise PulseError("VALIDATION_ERROR", "Unrecognized Campus Pulse intent")
+    intent = classify_intent(message)
+    companion = intent == "find_companion"
     prefs = parse_preferences(message, c)
     start, end = instant(c.get("availability_start")), instant(c.get("availability_end"))
     if end <= start:
         raise PulseError("VALIDATION_ERROR", "Availability end must follow start")
+    weekdays = [day for day in ("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday")
+                if re.search(r"\b" + day + r"\b", text)]
+    if weekdays and (len(weekdays) != 1 or start.astimezone(PHOENIX).strftime("%A").lower() != weekdays[0]):
+        raise PulseError("VALIDATION_ERROR", "Requested weekday conflicts with availability; confirm dates")
     # Relative dates require an injected clock and must agree with the explicit gap.
     if "tomorrow" in text or re.search(r"\btoday\b", text):
         now = instant(c.get("now")).astimezone(PHOENIX)

@@ -1,4 +1,10 @@
-# Campus Pulse provider verification
+# Crewbie Planner provider verification
+
+Final planning scope update: the Skill now supports free-time planning, dinner/sports,
+multi-day trips and optional campus food. Local planner and consent-gated A3/A4 gateway
+are documented in [PLANNER_HANDOFF.md](PLANNER_HANDOFF.md). Forty automated tests pass;
+actual installation, browsing, memory, reminders, connected-calendar access and
+scheduled delivery remain UNVERIFIED in a real Cubbie account.
 
 Updated: 2026-10-24 against the supplied **Build a Cubbie Skill — Hackathon Guide**, October 19, 2026, @ziyou ([local PDF](HACKATHON_GUIDE.pdf)). **Actual Cubbie Skill execution: UNVERIFIED. Track 1 is incomplete until public GitHub installation and the main flow succeed on a real account.** An instruction-only Skill now exists at `skills/campus-pulse/SKILL.md`; the preserved Python simulator is a separate local test component.
 
@@ -23,6 +29,8 @@ The earlier [Cubbie API developer page](https://www.cubbie.com/developers) descr
 | Capability | Status | Evidence / limitation |
 |---|---|---|
 | Frozen OpportunityBrief parser | VERIFIED locally | Fixture scenario and parser tests; not sponsor execution |
+| General planning and multi-day constraints | VERIFIED locally | Time-first/intent-first routing, private detail sidecar and clarification tests; no live venue or price claims |
+| A3/A4 handoff consent gate | VERIFIED locally / mock | Activity/brief-bound sharing and separate matching/coordination opt-in; no real service connected |
 | Campus/time/food/freshness selection | VERIFIED locally | Automated tests against shared fictional opportunities |
 | Private source-linked preview and uncertainty copy | VERIFIED locally | Runnable demo, source/diet/access tests |
 | User-authorized campus, dietary and cadence parsing | VERIFIED locally | Context and message parser; no persistent sponsor memory |

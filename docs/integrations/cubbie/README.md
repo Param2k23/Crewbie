@@ -1,4 +1,9 @@
-# Campus Pulse handoff
+# Crewbie Planner handoff
+
+Current product scope: time-first and intent-first personal/social planning, with
+campus food retained as an optional category. Start with [PLANNER_HANDOFF.md](PLANNER_HANDOFF.md)
+for the audit, new private planner, consent gate, compatible extension proposal and
+local demo. The install/update identifier remains campus-pulse.
 
 Campus Pulse now has two separate components: the native instruction-only Skill at `skills/campus-pulse/SKILL.md`, and the preserved deterministic Python simulator with a truthful unavailable-provider adapter. The October 19, 2026 hackathon guide confirms native browsing, memory and scheduled check-ins. See [NATIVE_SKILL.md](NATIVE_SKILL.md) for public GitHub installation, real-account testing and future service integration, and [VERIFICATION.md](VERIFICATION.md) for documented versus observed capabilities. No shared contracts or fixtures were changed.
 
@@ -11,6 +16,7 @@ python -B -m unittest discover -s tests/cubbie -v
 python -B -m integrations.cubbie.demo
 python -B -m integrations.cubbie.demo --simulate-schedule
 python -B -m integrations.cubbie.validate_skill skills/campus-pulse
+python -B -m integrations.cubbie.planner_demo
 ```
 
 The fixture path can be overridden with `--fixtures PATH`. The fixture adapter rejects non-synthetic events. Demo clock is pinned to 2026-10-26 09:00 Phoenix to make the supplied fictional events reproducible. The simulator loads the three supplied opportunities and selects the Tempe lunch event; the evening social and West Valley workshop do not fit that request.

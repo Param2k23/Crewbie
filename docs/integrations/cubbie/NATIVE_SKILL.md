@@ -1,4 +1,10 @@
-# Native Campus Pulse Skill
+# Native Crewbie Planner Skill
+
+Current user-facing identity: **Crewbie Planner**. Installed identifier/folder stays
+`campus-pulse`. The Skill now handles time-first and intent-first personal/social
+planning, with food discovery as an optional activity. See [PLANNER_HANDOFF.md](PLANNER_HANDOFF.md)
+for current local code, 40-test evidence, consent-gated A3/A4 readiness and schema
+extension proposal. Earlier Campus Pulse validation evidence below is historical.
 
 ## Package and permissions
 
@@ -19,11 +25,18 @@ https://github.com/Param2k23/Crewbie/tree/agent-01-cubbie/skills/campus-pulse
 **This URL is a publication target, not proof the folder is remotely available.** No push has been authorized or performed during this task, and public repository visibility has not been checked. After explicit approval, publish the Skill on this branch in a public repository. Do not merge to master for installation.
 
 1. Text that public folder URL to Cubbie (guide p. 5). Alternatively send the public SKILL.md URL.
-2. Inspect Cubbie's summary: Campus Pulse purpose, exact commit, and no added script packages, hosts, keys or logins. Reply yes to install. Installation is per student; no account-wide rollout occurs.
+2. Inspect Cubbie's summary: Crewbie Planner purpose, campus-pulse identifier, exact commit, and no added script packages, hosts, keys or logins. Reply yes to install. Installation is per student; no account-wide rollout occurs.
 3. Ask: "Use Campus Pulse to find campus events in Tempe today between noon and 1:30 pm. I'm vegetarian. Check food opportunities, but don't schedule anything yet." Resolve date/time if needed and inspect source evidence.
 4. Ask: "Send me a daily Campus Pulse check-in at 9 am America/Phoenix for my noon to 1:30 pm gap. Send a short no-matches note if nothing fits." This is explicit consent for those settings; clarify start date or other missing details without duplicating consent already given.
 5. Confirm only the schedule result actually returned by Cubbie. A scheduled task is not evidence of delivery: wait for a real authorized occurrence and record its outcome. Test stop/cancellation afterward.
 6. For a later approved update, publish the revised commit and text `update campus-pulse`; review the new summary and confirm. `What Skills do I have?` lists installs; `remove campus-pulse` removes this Skill. Cancel check-ins separately and verify they stopped; do not assume uninstall cancels schedules.
+
+For the current main flow, ask "I have two free hours tomorrow" and provide an exact
+window/location if requested; expect researched personal activity choices. Then ask
+"Plan a two-day trip" and confirm dates, budget scope, transport, destination and
+overnight needs. Try "Find a crew" and verify activity-scoped consent plus the honest
+service-unavailable fallback. A native one-time reminder and recurring planning
+check-in each require authorization and an observed successful native tool outcome.
 
 For submission, replace the branch name in the folder link with the actual published 40-character commit SHA: `https://github.com/Param2k23/Crewbie/tree/<published-commit-sha>/skills/campus-pulse`. Do not submit this placeholder. Cubbie pins the installation commit. Exact submission form/cutoff and test accounts still need organizer confirmation.
 
