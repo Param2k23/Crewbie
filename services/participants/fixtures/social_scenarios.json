@@ -1,0 +1,27 @@
+{
+  "fixture_notice": "All activities and profile extensions are synthetic. These are not live events, bookings or offers.",
+  "discovery_scope": "social_discovery_demo",
+  "trip_scope": "two_day_friends_demo",
+  "evening_availability": [{"start_at": "2026-10-30T17:00:00-07:00", "end_at": "2026-10-30T23:00:00-07:00"}],
+  "discovery_preferences": {
+    "stu_alex": {"activity_interests": ["games", "dinner", "hiking", "travel"], "rough_areas": ["Tempe"], "max_duration_minutes": 180, "max_travel_minutes": 40, "min_group_size": 2, "max_group_size": 6, "willingness": "interested"},
+    "stu_maya": {"activity_interests": ["games", "dinner"], "rough_areas": ["Tempe"], "max_duration_minutes": 120, "max_travel_minutes": 30, "min_group_size": 2, "max_group_size": 4, "willingness": "interested"},
+    "stu_jordan": {"activity_interests": ["dinner", "travel"], "rough_areas": ["Tempe"], "max_duration_minutes": 150, "max_travel_minutes": 30, "min_group_size": 2, "max_group_size": 4, "willingness": "interested"},
+    "stu_taylor": {"activity_interests": ["games", "hiking"], "rough_areas": ["Tempe"], "max_duration_minutes": 180, "max_travel_minutes": 30, "min_group_size": 2, "max_group_size": 4, "willingness": "unavailable"}
+  },
+  "shareable_interests": {"stu_alex": ["games"], "stu_maya": ["games"], "stu_jordan": [], "stu_taylor": ["hiking"]},
+  "activities": [
+    {"activity_id": "evening_games", "activity_kind": "games", "rough_area": "Tempe", "start_at": "2026-10-30T18:00:00-07:00", "end_at": "2026-10-30T19:30:00-07:00", "group_size": 2, "estimated_travel_minutes": 20, "synthetic": true},
+    {"activity_id": "evening_dinner", "activity_kind": "dinner", "rough_area": "Tempe", "start_at": "2026-10-30T19:30:00-07:00", "end_at": "2026-10-30T21:00:00-07:00", "group_size": 3, "estimated_travel_minutes": 20, "synthetic": true}
+  ],
+  "trip_preferences": {
+    "stu_alex": {"activity_interests": ["travel"], "max_duration_minutes": 3000, "max_travel_minutes": 300},
+    "stu_maya": {"activity_interests": ["travel"], "max_duration_minutes": 3000, "max_travel_minutes": 300},
+    "stu_jordan": {"activity_interests": ["games"], "max_duration_minutes": 3000, "max_travel_minutes": 300},
+    "stu_taylor": {"activity_interests": ["hiking", "travel"], "max_duration_minutes": 3000, "max_travel_minutes": 300}
+  },
+  "trip_plans": [
+    {"session_id": "session_two_day_demo", "plan_id": "two_day_demo", "version": 1, "opportunity_id": null, "activity_id": "weekend_trip", "activity_kind": "travel", "rough_area": "Northern Arizona", "title": "Two-day friends trip DEMO", "member_refs": ["stu_alex", "stu_maya", "stu_jordan", "stu_taylor"], "start_at": "2026-10-30T07:00:00-07:00", "end_at": "2026-11-01T07:00:00-07:00", "estimated_cost_cents_by_ref": {"stu_alex": 7000, "stu_maya": 7000, "stu_jordan": 7000, "stu_taylor": 7000}, "estimated_travel_minutes_by_ref": {"stu_alex": 240, "stu_maya": 240, "stu_jordan": 240, "stu_taylor": 240}, "activities": ["Scenic walk", "Overnight stay DEMO", "Return"], "estimate_disclaimer": "Synthetic estimates only; no booking or inventory", "synthetic": true},
+    {"session_id": "session_two_day_demo", "plan_id": "two_day_demo", "version": 2, "opportunity_id": null, "activity_id": "weekend_trip", "activity_kind": "travel", "rough_area": "Northern Arizona", "title": "Two-day friends trip DEMO", "member_refs": ["stu_alex", "stu_maya", "stu_jordan", "stu_taylor"], "start_at": "2026-11-01T10:00:00-07:00", "end_at": "2026-11-03T10:00:00-07:00", "estimated_cost_cents_by_ref": {"stu_alex": 5200, "stu_maya": 5200, "stu_jordan": 5200, "stu_taylor": 5200}, "estimated_travel_minutes_by_ref": {"stu_alex": 240, "stu_maya": 240, "stu_jordan": 240, "stu_taylor": 240}, "activities": ["Scenic walk", "Overnight stay DEMO", "Return"], "estimate_disclaimer": "Synthetic estimates only; no booking or inventory", "synthetic": true}
+  ]
+}
