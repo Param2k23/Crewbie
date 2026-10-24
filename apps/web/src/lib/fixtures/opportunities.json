@@ -1,0 +1,53 @@
+{
+  "fixture_notice": "All listings fictional. Do not present as current ASU events or claim real inventory.",
+  "opportunities": [
+    {
+      "opportunity_id": "opp_demo_pizza",
+      "title": "Engineering Club Pizza Meetup — DEMO ONLY",
+      "campus": "Tempe",
+      "start_at": "2026-10-26T12:00:00-07:00",
+      "end_at": "2026-10-26T13:00:00-07:00",
+      "location_label": "Sample public campus venue — NOT A REAL LISTING",
+      "food_status": "listed",
+      "food_detail": "Demo listing mentions pizza; actual free-food availability unknown",
+      "dietary_suitability": "unknown",
+      "access_status": "unknown",
+      "rsvp_required": null,
+      "source_url": "https://example.org/crewbie-demo/pizza",
+      "checked_at": "2026-10-24T18:00:00Z",
+      "synthetic": true
+    },
+    {
+      "opportunity_id": "opp_demo_tacos",
+      "title": "Student Organizations Taco Social — DEMO ONLY",
+      "campus": "Tempe",
+      "start_at": "2026-10-26T17:00:00-07:00",
+      "end_at": "2026-10-26T18:00:00-07:00",
+      "location_label": "Sample lawn — NOT A REAL LISTING",
+      "food_status": "listed",
+      "food_detail": "Demo listing mentions tacos; ingredients and inventory not verified",
+      "dietary_suitability": "unknown",
+      "access_status": "public",
+      "rsvp_required": null,
+      "source_url": "https://example.org/crewbie-demo/tacos",
+      "checked_at": "2026-10-24T18:00:00Z",
+      "synthetic": true
+    },
+    {
+      "opportunity_id": "opp_demo_workshop",
+      "title": "Career Skills Workshop — DEMO ONLY",
+      "campus": "West Valley",
+      "start_at": "2026-10-26T12:30:00-07:00",
+      "end_at": "2026-10-26T14:00:00-07:00",
+      "location_label": null,
+      "food_status": "unknown",
+      "food_detail": "Food not mentioned in demo description",
+      "dietary_suitability": "unknown",
+      "access_status": "restricted",
+      "rsvp_required": true,
+      "source_url": "https://example.org/crewbie-demo/workshop",
+      "checked_at": "2026-10-24T18:00:00Z",
+      "synthetic": true
+    }
+  ]
+}
