@@ -1,6 +1,6 @@
 # Campus Pulse handoff
 
-Campus Pulse provides a deterministic, independently runnable Campus Pulse core and a truthful unavailable-provider adapter. Native Cubbie integration is blocked; see [VERIFICATION.md](VERIFICATION.md). No shared contracts or fixtures were changed.
+Campus Pulse now has two separate components: the native instruction-only Skill at `skills/campus-pulse/SKILL.md`, and the preserved deterministic Python simulator with a truthful unavailable-provider adapter. The October 19, 2026 hackathon guide confirms native browsing, memory and scheduled check-ins. See [NATIVE_SKILL.md](NATIVE_SKILL.md) for public GitHub installation, real-account testing and future service integration, and [VERIFICATION.md](VERIFICATION.md) for documented versus observed capabilities. No shared contracts or fixtures were changed.
 
 ## Setup and local commands
 
@@ -10,6 +10,7 @@ Run from the repository root. No third-party dependencies, network, credentials 
 python -B -m unittest discover -s tests/cubbie -v
 python -B -m integrations.cubbie.demo
 python -B -m integrations.cubbie.demo --simulate-schedule
+python -B -m integrations.cubbie.validate_skill skills/campus-pulse
 ```
 
 The fixture path can be overridden with `--fixtures PATH`. The fixture adapter rejects non-synthetic events. Demo clock is pinned to 2026-10-26 09:00 Phoenix to make the supplied fictional events reproducible. The simulator loads the three supplied opportunities and selects the Tempe lunch event; the evening social and West Valley workshop do not fit that request.
@@ -27,15 +28,10 @@ The fixture path can be overridden with `--fixtures PATH`. The fixture adapter r
 
 All briefs, preferences and previews are private: do not publish them to A5/A6 or public logs. Error details never echo the original student message. There are no public events, external calls or profile reads in this component. Production integrations require authentication, persistent idempotency, fresh catalog evaluation at delivery, verified provider permissions and approved privacy handling.
 
-## Actual Track 1 demo procedure (blocked, not executed)
+## Actual Track 1 demo procedure (not executed)
 
-1. Obtain the sponsor requirements listed in VERIFICATION.md, implement their official adapter, and install with their documented procedure. There is currently no known valid install command.
-2. In the real Cubbie test workspace, authenticate a consenting synthetic student and provide Tempe, a timezone-aware lunch window, vegetarian preference and explicit alert opt-in through supported controls.
-3. Invoke Campus Pulse using the documented trigger. Supply the labeled fixture catalog or verified A2 catalog through the permitted external service interface.
-4. Capture the real rendered source-linked alert with diet/access uncertainty, invocation receipt and adapter version. Never call fixtures live ASU events.
-5. Reply Find company and prove it requests matching consent before any handoff. If scheduling is supported, register a test notice, retry the same request ID, cancel, revoke permission and verify delivery/cancellation receipts. Otherwise show a manual preview and explicitly state scheduling is unavailable.
-6. Store redacted sponsor evidence under docs/integrations/cubbie and update capability statuses only after observing execution.
+Follow the six-case checklist in [NATIVE_SKILL.md](NATIVE_SKILL.md). Publish only with the user's explicit approval, then text Cubbie the public Skill folder link, inspect the commit-pinned installation summary and reply yes. Ask for campus events directly and authorize a daily check-in through native abilities. No Python bridge or event backend is necessary. Capture real evidence and update VERIFICATION.md only after installation and execution succeed.
 
 ## Delivered evidence and remaining work
 
-The local test and demo run completed successfully; see [DEMO_TRANSCRIPT.md](DEMO_TRANSCRIPT.md). Phase 0 discovery and blocker report, Phase 1 core, and Phase 3 local reliability are delivered. Phase 2 native integration remains blocked by sponsor docs/workspace/permissions. No contract changes requested. Changes are uncommitted on agent-01-cubbie; baseline commit is 2aec391a86605efd2cb0f3de4643456abb20ff78. No push or merge performed.
+The original 18 tests and demo are preserved; six additional package tests validate standalone installation boundaries and offline structure. See [DEMO_TRANSCRIPT.md](DEMO_TRANSCRIPT.md) for historical simulator output and NATIVE_SKILL.md for the new package validation evidence. Native Skill authoring and local validation are complete; publication and real-account installation/execution remain unverified. No contract changes requested. Work remains on agent-01-cubbie. No push or merge performed.
