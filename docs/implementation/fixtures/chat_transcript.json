@@ -1,0 +1,50 @@
+{
+  "fixture_notice": "Synthetic messages for parser and approval-version tests.",
+  "session_id": "session_trip_001",
+  "plan_id": "plan_flagstaff_002",
+  "version": 2,
+  "messages": [
+    {
+      "request_id": "m1",
+      "member_ref": "stu_alex",
+      "text": "I accept this Sunday trip plan",
+      "expected_state": "accepted"
+    },
+    {
+      "request_id": "m2",
+      "member_ref": "stu_maya",
+      "text": "Sounds interesting",
+      "expected_state": "interested"
+    },
+    {
+      "request_id": "m3",
+      "member_ref": "stu_jordan",
+      "text": "Maybe",
+      "expected_state": "tentative"
+    },
+    {
+      "request_id": "m4",
+      "member_ref": "stu_taylor",
+      "text": "Yes, if we leave after 10",
+      "expected_state": "conditional"
+    },
+    {
+      "request_id": "m5",
+      "member_ref": "stu_maya",
+      "text": "I confirm plan version 2",
+      "expected_state": "accepted"
+    },
+    {
+      "request_id": "m6",
+      "member_ref": "stu_jordan",
+      "text": "I confirm plan version 2",
+      "expected_state": "accepted"
+    },
+    {
+      "request_id": "m7",
+      "member_ref": "stu_taylor",
+      "text": "I confirm plan version 2",
+      "expected_state": "accepted"
+    }
+  ]
+}

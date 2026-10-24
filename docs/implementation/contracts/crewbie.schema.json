@@ -1,0 +1,466 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/crewbie/contracts/crewbie.schema.json",
+  "title": "Crewbie shared contract shapes (v0.1)",
+  "description": "Contract drafts for development, not proof of real sponsor API. Sensitive structures must not be exposed in public payloads.",
+  "type": "object",
+  "$defs": {
+    "Opportunity": {
+      "type": "object",
+      "required": [
+        "opportunity_id",
+        "title",
+        "campus",
+        "start_at",
+        "end_at",
+        "food_status",
+        "dietary_suitability",
+        "access_status",
+        "source_url",
+        "checked_at",
+        "synthetic"
+      ],
+      "properties": {
+        "opportunity_id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "campus": {
+          "type": "string"
+        },
+        "start_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "location_label": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "food_status": {
+          "enum": [
+            "none",
+            "listed",
+            "confirmed_by_organizer",
+            "unknown"
+          ]
+        },
+        "food_detail": {
+          "type": "string"
+        },
+        "dietary_suitability": {
+          "enum": [
+            "known_suitable",
+            "known_unsuitable",
+            "unknown"
+          ]
+        },
+        "access_status": {
+          "enum": [
+            "public",
+            "restricted",
+            "unknown"
+          ]
+        },
+        "rsvp_required": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "source_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "checked_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "synthetic": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "OpportunityBrief": {
+      "type": "object",
+      "required": [
+        "brief_id",
+        "student_ref",
+        "intent",
+        "campus",
+        "availability_start",
+        "availability_end",
+        "opportunity_id",
+        "wants_companion",
+        "requirements_to_verify",
+        "source",
+        "synthetic"
+      ],
+      "properties": {
+        "brief_id": {
+          "type": "string"
+        },
+        "student_ref": {
+          "type": "string"
+        },
+        "intent": {
+          "enum": [
+            "find_campus_food",
+            "find_companion",
+            "plan_group_activity"
+          ]
+        },
+        "campus": {
+          "type": "string"
+        },
+        "availability_start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "availability_end": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "opportunity_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "wants_companion": {
+          "type": "boolean"
+        },
+        "requirements_to_verify": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source": {
+          "type": "string"
+        },
+        "synthetic": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "PrivateParticipantProfile": {
+      "type": "object",
+      "required": [
+        "student_ref",
+        "activity_scope",
+        "authorized",
+        "matching_opt_in",
+        "introduction_opt_in",
+        "hard_budget_cap_cents",
+        "blocked_windows",
+        "soft_preferences",
+        "shareable_interests",
+        "synthetic"
+      ],
+      "properties": {
+        "student_ref": {
+          "type": "string"
+        },
+        "activity_scope": {
+          "type": "string"
+        },
+        "authorized": {
+          "type": "boolean"
+        },
+        "matching_opt_in": {
+          "type": "boolean"
+        },
+        "introduction_opt_in": {
+          "type": "boolean"
+        },
+        "hard_budget_cap_cents": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "blocked_windows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "start_at",
+              "end_at"
+            ],
+            "properties": {
+              "start_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "end_at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "soft_preferences": {
+          "type": "object"
+        },
+        "shareable_interests": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "synthetic": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CandidatePlan": {
+      "type": "object",
+      "required": [
+        "plan_id",
+        "session_id",
+        "version",
+        "opportunity_id",
+        "title",
+        "member_refs",
+        "start_at",
+        "end_at",
+        "estimated_cost_cents_by_ref",
+        "activities",
+        "estimate_disclaimer",
+        "synthetic"
+      ],
+      "properties": {
+        "plan_id": {
+          "type": "string"
+        },
+        "session_id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "opportunity_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "member_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "start_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "estimated_cost_cents_by_ref": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "activities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "estimate_disclaimer": {
+          "type": "string"
+        },
+        "synthetic": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "PrivateEvaluation": {
+      "type": "object",
+      "required": [
+        "session_id",
+        "plan_id",
+        "version",
+        "student_ref",
+        "feasible",
+        "requires_private_exception",
+        "internal_issue_codes",
+        "soft_penalty",
+        "counteroffer_hints",
+        "synthetic"
+      ],
+      "properties": {
+        "session_id": {
+          "type": "string"
+        },
+        "plan_id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "student_ref": {
+          "type": "string"
+        },
+        "feasible": {
+          "type": "boolean"
+        },
+        "requires_private_exception": {
+          "type": "boolean"
+        },
+        "internal_issue_codes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "soft_penalty": {
+          "type": "number",
+          "minimum": 0
+        },
+        "counteroffer_hints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "synthetic": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CommitmentRecord": {
+      "type": "object",
+      "required": [
+        "session_id",
+        "plan_id",
+        "version",
+        "member_ref",
+        "state",
+        "explicit_acceptance",
+        "last_changed_at",
+        "request_id"
+      ],
+      "properties": {
+        "session_id": {
+          "type": "string"
+        },
+        "plan_id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "member_ref": {
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "pending",
+            "interested",
+            "tentative",
+            "conditional",
+            "accepted",
+            "declined",
+            "withdrawn"
+          ]
+        },
+        "explicit_acceptance": {
+          "type": "boolean"
+        },
+        "last_changed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "request_id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "AgentEvent": {
+      "type": "object",
+      "required": [
+        "event_id",
+        "session_id",
+        "timestamp",
+        "type",
+        "actor_ref",
+        "visibility",
+        "payload",
+        "synthetic"
+      ],
+      "properties": {
+        "event_id": {
+          "type": "string"
+        },
+        "session_id": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "type": {
+          "enum": [
+            "opportunity_discovered",
+            "match_requested",
+            "match_suggested",
+            "consent_requested",
+            "consent_granted",
+            "negotiation_started",
+            "candidate_proposed",
+            "proposal_rejected",
+            "counteroffer_proposed",
+            "fairness_evaluated",
+            "proposal_ready",
+            "approval_requested",
+            "member_response_received",
+            "proposal_confirmed",
+            "proposal_revised",
+            "negotiation_failed",
+            "session_completed"
+          ]
+        },
+        "actor_ref": {
+          "type": "string"
+        },
+        "visibility": {
+          "const": "group_safe"
+        },
+        "payload": {
+          "type": "object"
+        },
+        "synthetic": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}
