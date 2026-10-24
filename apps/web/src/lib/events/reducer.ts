@@ -104,6 +104,8 @@ export function deriveView(log: AgentEvent[], snapshot: PublicSnapshot | null): 
   const warnings: SyncWarning[] = [];
   const timeline: TimelineEntry[] = [];
   let phase: Phase = "idle";
+  /** Members who withdrew stay withdrawn on later versions unless they respond again. */
+  const withdrawnAt = new Map<string, number>();
 
   const ensure = (version: number, planId: string | null | undefined, eventId: string, status: PlanStatus): PlanVersion => {
     let pv = versions.get(version);
@@ -222,6 +224,8 @@ export function deriveView(log: AgentEvent[], snapshot: PublicSnapshot | null): 
           break;
         }
         (view.commitmentsByVersion[p.version] ??= {})[ref] = state;
+        if (state === "withdrawn") withdrawnAt.set(ref, p.version);
+        else withdrawnAt.delete(ref);
         if (!view.members.includes(ref)) view.members.push(ref);
         break;
       }
@@ -275,6 +279,7 @@ export function deriveView(log: AgentEvent[], snapshot: PublicSnapshot | null): 
   // Approvals only count while their version is live; a rejected/failed version keeps history in commitmentsByVersion.
   const countable = live && (live.status === "awaiting_approval" || live.status === "confirmed" || live.status === "ready" || live.status === "proposed");
   view.commitments = countable ? { ...(view.commitmentsByVersion[live.version] ?? {}) } : {};
+  if (countable) for (const [ref, v] of withdrawnAt) if (v <= live.version && !view.commitments[ref]) view.commitments[ref] = "withdrawn";
   view.acceptedCount = Object.values(view.commitments).filter((s) => s === "accepted").length;
   view.requiredCount = live?.required_count ?? null;
   view.confirmed = live?.status === "confirmed";

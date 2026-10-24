@@ -1,6 +1,6 @@
 import type { Opportunity } from "./types";
 
-/** Campus time: ASU campuses in this fixture are in Arizona (no DST). */
+/** Arizona time (no DST) is used for all displayed times. */
 export const CAMPUS_TZ = "America/Phoenix";
 
 export function foodBadge(o: Opportunity): { label: string; tone: "neutral" | "warn" | "good" } {

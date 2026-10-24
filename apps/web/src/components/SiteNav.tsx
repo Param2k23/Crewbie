@@ -15,7 +15,7 @@ export function SiteNav() {
         <span className="brand-dot" aria-hidden /> Crewbie
       </Link>
       <nav aria-label="Primary">
-        {item("/", "Campus Pulse")}
+        {item("/", "Discover")}
         {item("/arena", "Mission Control")}
       </nav>
       <span className="pill pill-synth" title="All bundled data is fictional">Synthetic data</span>

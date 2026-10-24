@@ -4,6 +4,8 @@ export const REASON_LABELS: Record<string, string> = {
   constraint_conflict: "A hard constraint of at least one member is not met (details stay private)",
   no_feasible_plan: "No plan satisfied every hard constraint within the search limit",
   availability_conflict: "A member's availability conflicts with the plan (details stay private)",
+  budget_conflict: "The plan exceeds a member's hard budget (amount and member stay private)",
+  departure_conflict: "The departure or return time conflicts with a member's constraint (details stay private)",
 };
 
 export const CONDITION_LABELS: Record<string, string> = {
@@ -46,7 +48,8 @@ export function describeEvent(e: AgentEvent): Pick<TimelineEntry, "title" | "ton
     case "approval_requested":
       return { title: `Approval requested for${v}${p.required_count ? ` (${p.required_count} required)` : ""}`, tone: "warn" };
     case "member_response_received":
-      return { title: `${p.member_ref ?? "Member"} responded: ${p.state ?? "unknown"}${v ? ` on${v}` : ""}${p.condition_category ? ` (${labelFor(CONDITION_LABELS, p.condition_category)})` : ""}`, tone: p.state === "accepted" ? "good" : p.state === "declined" || p.state === "withdrawn" ? "bad" : "warn" };
+      if (p.state === "withdrawn") return { title: `${p.member_ref ?? "A participant"} withdrew from the plan`, tone: "bad" };
+      return { title: `${p.member_ref ?? "Member"} responded: ${p.state ?? "unknown"}${v ? ` on${v}` : ""}${p.condition_category ? ` (${labelFor(CONDITION_LABELS, p.condition_category)})` : ""}`, tone: p.state === "accepted" ? "good" : p.state === "declined" ? "bad" : "warn" };
     case "proposal_confirmed":
       return { title: `Backend confirmed plan${v}${p.accepted_count !== undefined ? ` (${p.accepted_count}/${p.required_count ?? "?"} accepted)` : ""}`, tone: "good" };
     case "negotiation_failed":

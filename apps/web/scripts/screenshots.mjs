@@ -21,57 +21,70 @@ async function page(url, w = 1440, h = 900) {
 const shot = async (p, name) => { await p.evaluate(() => scrollTo(0, 0)); await p.waitForTimeout(250); await p.screenshot({ path: `${out}/${name}.png` }); };
 const step = async (p, n) => { for (let i = 0; i < n; i++) { await p.getByRole("button", { name: /Step/ }).click(); await p.waitForTimeout(150); } };
 
-// 1. Campus Pulse
+// 1. Discover
 let p = await page("/");
-await shot(p, "01-campus-pulse");
+await shot(p, "01-discover");
 
-// 2. Demo: rejection -> pending -> judge
-p = await page("/arena?mode=demo&view=3d");
+const judge = async (p, { kind, value, member }) => {
+  await p.getByLabel("This targets a synthetic sandbox profile").check();
+  if (kind) await p.locator(".judge select").nth(0).selectOption(kind);
+  if (member) await p.locator(".judge select").nth(1).selectOption(member);
+  if (value) await p.getByLabel(/New hard cap/).fill(value);
+  await p.getByRole("button", { name: "Send change request" }).click();
+};
+
+// 2. Demo A: Quick Plan -> rejection -> pending -> judge budget change -> v3
+p = await page("/arena?mode=quick&view=3d");
 await p.waitForSelector("canvas", { timeout: 15000 });
 await step(p, 3); await p.waitForTimeout(800);
-await shot(p, "02-demo-proposal-rejected");
+await shot(p, "02-quick-proposal-rejected");
 await step(p, 7); await p.waitForTimeout(800);
-await shot(p, "03-demo-pending-conditional-approvals");
-
-await p.getByLabel("This targets a synthetic sandbox profile").check();
-await p.getByLabel(/New hard cap/).fill("45");
-await p.getByRole("button", { name: "Send change request" }).click();
+await shot(p, "03-quick-pending-conditional-approvals");
+await judge(p, { value: "12" });
 await p.waitForTimeout(150);
 await shot(p, "04-judge-request-pending");
 await p.getByText(/Server: accepted/).waitFor({ timeout: 5000 });
 await p.getByLabel("Speed").selectOption("4");
 await p.getByText(/Approvals for v3: 0 \/ 4/).waitFor({ timeout: 15000 });
 await p.waitForTimeout(900);
-await shot(p, "05-judge-replanned-v3-approvals-reset");
+await shot(p, "05-quick-judge-replanned-approvals-reset");
 
-// 3. Honest failure: cap below any feasible plan
-p = await page("/arena?mode=demo&view=3d");
+// 3. Honest failure
+p = await page("/arena?mode=quick&view=3d");
 await p.waitForSelector("canvas");
 await step(p, 10);
-await p.getByLabel("This targets a synthetic sandbox profile").check();
-await p.getByLabel(/New hard cap/).fill("20");
-await p.getByRole("button", { name: "Send change request" }).click();
+await judge(p, { value: "4" });
 await p.getByLabel("Speed").selectOption("4");
 await p.getByText(/No feasible plan/).first().waitFor({ timeout: 15000 });
 await p.waitForTimeout(900);
 await shot(p, "06-judge-no-feasible-plan");
 
-// 4. Confirmed (canonical fixture, full replay)
+// 4. Demo B: Weekend Plan with two failed proposals
+p = await page("/arena?mode=weekend&view=3d");
+await p.waitForSelector("canvas");
+await step(p, 12); await p.waitForTimeout(900);
+await shot(p, "07-weekend-pending-after-two-failures");
+
+// 5. Demo C: withdrawal -> replan with 3 required
+await judge(p, { kind: "withdraw", member: "stu_taylor" });
+await p.getByLabel("Speed").selectOption("4");
+await p.getByText(/Approvals for v4: 0 \/ 3/).waitFor({ timeout: 15000 });
+await p.waitForTimeout(900);
+await shot(p, "08-weekend-withdrawal-replan");
+
+// 6. Confirmed (canonical fixture)
 p = await page("/arena?mode=fixture&view=3d");
 await p.waitForSelector("canvas");
-await p.getByLabel("Speed").selectOption("8").catch(() => {});
 await step(p, 11); await p.waitForTimeout(900);
-await shot(p, "07-fixture-confirmed");
+await shot(p, "09-fixture-confirmed");
 
-// 5. 2D fallback of the demo pending state
-p = await page("/arena?mode=demo&view=2d");
+// 7. 2D fallback + narrow width
+p = await page("/arena?mode=quick&view=2d");
 await step(p, 10);
-await shot(p, "08-2d-fallback-pending");
-
-// 6. Narrow laptop/tablet width
-p = await page("/arena?mode=demo&view=2d", 820, 1100);
-await step(p, 10);
-await shot(p, "09-narrow-2d");
+await shot(p, "10-2d-fallback-pending");
+p = await page("/arena?mode=weekend&view=2d", 820, 1100);
+await step(p, 12);
+await shot(p, "11-narrow-2d");
 
 // 7. Live SSE bridge (optional): LIVE_API=http://127.0.0.1:8787 with `python -m services.realtime.dev_server --replay`
 if (process.env.LIVE_API) {
@@ -81,13 +94,13 @@ if (process.env.LIVE_API) {
   await p.getByText("Stream: open").waitFor({ timeout: 10000 });
   await p.locator(".timeline").getByText("Backend confirmed plan v2").waitFor({ timeout: 40000 });
   await p.waitForTimeout(900);
-  await shot(p, "10-live-sse-confirmed");
+  await shot(p, "12-live-sse-confirmed");
   // Judge request against the read-only bridge must fail honestly (HTTP 501)
   await p.getByLabel("This targets a synthetic sandbox profile").check();
   await p.getByRole("button", { name: "Send change request" }).click();
   await p.getByText(/Server: unavailable/).waitFor({ timeout: 5000 });
   await p.getByText(/Server: unavailable/).scrollIntoViewIfNeeded();
-  await p.screenshot({ path: `${out}/11-live-judge-honest-failure.png` });
+  await p.screenshot({ path: `${out}/13-live-judge-honest-failure.png` });
 }
 
 await browser.close();

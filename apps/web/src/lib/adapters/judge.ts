@@ -2,7 +2,7 @@
  * Judge intervention contract. The UI only ever *submits a request*. It never writes events
  * or flips plan state; any consequence must arrive afterwards as AgentEvents from the backend.
  */
-export type ConstraintKind = "hard_budget" | "availability";
+export type ConstraintKind = "hard_budget" | "block_window" | "withdraw";
 
 export interface JudgeRequest {
   request_id: string;
@@ -10,7 +10,7 @@ export interface JudgeRequest {
   changed_constraint_ref: {
     member_ref: string;
     kind: ConstraintKind;
-    /** hard_budget: new cap in integer US cents. availability: opaque preset id. */
+    /** hard_budget: new cap in integer US cents. block_window: opaque window id. withdraw: "withdraw". */
     value: number | string;
   };
   /** The judge explicitly confirmed this targets a synthetic sandbox profile. */
@@ -30,11 +30,6 @@ export interface JudgeAdapter {
   readonly simulated: boolean;
   submit(req: JudgeRequest): Promise<JudgeResponse>;
 }
-
-export const AVAILABILITY_PRESETS = [
-  { id: "blocks_current_day", label: "Member becomes unavailable on the planned day" },
-  { id: "blocks_all_days", label: "Member becomes unavailable on every candidate day" },
-] as const;
 
 export function newRequestId(prefix = "judge"): string {
   const rnd = typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID().slice(0, 8) : Math.random().toString(36).slice(2, 10);

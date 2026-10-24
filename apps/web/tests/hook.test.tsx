@@ -9,7 +9,7 @@ import { ev } from "./helpers";
 function liveAdapter(events: unknown[], judge: JudgeAdapter): { adapter: MissionAdapter; push: () => void } {
   let h: Parameters<MissionAdapter["connect"]>[0] | null = null;
   const adapter: MissionAdapter = {
-    kind: "network", label: "test", description: "", sessionId: "s1", replay: null, judge, actions: [], localSynthetic: false,
+    kind: "network", label: "test", description: "", sessionId: "s1", replay: null, judge, actions: [], localSynthetic: false, intent: null, previews: () => ({}), judgeOptions: { members: [], windows: [] },
     connect: (handlers) => { h = handlers; handlers.onStatus("open"); return () => {}; },
   };
   return { adapter, push: () => events.forEach((e) => h!.onEvent(e)) };

@@ -7,6 +7,7 @@ import { useMissionControl } from "@/lib/useMissionControl";
 import { ArenaFallback } from "./ArenaFallback";
 import type { ArenaSceneHandle } from "./ArenaScene";
 import { JudgePanel } from "./JudgePanel";
+import { IntentPanel, ItineraryPanel, OptionsPanel } from "./PlanPanels";
 import { Legend, StatusPanel, VersionsPanel } from "./Inspector";
 import { buildSceneModel } from "@/lib/scene/model";
 
@@ -100,6 +101,7 @@ export function MissionControl({ adapter, initialView }: { adapter: MissionAdapt
   return (
     <div className="mc-body" data-testid="mission-control">
       {replay.holdMessage && <div className="hold" role="status"><b>Waiting.</b> {replay.holdMessage}</div>}
+      <ConnectionBanner kind={adapter.kind} status={status} empty={view.timeline.length === 0} />
       <div className="controls" role="toolbar" aria-label="Playback controls">
         {adapter.replay ? (
           <>
@@ -158,7 +160,11 @@ export function MissionControl({ adapter, initialView }: { adapter: MissionAdapt
           {sceneFailed && <p className="cta-note" role="alert">The 3D scene failed to start; showing the 2D view with the same state.</p>}
           <p className="guide" style={{ marginTop: 12 }}>{guideFor(view)}</p>
           <div className="sr-only" aria-live="polite" role="log">{lastTitle}</div>
-          <JudgePanel judge={adapter.judge} blockedReason={judgeBlockedReason} state={judgeState} reflected={reflectedInStream} members={view.members} onSubmit={submitJudge} />
+          <div className="two">
+            <IntentPanel intent={adapter.intent} view={view} label={adapter.label} />
+            <ItineraryPanel intent={adapter.intent} view={view} previews={adapter.previews()} />
+          </div>
+          <JudgePanel judge={adapter.judge} options={adapter.judgeOptions} blockedReason={judgeBlockedReason} state={judgeState} reflected={reflectedInStream} members={view.members} onSubmit={submitJudge} />
         </div>
 
         <aside aria-label="Inspector">
@@ -188,11 +194,21 @@ export function MissionControl({ adapter, initialView }: { adapter: MissionAdapt
               </p>
             )}
           </section>
+          <OptionsPanel intent={adapter.intent} />
           <Legend />
         </aside>
       </div>
     </div>
   );
+}
+
+function ConnectionBanner({ kind, status, empty }: { kind: MissionAdapter["kind"]; status: string; empty: boolean }) {
+  if (kind !== "network") return null;
+  if (status === "connecting") return <div className="banner" role="status">Connecting to the event stream…</div>;
+  if (status === "reconnecting") return <div className="banner warn" role="status">Connection lost. Reconnecting; already received events are kept and duplicates are ignored.</div>;
+  if (status === "closed" || status === "error") return <div className="banner bad" role="alert">The event stream is closed. Check the API URL and that the server allows this origin, then Connect again.</div>;
+  if (status === "open" && empty) return <div className="banner" role="status">Connected. Waiting for the first event for this session. Nothing is shown until the backend emits it.</div>;
+  return null;
 }
 
 function EventDetail({ e }: { e: AgentEvent }) {

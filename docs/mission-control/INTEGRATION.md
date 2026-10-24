@@ -26,7 +26,8 @@ item is a proposal for the integrator to accept or reject.
 | `GET /v1/sessions/{id}/events` SSE of `group_safe` events | A6 (done) | implemented, tested |
 | **`POST /v1/sessions/{id}/constraint-changes`** – judge intervention | **A4** (wraps `revise_negotiation(session_id, changed_constraint_ref)`) | UI client done; **route does not exist yet**. Dev bridge returns 501 and the UI reports it honestly |
 | **`GET /v1/sessions/{id}/snapshot`** → public snapshot | A4 (`get_public_snapshot`) | reducer supports comparison (`PublicSnapshot` type); **no fetcher wired** because the route/shape is unspecified |
-| Opportunity list `list_opportunities(...)` over HTTP | A2 | Campus Pulse reads the fixture copy only |
+| Opportunity list `list_opportunities(...)` over HTTP | A2 | Discover reads the fixture copy only |
+| **Public plan snapshot with itinerary** (title, window, activities with times, aggregate budget wording) per version | A4 | UI has `PlanPreview` and renders it from `adapter.previews()`; live streams supply none today, so the itinerary panel says "not supplied". Needs an agreed sanitized shape (aggregate/redacted costs only, per CONTRACTS §2 CandidatePlan) |
 | Match/introduction request (`opt_in`, `find_mutual_candidates`) | A3 | "Find company" button is permanently disabled with an explanation |
 
 ### Judge request (proposed)
@@ -41,8 +42,11 @@ Idempotency-Key: judge_ab12cd34
   "synthetic_confirmed": true
 }
 ```
-* `kind`: `hard_budget` (`value` = integer US cents) | `availability` (`value` = opaque preset id, currently
-  `blocks_current_day` | `blocks_all_days`; A4 should define the real vocabulary).
+* `kind`: `hard_budget` (`value` = integer US cents) | `block_window` (`value` = opaque window id; the live adapter
+  currently offers `blocks_current_day` | `blocks_all_days`, A4 should define the real vocabulary) | `withdraw`
+  (`value` = `"withdraw"`; the server should emit `member_response_received` with `state: withdrawn`, then a revision whose
+  `approval_requested.required_count` reflects the remaining participants).
+* Changed (A6 v2): the previous `availability` kind was renamed `block_window`.
 * Respond `202` (accepted for processing) / `4xx` rejected. **The UI treats a 2xx only as "request received"**; the
   outcome must arrive as events (`proposal_rejected` → `proposal_revised`/`negotiation_failed` …).
 * **Server-side authorization is mandatory:** refuse unless the session and `member_ref` are synthetic sandbox data.
@@ -53,7 +57,7 @@ Idempotency-Key: judge_ab12cd34
 ## 3. Event payload expectations / proposed optional fields
 
 A6 renders only these payload keys (anything else is dropped; private-looking keys reject the event):
-`plan_id, version, group_size, reason_category, summary, approval_state, required_count, accepted_count, member_ref,
+`plan_id, version, group_size, reason_category (free slug; labelled for constraint_conflict, budget_conflict, availability_conflict, departure_conflict), summary, approval_state, required_count, accepted_count, member_ref,
 state, condition_category, fairness_category, failure_code, changed_constraint_kind, opportunity_id, request_id`.
 
 The canonical fixture already covers most. **Optional additions proposed** (older clients ignore them; CONTRACTS §1 rule):

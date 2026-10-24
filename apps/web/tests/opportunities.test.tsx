@@ -16,7 +16,7 @@ describe("Campus Pulse wording", () => {
   });
   it("labels fixture listings and shows source + freshness", () => {
     render(<CampusPulse />);
-    const cards = screen.getAllByRole("listitem");
+    const cards = within(screen.getByRole("list", { name: "Opportunities" })).getAllByRole("listitem");
     expect(cards).toHaveLength(3);
     for (const c of cards) {
       expect(within(c).getByText(/Demo listing, not real/)).toBeInTheDocument();
@@ -27,7 +27,13 @@ describe("Campus Pulse wording", () => {
   it("Find company is disabled and explains why", () => {
     render(<CampusPulse />);
     for (const b of screen.getAllByRole("button", { name: "Find company" })) expect(b).toBeDisabled();
-    expect(screen.getAllByText(/needs your opt-in/i).length).toBe(3);
+    expect(screen.getAllByText(/needs your opt-in/i).length).toBeGreaterThanOrEqual(3);
+  });
+  it("is activity-agnostic: demo activity ideas appear with the same uncertainty labels", () => {
+    render(<CampusPulse />);
+    const ideas = within(screen.getByRole("list", { name: "Demo activity ideas" })).getAllByRole("listitem");
+    expect(ideas.length).toBe(5);
+    expect(screen.getByText(/Flagstaff scenic day/)).toBeInTheDocument();
   });
   it("food and dietary badges stay honest for every fixture state", () => {
     const [pizza, , workshop] = fixtureOpportunities;

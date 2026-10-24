@@ -141,3 +141,14 @@ a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* ---------- Itinerary ---------- */
+.gantt-row { display: grid; grid-template-columns: 110px 1fr 70px; gap: 8px; align-items: center; font-size: 0.82rem; padding: 3px 0; }
+.gantt-label { color: var(--ink); }
+.gantt-track { position: relative; height: 10px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
+.gantt-track i { position: absolute; top: 0; bottom: 0; background: var(--accent); border-radius: 999px; }
+.gantt-time { color: var(--ink-2); text-align: right; font-family: var(--mono); font-size: 0.72rem; }
+.banner { border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 8px 12px; margin-bottom: 12px; font-size: 0.9rem; }
+.banner.bad { border-color: var(--bad); } .banner.warn { border-color: var(--warn); }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 760px) { .two { grid-template-columns: 1fr; } }

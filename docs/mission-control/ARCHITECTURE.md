@@ -61,3 +61,15 @@
    (UI gating is not authorization; see INTEGRATION.md.)
 5. Campus Pulse never says "free food now"; `listed` ⇒ "mentioned in listing; availability unknown", dietary fit is
    "unverified" unless the data has `known_*`. The private profiles in `scenarios.json` are never imported.
+
+## Activity-agnostic planning layer
+
+* **Scenario definitions** (`lib/demo/scenarios.ts`, `types.ts`): Quick Plan (hours) and Weekend Plan (days) are data, not
+  separate screens. Each has a `PlanningIntent` (activity, horizon, options as frozen `Opportunity` objects), public
+  `PlanPreview`s per version (itinerary + aggregate budget wording), judge window presets, and base events.
+* The horizon only changes the scale of the itinerary Gantt strip (`PlanPanels.tsx`); the arena, reducer and panels are shared.
+* `LocalSimulator` (`lib/demo/simulator.ts`) is the only producer of post-intervention demo events. Three interventions:
+  `hard_budget`, `block_window`, `withdraw`. It queues events onto the replay controller; the reducer folds them like any source.
+  Withdrawals persist across versions (`withdrawnAt` in the reducer) and shrink the required count via `approval_requested`.
+* Itinerary previews are **adapter-supplied public data** (`adapter.previews()`), keyed by version and only shown for versions
+  that exist in the event-derived view. Live streams currently supply none; the panel says so instead of inventing one.
