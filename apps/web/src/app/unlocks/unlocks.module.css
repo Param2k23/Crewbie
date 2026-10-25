@@ -101,7 +101,7 @@
 .section { padding: clamp(72px, 9vw, 140px) 7vw; border-bottom: 1px solid var(--line); scroll-margin-top: 24px; }
 .eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: 11px; font-weight: 700; margin-bottom: 28px !important; }
 .page h1, .page h2 { font-family: var(--display); font-weight: 800; letter-spacing: -.065em; line-height: 1.02; text-wrap: balance; }
-.page h1 { font-size: clamp(50px, 6.3vw, 100px); }
+.page h1 { font-size: clamp(44px, 5.1vw, 80px); }
 .page h2 { font-size: clamp(38px, 4.8vw, 76px); max-width: 950px; }
 .page h3 { font-size: 22px; line-height: 1.2; letter-spacing: -.035em; }
 .hero { min-height: 85svh; display: grid; grid-template-columns: 1.12fr 1fr; column-gap: 7vw; align-items: center; padding-top: 70px; padding-bottom: 25px; }
@@ -175,7 +175,13 @@
 .finaleBrand { font-family: var(--display); font-size: clamp(32px, 4.6vw, 62px); font-weight: 800; line-height: 1.05; letter-spacing: -.035em; margin: 0 0 28px !important; color: var(--ink); }
 .finaleBrand span { color: var(--accent); }
 .finale .lede, .finale .caption { margin-inline: auto; }
-.footer { display: flex; justify-content: space-between; align-items: center; gap: 25px; padding: 35px 7vw; }
+.footer { padding: 35px 7vw 40px; }
+.footerMain { display: flex; justify-content: space-between; align-items: center; gap: 25px; }
+.stack { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line); }
+.stackTitle { font-size: 11px !important; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--ink) !important; margin-bottom: 14px !important; }
+.stack dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px 32px; margin: 0; }
+.stack dt { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.stack dd { margin: 0; font-size: 13px; line-height: 1.6; color: var(--muted); }
 .footer p, .footer a { font-size: 12px; line-height: 1.6; color: var(--muted); }
 .footer a { min-height: 44px; display: flex; align-items: center; }
 
@@ -191,9 +197,11 @@
   .categoryMark { grid-row: 2 / 4; font-size: 48px; line-height: 1.2; }
   .category p { grid-column: 2; }
   .heroFoot { flex-direction: column; gap: 8px; }
-  .footer { flex-wrap: wrap; }
+  .footerMain { flex-wrap: wrap; }
+  .stack dl { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 480px) {
+  .stack dl { grid-template-columns: 1fr; }
   .brandSuffix { display: none; }
   .cubbieWord { font-size: 22px; }
   .times { font-size: 18px; }

@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
@@ -12,7 +12,7 @@ const text = html.replace(/<[^>]+>/g, " ").replace(/&[a-z#0-9]+;/g, " ").replace
 describe("Cubbie x Crewbie landing page", () => {
   it("is built around Cubbie from the title to the footer", () => {
     expect(String(metadata.title)).toContain("Cubbie");
-    expect(text).toContain("Text Cubbie. Plans actually happen.");
+    expect(text).toContain("Text Cubbie. Find your crew. Make plans happen.");
     expect(text).toContain("We built Crewbie on Cubbie. Here is why it works.");
     expect(text).toContain("Three layers. One Cubbie.");
     expect(text).toContain("Built on Cubbie for the Cubbie hackathon");
@@ -75,5 +75,21 @@ describe("Cubbie x Crewbie landing page", () => {
   it("links to the open-source repo and shows the video button only when a video exists", () => {
     expect(html).toContain(`href="${REPO_URL}"`);
     expect(DEMO_VIDEO_URL === null ? !html.includes("Watch Cubbie") : html.includes(DEMO_VIDEO_URL)).toBe(true);
+  });
+
+  it("lists a tech stack in the footer that matches the project's real dependencies", () => {
+    expect(text).toContain("Built with");
+    const root = path.resolve(__dirname, "../../..");
+    const python = readFileSync(path.join(root, "pyproject.toml"), "utf8").toLowerCase();
+    const web = readFileSync(path.join(root, "apps/web/package.json"), "utf8").toLowerCase();
+    for (const dependency of ["fastapi", "sqlalchemy", "alembic", "pydantic", "cryptography", "discord.py"]) {
+      expect(python).toContain(dependency);
+      expect(text.toLowerCase()).toContain(dependency === "cryptography" ? "fernet" : dependency.replace(".py", ""));
+    }
+    for (const dependency of ["next", "react", "typescript", "gsap", "three"]) expect(web).toContain(`"${dependency}"`);
+    expect(existsSync(path.join(root, "Dockerfile"))).toBe(true);
+    expect(readFileSync(path.join(root, "deploy/docker-compose.yml"), "utf8")).toContain("caddy");
+    expect(text).toContain("Python 3.12");
+    expect(python).toContain("requires-python = \">=3.12");
   });
 });

@@ -9,10 +9,20 @@ import { DEMO_VIDEO_URL, INSTALL_MESSAGE, REPO_URL } from "./_lib/install";
 import styles from "./unlocks.module.css";
 
 export const metadata: Metadata = {
-  title: "Cubbie × Crewbie — Text Cubbie. Plans actually happen.",
+  title: "Cubbie × Crewbie — Text Cubbie. Find your crew. Make plans happen.",
   description: "Crewbie is built entirely on Cubbie, your iMessage assistant. Text Cubbie to discover student perks, plan around your week, and find a crew if you want company.",
-  openGraph: { title: "Cubbie × Crewbie", description: "Built entirely on Cubbie. Text Cubbie, and plans actually happen." },
+  openGraph: { title: "Cubbie × Crewbie", description: "Built entirely on Cubbie. Text Cubbie, find your crew, make plans happen." },
 };
+
+// Every item is a real dependency; tests/unlocks-page.test.tsx checks them against the package files.
+const techStack = [
+  ["Platform", "Cubbie Skills · iMessage"],
+  ["Backend", "Python 3.12 · FastAPI · SQLAlchemy · SQLite · Alembic · Pydantic"],
+  ["Privacy", "Fernet encryption (cryptography)"],
+  ["Group chat", "Discord · discord.py"],
+  ["Infrastructure", "Docker · Caddy · AWS EC2"],
+  ["Website", "Next.js · React · TypeScript · GSAP · Three.js · Vercel"],
+];
 
 const cubbieBase = [
   ["01", "Your messages are the app.", "Cubbie already lives in iMessage, so Crewbie needs no download. One text adds the Skill, and updates arrive the same way.", "iMessage"],
@@ -49,7 +59,7 @@ export default function UnlocksPage() {
         <div className={styles.heroAtmosphere} aria-hidden="true"><div data-parallax-background><i data-blob /><i data-blob /></div></div>
         <div className={styles.heroCopy}>
           <p className={styles.eyebrow}>Built on Cubbie · For the Cubbie hackathon</p>
-          <h1 id="hero-title" data-headline>Text Cubbie. Plans actually happen.</h1>
+          <h1 id="hero-title" data-headline>Text Cubbie. Find your crew. Make plans happen.</h1>
           <p className={styles.lede}>Crewbie is built entirely on Cubbie: no app, no signup, just your iMessage thread. One text adds it, then Cubbie finds student perks, plans around your week and brings a crew if you want one.</p>
           <UnlockCTA />
           <p className={styles.caption}>Everything happens in your Cubbie thread · Made for the Cubbie hackathon</p>
@@ -180,7 +190,15 @@ export default function UnlocksPage() {
           </p>
         </div>
       </section>
-      <footer className={styles.footer}><span className={styles.brand}><CubbieLockup /></span><p>Built on Cubbie for the Cubbie hackathon. Thank you to the Cubbie team for sponsoring it.<br />No booking, payment or automatic crew membership.</p><Link href="#hero-title">Back to top ↑</Link></footer>
+      <footer className={styles.footer}>
+        <div className={styles.footerMain}><span className={styles.brand}><CubbieLockup /></span><p>Built on Cubbie for the Cubbie hackathon. Thank you to the Cubbie team for sponsoring it.<br />No booking, payment or automatic crew membership.</p><Link href="#hero-title">Back to top ↑</Link></div>
+        <div className={styles.stack} aria-labelledby="stack-title">
+          <p className={styles.stackTitle} id="stack-title">Built with</p>
+          <dl>
+            {techStack.map(([label, items]) => <div key={label}><dt>{label}</dt><dd>{items}</dd></div>)}
+          </dl>
+        </div>
+      </footer>
     </ScrollStory>
   );
 }
