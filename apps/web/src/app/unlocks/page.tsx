@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ScrollStory } from "./_components/ScrollStory";
 import { CubbieLockup } from "./_components/CubbieLockup";
+import { LanguageRotator } from "./_components/LanguageRotator";
 import { PlanningPanel } from "./_components/PlanningPanel";
 import { UnlockCTA } from "./_components/UnlockCTA";
 import { UnlockSceneLoader } from "./_components/UnlockSceneLoader";
@@ -59,7 +60,8 @@ export default function UnlocksPage() {
         <div className={styles.heroAtmosphere} aria-hidden="true"><div data-parallax-background><i data-blob /><i data-blob /></div></div>
         <div className={styles.heroCopy}>
           <p className={styles.eyebrow}>Built on Cubbie · For the Cubbie hackathon</p>
-          <h1 id="hero-title" data-headline>Text Cubbie. Find your crew. Make plans happen.</h1>
+          <h1 id="hero-title"><span data-headline>Text Cubbie. Find your crew.</span> <span className={styles.srOnly}>Make plans happen.</span><LanguageRotator /></h1>
+          <p className={styles.multilingual}><b>Multilingual</b> Talk to Cubbie in any language. It answers in yours.</p>
           <p className={styles.lede}>Crewbie is built entirely on Cubbie: no app, no signup, just your iMessage thread. One text adds it, then Cubbie finds student perks, plans around your week and brings a crew if you want one.</p>
           <UnlockCTA />
           <p className={styles.caption}>Everything happens in your Cubbie thread · Made for the Cubbie hackathon</p>

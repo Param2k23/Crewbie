@@ -42,6 +42,7 @@ single front door, and it asks before anything is shared.
   other students, not Discord. Only room-level facts (time window, vibe, budget level) are shared.
 - A student's private agent can accept a small time change inside the limits they gave; the thread then says
   "Plan moved to 10:00 to 11:30 am."
+- The website hero cycles "Make plans happen." through eight languages and says "Multilingual".
 - Cubbie answers in the student's own language (the Skill says so explicitly), with the same tone options, the same
   facts and the same consent steps. Event matching works for titles in other scripts too.
 - If the service is down, Cubbie still gives a normal solo plan. Matching is optional.

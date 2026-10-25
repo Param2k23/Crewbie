@@ -4,6 +4,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import UnlocksPage, { metadata } from "@/app/unlocks/page";
 import { DEMO_VIDEO_URL, INSTALL_MESSAGE, REPO_URL, SKILL_PATH } from "@/app/unlocks/_lib/install";
+import { heroLanguages } from "@/app/unlocks/_lib/languages";
 import { planningExamples } from "@/app/unlocks/_lib/planningExamples";
 
 const html = renderToStaticMarkup(<UnlocksPage />);
@@ -13,6 +14,7 @@ describe("Cubbie x Crewbie landing page", () => {
   it("is built around Cubbie from the title to the footer", () => {
     expect(String(metadata.title)).toContain("Cubbie");
     expect(text).toContain("Text Cubbie. Find your crew. Make plans happen.");
+    expect(html).toContain("Talk to Cubbie in any language");
     expect(text).toContain("We built Crewbie on Cubbie. Here is why it works.");
     expect(text).toContain("Three layers. One Cubbie.");
     expect(text).toContain("Built on Cubbie for the Cubbie hackathon");
@@ -91,5 +93,14 @@ describe("Cubbie x Crewbie landing page", () => {
     expect(readFileSync(path.join(root, "deploy/docker-compose.yml"), "utf8")).toContain("caddy");
     expect(text).toContain("Python 3.12");
     expect(python).toContain("requires-python = \">=3.12");
+  });
+
+  it("cycles the last headline line through languages without shifting the layout", () => {
+    expect(html).toContain("data-language-rotator");
+    for (const language of heroLanguages) expect(html).toContain(`lang="${language.code}"`);
+    expect(html.match(/data-active="true"/g)?.length).toBe(1);
+    expect(heroLanguages[0].text).toBe("Make plans happen.");
+    expect(html).toMatch(/aria-hidden="true"[^>]*data-language-rotator/);
+    expect(text).toContain("Multilingual");
   });
 });
