@@ -84,6 +84,7 @@ DISCLOSED = [
     "vibe (chill, social or active)", "up to 3 interests",
     "the earliest you could start and latest you could stay", "your budget cap",
     "never shown to anyone", "Do not send dietary needs, calendar details, course names",
+    "sent to the Crewbie server over HTTPS and stored encrypted",
 ]  # fmt: skip
 
 
@@ -155,3 +156,8 @@ def test_the_skill_still_works_without_the_service() -> None:
     assert "Discovery and solo planning work without scripts, a backend" in TEXT
     assert "carry on with the solo plan" in TEXT
     assert "continue with the solo plan" in TEXT
+
+
+def test_the_skill_warns_about_the_replace_link_button_and_flexible_check_in_rhythm() -> None:
+    assert 'must press its "Replace link" button' in TEXT
+    assert "or the rhythm they prefer within what Cubbie's check-ins support" in TEXT

@@ -344,7 +344,9 @@ Crewbie server and ask for a yes:
   social or active), up to 3 interests.
 - Kept private by your Crewbie agent and never shown to anyone: the earliest you
   could start and latest you could stay, and your budget cap if you give one. Your
-  agent uses these to say yes or no to small time changes.
+  agent uses these to say yes or no to small time changes. They are sent to the
+  Crewbie server over HTTPS and stored encrypted; other students, the Discord chat
+  and every message never see them.
 Do not send dietary needs, calendar details, course names, or anything else.
 
 Choosing the values: use the student's own words and never guess a limit. Budget
@@ -368,13 +370,17 @@ Steps (run commands from this Skill's folder):
    If they say no, run `python3 scripts/crew.py decline --offer <id>`.
 5. If accept exits with code 2 and prints `LINK_CODE`, send the student the invite
    and the exact `COMMAND` line (typed in the Crewbie Discord server), then end your
-   turn. When they say they did it, run accept again. If it exits 2 for an expired or
-   changed offer, run a fresh submit only if the student still wants to.
+   turn. If the bot asks whether to replace an existing link, the student must press
+   its "Replace link" button or nothing changes. When they say they did it, run accept
+   again; if it still asks to link, give a fresh code and ask them to check the bot's
+   reply. If it exits 2 for an expired or changed offer, run a fresh submit only if the
+   student still wants to.
 6. After `JOINED`: a `THREAD` URL is the group chat, so send it. `THREAD pending`
    means the chat link will come shortly. `THREAD none` means they are the first in
    the crew and the chat opens when someone joins; say so.
 7. Offer a scheduled check-in for this activity (with the student's yes): every 30
-   minutes until the activity starts, run `python3 scripts/crew.py updates` from the
+   minutes, or the rhythm they prefer within what Cubbie's check-ins support, until the
+   activity starts, run `python3 scripts/crew.py updates` from the
    crewbie-unlocks Skill folder and text only lines that start with UPDATE, in plain
    words. Word the check-in so it makes sense days later: name the activity and say
    what to run. Follow the recurring-update rules above (one check-in per activity,
