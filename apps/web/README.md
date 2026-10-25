@@ -41,3 +41,20 @@ browser views at v2, 2/4 approvals, including a working 3D canvas and successful
 snapshot/SSE requests with CORS. No new Discord approval arrived during the wait,
 so live approval propagation remains unverified. Automated adapter/hook tests
 cover a later acceptance reaching the 2D rendering and shared 3D scene model.
+
+
+## Public site (Vercel)
+
+The landing page is deployed as the Vercel project `crewbie`:
+`https://crewbie-sepia.vercel.app` (also `https://crewbie-devils-ghost.vercel.app`).
+`/` redirects to `/unlocks`; the Mission Control demo is at `/demo` and `/arena`.
+
+Deploy from this folder after `vercel login` (the repo owner has not installed Vercel's GitHub app, so
+deployments are made from the command line, not on every push):
+
+```bash
+cd apps/web
+npx vercel@65.2.0 deploy --prod --yes
+```
+
+No environment variables are needed for the landing page. `.vercel/` and `.env.local` are git-ignored.

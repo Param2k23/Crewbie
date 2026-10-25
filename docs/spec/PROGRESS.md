@@ -145,4 +145,8 @@ the Discord board card with a fresh account. The owner approved merging `crewbie
 ## Website (landing page)
 `apps/web` now serves the "Cubbie x Crewbie" landing page at `/unlocks` (`/` redirects there; the Mission Control
 demo is at `/demo` and `/arena`). Content is written around Cubbie as the base, tests guard the claims, and a
-`web` CI job runs typecheck, tests and build. Deployment to Vercel follows the merge.
+`web` CI job runs typecheck, tests and build. Deployed to Vercel production at https://crewbie-sepia.vercel.app
+(see `apps/web/README.md` to redeploy). `crewbie-v2` is merged into `master`.
+
+Deferred to the end by the owner: live test step 11 (service offline) and a Join from the Discord board card.
+Next: Phase 7 (LLM agents, facilitation, Mission Control), most of it optional.
