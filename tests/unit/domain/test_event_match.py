@@ -78,3 +78,50 @@ def test_property_matching_is_symmetric_and_bounded(a: EventDescriptor, b: Event
     assert forward is None or 0.65 <= forward <= 1.0 + 1e-9
     if a.date != b.date:
         assert forward is None
+
+
+def test_multilingual_titles_match_across_accents_case_and_scripts() -> None:
+    cases = [
+        ("Café Night", "cafe night"),
+        ("Música en vivo", "MUSICA EN VIVO"),
+        ("Noche de juegos de mesa", "noche de juegos de mesa"),
+        ("桌游之夜", "桌游之夜 ASU"),
+        ("ボードゲームナイト", "ボードゲームナイト"),
+        ("बोर्ड गेम नाइट", "बोर्ड गेम नाइट"),
+        ("ليلة ألعاب اللوحة", "ليلة ألعاب اللوحة"),
+        ("보드게임 나이트", "보드게임 나이트"),
+        ("Soirée jeux de société", "soiree jeux de societe"),
+    ]
+    for a, b in cases:
+        score = match_score(event(a), event(b))
+        assert score is not None and score >= 0.65, (a, b)
+        assert match_score(event(b), event(a)) == score
+
+
+def test_different_events_in_other_scripts_do_not_match() -> None:
+    assert match_score(event("桌游之夜"), event("电影之夜")) is None  # shares only "之夜"
+    assert match_score(event("बोर्ड गेम नाइट"), event("योग सत्र")) is None
+    assert match_score(event("Noche de juegos"), event("Noche de cine")) is None
+    assert match_score(event("桌游之夜"), event("Board game night")) is None  # no shared words
+
+
+def test_a_single_unspaced_character_is_still_a_word_and_places_work_in_any_script() -> None:
+    assert title_score("夜", "夜") == 1.0
+    a = event("桌游之夜", place="亚利桑那州立大学 图书馆")
+    assert match_score(a, event("桌游之夜", place="亚利桑那州立大学")) is not None
+    assert match_score(a, event("桌游之夜", place="东京大学")) is None
+
+
+def test_every_script_produces_words_so_a_title_always_matches_itself() -> None:
+    titles = [
+        "कैफ़े नाइट",
+        "ليلة ألعاب",
+        "桌游之夜",
+        "ボードゲーム",
+        "보드게임",
+        "Ночь настольных игр",
+        "Βράδυ παιχνιδιών",
+    ]
+    for title in titles:
+        assert title_score(title, title) == 1.0, title
+        assert match_score(event(title), event(title)) is not None, title

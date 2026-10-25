@@ -282,3 +282,45 @@ def test_events_finds_a_crew_started_by_another_student_under_different_wording(
     bad = other.run("events", "--title", "x", "--date", "tomorrow")
     assert bad.returncode == 4 and "VALIDATION_FAILED" in bad.stderr
     assert other.run("events", "--date", date).returncode == 4  # --title is required
+
+
+def test_non_english_titles_work_even_when_the_machine_locale_is_ascii(
+    tmp_path: Path, live_server: LiveServer
+) -> None:
+    """Cubbie's sandbox may run with a plain C locale; titles in any language must still work."""
+    ascii_only = {
+        "LC_ALL": "C",
+        "PYTHONCOERCECLOCALE": "0",
+        "PYTHONUTF8": "0",
+        "PYTHONIOENCODING": "ascii",
+    }
+    home = tmp_path / "student"
+    home.mkdir()
+    env = {**os.environ, **ascii_only, "HOME": str(home), "CREWBIE_API_URL": live_server.url}
+
+    def crew(*args: str) -> subprocess.CompletedProcess[bytes]:
+        return subprocess.run(
+            [sys.executable, str(CREW), *args], env=env, capture_output=True, timeout=60
+        )
+
+    body = json.loads(intent_file(tmp_path).read_text())
+    body["event"]["title"] = "Noche de juegos · 桌游之夜 · बोर्ड गेम नाइट"
+    body["event"]["location_label"] = "Biblioteca Hayden, Tempe"
+    path = tmp_path / "unicode-intent.json"
+    path.write_text(json.dumps(body, ensure_ascii=False), encoding="utf-8")
+
+    submitted = crew("submit", "--file", str(path))
+    assert submitted.returncode == 0, submitted.stderr.decode()
+    offer_id = submitted.stdout.decode().splitlines()[1].split()[1]
+    code = crew("accept", "--offer", offer_id).stdout.decode().splitlines()[0].split()[1]
+    linking.complete(live_server.ctx, code, "822222222222222222", "unicode")
+    assert crew("accept", "--offer", offer_id).stdout.decode().startswith("JOINED")
+
+    date = body["event"]["date"]
+    found = crew("events", "--title", "noche de juegos", "--date", date)
+    assert found.returncode == 0, found.stderr.decode()
+    shown = found.stdout.decode("utf-8")
+    assert shown.splitlines()[0] == "EVENTS 1"
+    assert (
+        "桌游之夜" in shown and "बोर्ड गेम नाइट" in shown
+    )  # printed as UTF-8 despite the ASCII locale

@@ -42,6 +42,8 @@ single front door, and it asks before anything is shared.
   other students, not Discord. Only room-level facts (time window, vibe, budget level) are shared.
 - A student's private agent can accept a small time change inside the limits they gave; the thread then says
   "Plan moved to 10:00 to 11:30 am."
+- Cubbie answers in the student's own language (the Skill says so explicitly), with the same tone options, the same
+  facts and the same consent steps. Event matching works for titles in other scripts too.
 - If the service is down, Cubbie still gives a normal solo plan. Matching is optional.
 - Three layers map to the three hackathon tracks: the Skill, the agents, the group chat.
 
@@ -51,6 +53,8 @@ single front door, and it asks before anything is shared.
 - "Guaranteed match" or "always finds someone": a crew needs another student going to the same event.
 - "Official Cubbie partner": we built on Cubbie for its hackathon; the site only thanks the sponsor.
 - Mission Control: dropped from the story. It still exists at `/demo` but is not part of the pitch.
+- "Fully multilingual": Cubbie's side is, but Crewbie's Discord messages are English only for now. A non-English
+  conversation has been tested only by automated tests, not with a real Cubbie yet.
 - Not yet tried live: joining from the Discord card with a fresh account, and Cubbie's behaviour with the service
   switched off (both are covered by automated tests only).
 

@@ -5,6 +5,7 @@ it never merges anything by itself.
 """
 
 import re
+import unicodedata
 from dataclasses import dataclass
 from datetime import time
 
@@ -22,7 +23,7 @@ _STOP_PLACE = frozenset(
      "cinemas", "movie", "movies", "center", "centre", "hall", "building", "room"}
 )  # fmt: skip
 _YEAR = re.compile(r"^(19|20)\d\d$")
-_WORDS = re.compile(r"[a-z0-9]+")
+_WORDS = re.compile(r"[^\W_]+")  # runs of letters and digits in any script
 
 MAX_START_GAP_MINUTES = 30
 MIN_TITLE_SCORE = 0.6
@@ -38,12 +39,42 @@ class EventDescriptor:
     location_label: str | None = None
 
 
+def _is_unspaced_script(char: str) -> bool:
+    """Han, Hiragana and Katakana are written without spaces between words."""
+    code = ord(char)
+    return 0x3040 <= code <= 0x30FF or 0x3400 <= code <= 0x4DBF or 0x4E00 <= code <= 0x9FFF
+
+
+def _fold(text: str) -> str:
+    """Case-fold and drop accents on Latin letters ("Café" is "cafe"); leave other scripts alone."""
+    out: list[str] = []
+    previous_latin = False
+    for char in unicodedata.normalize("NFKD", text.casefold()):
+        if unicodedata.combining(char) and previous_latin:
+            continue
+        out.append(char)
+        previous_latin = ord(char) < 0x250 and char.isalpha()
+    return "".join(out)
+
+
+def _split(word: str) -> list[str]:
+    """Words as they are, except unspaced scripts, which become overlapping character pairs."""
+    if not any(_is_unspaced_script(c) for c in word):
+        return [word]
+    return [word] if len(word) == 1 else [word[i : i + 2] for i in range(len(word) - 1)]
+
+
 def _tokens(text: str, stop: frozenset[str], drop_years: bool) -> frozenset[str]:
-    words = _WORDS.findall(text.lower())
-    kept = {
-        w for w in words
-        if w not in stop and (len(w) > 1 or w.isdigit()) and not (drop_years and _YEAR.match(w))
-    }  # fmt: skip
+    kept: set[str] = set()
+    for run in _WORDS.findall(_fold(text)):
+        for word in _split(run):
+            if word in stop or (
+                len(word) < 2 and not (word.isdigit() or _is_unspaced_script(word))
+            ):
+                continue
+            if drop_years and _YEAR.match(word):
+                continue
+            kept.add(word)
     return frozenset(kept)
 
 

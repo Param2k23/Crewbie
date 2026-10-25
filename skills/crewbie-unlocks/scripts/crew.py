@@ -299,7 +299,7 @@ def cmd_events(args):
 
 def cmd_submit(args):
     try:
-        with open(args.file) as handle:
+        with open(args.file, encoding="utf-8") as handle:
             intent = json.load(handle)
     except (OSError, ValueError) as error:
         raise InputError("cannot read intent file: %s" % error)
@@ -455,7 +455,16 @@ def build_parser():
     return parser
 
 
+def use_utf8():
+    """Event titles and places can be in any language; never depend on the machine's locale."""
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure is not None:
+            reconfigure(encoding="utf-8", errors="replace")
+
+
 def main(argv=None):
+    use_utf8()
     args = build_parser().parse_args(argv)
     try:
         args.handler(args)

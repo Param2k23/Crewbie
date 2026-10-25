@@ -155,3 +155,7 @@ Next: Phase 7 (LLM agents, facilitation, Mission Control), most of it optional.
 Skipped on this branch. Mission Control is dropped from the pitch. The LLM work is deferred to a separate branch
 to be created when it starts; `crewbie-v2` and `master` are the final version for the demo. `docs/DEMO_BRIEF.md`
 summarises what is live, what is safe to claim and a suggested 3-minute shape for the video script.
+
+## Multilingual Skill (2026-10-26)
+Added the language section to `SKILL.md`, Unicode-aware event matching on the server and UTF-8-safe `crew.py`.
+Not yet tried with a real non-English Cubbie conversation. Discord bot messages are still English only.
