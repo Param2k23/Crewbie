@@ -15,7 +15,7 @@ from sqlalchemy.engine import make_url
 
 from crewbie.api.errors import install_error_handlers, internal_error_response
 from crewbie.api.rate_limit import RateLimits, TokenBucketLimiter
-from crewbie.api.routers import admin, health, installs, intents, offers, rooms, updates
+from crewbie.api.routers import admin, events, health, installs, intents, offers, rooms, updates
 from crewbie.api.state import AppState
 from crewbie.config import Settings
 from crewbie.discord_bot.runtime import BotRuntime
@@ -135,7 +135,10 @@ def create_app(
         )
         return response
 
-    for router in (health.router, installs.router, rooms.router, intents.router, offers.router,
-                   updates.router, admin.router):  # fmt: skip
+    routers = (
+        health.router, installs.router, rooms.router, events.router, intents.router,
+        offers.router, updates.router, admin.router,
+    )  # fmt: skip
+    for router in routers:
         app.include_router(router)
     return app

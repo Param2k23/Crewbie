@@ -74,3 +74,21 @@ class UpdateView:
     seq: int
     kind: str
     payload: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class EventCandidate:
+    """An existing event with a live crew that looks like the one a student described."""
+
+    event_key: str
+    title: str
+    location_label: str | None
+    date: str
+    start_time: str | None
+    source_url: str
+    rooms: list[RoomSummary]
+    score: float
+
+    @property
+    def going(self) -> int:
+        return sum(room.size for room in self.rooms)

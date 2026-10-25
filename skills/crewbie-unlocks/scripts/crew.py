@@ -268,6 +268,35 @@ def cmd_rooms(args):
     emit(lines)
 
 
+def cmd_events(args):
+    """Find existing events that look like this one and already have a crew."""
+    body = {"title": args.title, "date": args.date}
+    if args.start_time:
+        body["start_time"] = args.start_time
+    if args.place:
+        body["location_label"] = args.place
+    if args.link:
+        body["source_url"] = args.link
+    _, result = call("POST", "/v1/events/search", body)
+    if args.json:
+        return print(json.dumps(result))
+    events = result["events"]
+    lines = ["EVENTS %d" % len(events)]
+    for index, event in enumerate(events, 1):
+        when = event["date"] + (" " + event["start_time"] if event.get("start_time") else "")
+        parts = [
+            "EVENT %d" % index,
+            'TITLE "%s"' % event["title"].replace('"', "'"),
+            "WHEN " + when,
+        ]
+        if event.get("location_label"):
+            parts.append('PLACE "%s"' % event["location_label"].replace('"', "'"))
+        parts.append("GOING %d" % event["going"])
+        parts.append("LINK " + event["source_url"])
+        lines.append(" ".join(parts))
+    emit(lines)
+
+
 def cmd_submit(args):
     try:
         with open(args.file) as handle:
@@ -411,6 +440,12 @@ def build_parser():
     rooms.add_argument(
         "--event", action="append", required=True, help='JSON {"source_url","date","start_time"}'
     )
+    events = add("events", cmd_events, "find existing crews for an event described in other words")
+    events.add_argument("--title", required=True, help="event title as the student knows it")
+    events.add_argument("--date", required=True, help="YYYY-MM-DD")
+    events.add_argument("--start-time", help="HH:MM, 24-hour")
+    events.add_argument("--place", help="venue or location")
+    events.add_argument("--link", help="the original listing link, if known")
     submit = add("submit", cmd_submit, "submit an intent and get an offer")
     submit.add_argument("--file", required=True, help="intent JSON file")
     for name, handler in (("accept", cmd_accept), ("decline", cmd_decline)):

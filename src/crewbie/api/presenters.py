@@ -5,6 +5,7 @@ from typing import Any
 from crewbie.domain.windows import TimeWindow
 from crewbie.services.views import (
     AcceptResult,
+    EventCandidate,
     InstallView,
     IntentView,
     LinkCodeView,
@@ -87,3 +88,17 @@ def intent_json(view: IntentView) -> dict[str, Any]:
 
 def update_json(update: UpdateView) -> dict[str, Any]:
     return {"seq": update.seq, "kind": update.kind, **update.payload}
+
+
+def event_candidate_json(candidate: EventCandidate) -> dict[str, Any]:
+    return {
+        "event_key": candidate.event_key,
+        "title": candidate.title,
+        "location_label": candidate.location_label,
+        "date": candidate.date,
+        "start_time": candidate.start_time,
+        "source_url": candidate.source_url,
+        "going": candidate.going,
+        "match": candidate.score,
+        "rooms": [room_json(room) for room in candidate.rooms],
+    }

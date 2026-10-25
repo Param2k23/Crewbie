@@ -63,3 +63,11 @@ class LookupEventIn(Strict):
 
 class LookupIn(Strict):
     events: list[LookupEventIn] = Field(min_length=1, max_length=5)
+
+
+class EventSearchIn(Strict):
+    title: str = Field(min_length=1, max_length=500)
+    date: str = Field(pattern=DATE_PATTERN)
+    start_time: str | None = Field(None, pattern=TIME_PATTERN)
+    location_label: str | None = Field(None, max_length=500)
+    source_url: str | None = Field(None, max_length=2048, pattern=r"^https://")

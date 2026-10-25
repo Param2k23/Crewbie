@@ -1,3 +1,4 @@
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from crewbie.persistence.tables import EventRow
@@ -37,3 +38,10 @@ class EventRepository:
         self._session.add(row)
         self._session.flush()
         return row
+
+    def list_for_date(self, date: str) -> list[EventRow]:
+        return list(
+            self._session.scalars(
+                select(EventRow).where(EventRow.date == date).order_by(EventRow.created_at)
+            )
+        )

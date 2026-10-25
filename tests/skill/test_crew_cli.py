@@ -57,6 +57,7 @@ def intent_file(tmp_path: Path, **overrides: Any) -> Path:
         "event": {
             "source_url": EVENT_URL,
             "title": "Board game night",
+            "location_label": "Hayden Library",
             "date": start.date().isoformat(),
             "start_time": "18:00",
         },
@@ -249,3 +250,35 @@ def test_the_default_api_url_is_the_public_https_address_and_the_env_var_overrid
     finally:
         del os.environ["CREWBIE_API_URL"]
     assert crew.api_url() == crew.DEFAULT_API_URL
+
+
+def test_events_finds_a_crew_started_by_another_student_under_different_wording(
+    tmp_path: Path, live_server: LiveServer
+) -> None:
+    host = Cli(tmp_path / "host", live_server.url)
+    other = Cli(tmp_path / "other", live_server.url)
+    for cli in (host, other):
+        cli.home.mkdir()
+    path = intent_file(tmp_path)
+    date = json.loads(path.read_text())["event"]["date"]
+
+    offer_id = host.lines("submit", "--file", str(path))[1].split()[1]
+    code = host.run("accept", "--offer", offer_id).stdout.splitlines()[0].split()[1]
+    linking.complete(live_server.ctx, code, "811111111111111111", "host")
+    assert host.lines("accept", "--offer", offer_id)[0].startswith("JOINED")
+
+    assert other.lines("events", "--title", "Nobody", "--date", date) == ["EVENTS 0"]
+    lines = other.lines(
+        "events", "--title", "Board Game Night (all welcome)", "--date", date,
+        "--start-time", "18:20", "--place", "Hayden Library, Tempe",
+    )  # fmt: skip
+    assert lines[0] == "EVENTS 1"
+    expected = f'EVENT 1 TITLE "Board game night" WHEN {date} 18:00 PLACE "Hayden Library"'
+    assert lines[1] == f"{expected} GOING 1 LINK {EVENT_URL}"
+    raw = json.loads(
+        other.run("events", "--title", "Board game night", "--date", date, "--json").stdout
+    )
+    assert raw["events"][0]["source_url"] == EVENT_URL
+    bad = other.run("events", "--title", "x", "--date", "tomorrow")
+    assert bad.returncode == 4 and "VALIDATION_FAILED" in bad.stderr
+    assert other.run("events", "--date", date).returncode == 4  # --title is required

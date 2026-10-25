@@ -75,6 +75,24 @@ Query: `event_key` or (`source_url`, `date`, `start_time`).
 Batch form of the above. Body: `{ "events": [ {"ref":"a","source_url":"...","date":"...","start_time":"18:00"} ] }`
 (max 5). Response: `{ "results": [ {"ref":"a","event_key":"...","rooms":[...]} ] }`.
 
+### `POST /v1/events/search`
+
+Suggests existing events that already have an open or active crew and look like the one the student
+described. Students' searches rarely land on the same web page, so the exact event key alone is not enough
+to find each other. The result is a list of candidates for the student to confirm; nothing is merged
+automatically. After a yes, Cubbie submits the intent using the candidate's own `source_url`, `date` and
+`start_time`, so both students get the same `event_key`.
+
+Body: `{ "title": "Clayface (2026)", "date": "2026-10-25", "start_time": "19:15",
+"location_label": "Majestic Tempe Movie Theater", "source_url": "https://..." }` (`title` and `date`
+required; `source_url` optional and an exact match scores 1.0).
+
+Response: `{ "events": [ { "event_key", "title", "location_label", "date", "start_time", "source_url",
+"going", "match", "rooms": [ <room summary> ] } ] }`, at most 3, best first. Only public event fields and
+room aggregates are returned. Rules: same date; start times within 30 minutes when both are given; places
+must share a distinctive word and half of the smaller place's words when both are given; a clear title
+match. Events whose crews have all closed or ended are not returned.
+
 ### `POST /v1/intents`
 
 ```json

@@ -66,6 +66,7 @@ def intent_body(
     start_time: str = "18:00",
     url: str = EVENT_URL,
     minutes: int = 90,
+    place: str | None = "Hayden Library",
 ) -> dict[str, Any]:
     private: dict[str, Any] = {
         "flex": {
@@ -79,7 +80,7 @@ def intent_body(
         "event": {
             "source_url": url,
             "title": title,
-            "location_label": "Hayden Library",
+            "location_label": place,
             "date": date,
             "start_time": start_time,
         },
