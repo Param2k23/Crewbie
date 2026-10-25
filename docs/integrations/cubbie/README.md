@@ -4,14 +4,14 @@ Current primary Track 1 flow is **Crewbie Unlocks**: personalized overlooked ben
 resources, discounts and experiences, followed by an optional solo/social plan.
 Start with [UNLOCKS.md](UNLOCKS.md) for account/privacy safeguards, personality consent,
 Unlock Cards, proactive check-ins, local tests and real-account acceptance checks.
-Food discovery and Crewbie Planner are preserved. The install name stays campus-pulse.
+Food discovery and Crewbie Planner are preserved. The install name is crewbie-unlocks.
 
 Current product scope: time-first and intent-first personal/social planning, with
 campus food retained as an optional category. Start with [PLANNER_HANDOFF.md](PLANNER_HANDOFF.md)
 for the audit, new private planner, consent gate, compatible extension proposal and
-local demo. The install/update identifier remains campus-pulse.
+local demo. The install/update identifier is crewbie-unlocks.
 
-Campus Pulse now has two separate components: the native instruction-only Skill at `skills/campus-pulse/SKILL.md`, and the preserved deterministic Python simulator with a truthful unavailable-provider adapter. The October 19, 2026 hackathon guide confirms native browsing, memory and scheduled check-ins. See [NATIVE_SKILL.md](NATIVE_SKILL.md) for public GitHub installation, real-account testing and future service integration, and [VERIFICATION.md](VERIFICATION.md) for documented versus observed capabilities. No shared contracts or fixtures were changed.
+Crewbie Unlocks has two separate components: the native instruction-only Skill at `skills/crewbie-unlocks/SKILL.md`, and the preserved deterministic Python simulator with a truthful unavailable-provider adapter. The October 19, 2026 hackathon guide confirms native browsing, memory and scheduled check-ins. See [NATIVE_SKILL.md](NATIVE_SKILL.md) for public GitHub installation, real-account testing and future service integration, and [VERIFICATION.md](VERIFICATION.md) for documented versus observed capabilities. No shared contracts or fixtures were changed.
 
 ## Setup and local commands
 
@@ -21,7 +21,7 @@ Run from the repository root. No third-party dependencies, network, credentials 
 python -B -m unittest discover -s tests/cubbie -v
 python -B -m integrations.cubbie.demo
 python -B -m integrations.cubbie.demo --simulate-schedule
-python -B -m integrations.cubbie.validate_skill skills/campus-pulse
+python -B -m integrations.cubbie.validate_skill skills/crewbie-unlocks
 python -B -m integrations.cubbie.planner_demo
 python -B -m integrations.cubbie.unlocks_demo
 ```

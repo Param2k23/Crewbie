@@ -7,14 +7,14 @@ from unittest.mock import patch
 
 from integrations.cubbie.validate_skill import validate_skill
 
-SKILL = Path(__file__).resolve().parents[2] / "skills/campus-pulse"
+SKILL = Path(__file__).resolve().parents[2] / "skills/crewbie-unlocks"
 
 
 class SkillPackageTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
-        self.folder = Path(self.temp.name) / "campus-pulse"
+        self.folder = Path(self.temp.name) / "crewbie-unlocks"
         shutil.copytree(SKILL, self.folder)
 
     def change(self, before, after):
@@ -24,14 +24,14 @@ class SkillPackageTests(unittest.TestCase):
     def test_isolated_package_without_network(self):
         with patch("socket.socket", side_effect=AssertionError("Network forbidden")):
             result = validate_skill(self.folder)
-        self.assertEqual(result["name"], "campus-pulse")
+        self.assertEqual(result["name"], "crewbie-unlocks")
         self.assertEqual(result["files"], 1)
         self.assertFalse(result["scripts"])
         self.assertFalse(result["manifest"])
         self.assertEqual(result["runtime"], "UNVERIFIED")
 
     def test_invalid_frontmatter_rejected(self):
-        self.change("name: campus-pulse", "name: ../campus-pulse")
+        self.change("name: crewbie-unlocks", "name: ../crewbie-unlocks")
         with self.assertRaises(ValueError):
             validate_skill(self.folder)
 

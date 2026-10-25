@@ -1,7 +1,7 @@
 # Crewbie Unlocks
 
-Current Track 1 identity: **Crewbie Unlocks**. Keep the `campus-pulse` Skill name,
-folder and installation/update commands for compatibility. Native Cubbie handles
+Current Track 1 identity: **Crewbie Unlocks**. The Skill name and folder are `crewbie-unlocks`, matching the
+installation/update commands. Native Cubbie handles
 research, connected-account permissions, memory, reminders and check-ins; the Skill
 contains instructions only. There are no scripts, dependencies, manifest, service
 hosts or secrets in the installed folder. Tracks 2/3 are optional extensions.
@@ -106,7 +106,7 @@ Existing planner and event core remain available and their prior tests are intac
 
 ```powershell
 python -B -m unittest discover -s tests/cubbie -v
-python -B -m integrations.cubbie.validate_skill skills/campus-pulse
+python -B -m integrations.cubbie.validate_skill skills/crewbie-unlocks
 python -B -m integrations.cubbie.unlocks_demo
 python -B -m integrations.cubbie.planner_demo
 python -B -m integrations.cubbie.demo --simulate-schedule
@@ -134,9 +134,9 @@ account access, external notification, publication, push or merge was performed.
 
 Use the installation steps in [NATIVE_SKILL.md](NATIVE_SKILL.md): publish only with
 approval to a public GitHub branch, text the folder URL to Cubbie, inspect summary
-and exact commit, reply yes. Existing installations use `update campus-pulse` and
+and exact commit, reply yes. Existing installations use `update crewbie-unlocks` and
 confirm the new commit summary. The branch target is
-`https://github.com/Param2k23/Crewbie/tree/agent-01-cubbie/skills/campus-pulse`;
+`https://github.com/Param2k23/Crewbie/tree/agent-01-cubbie/skills/crewbie-unlocks`;
 this document does not establish remote publication or public visibility.
 
 On a consenting real account verify: authorized calendar/Canvas versus manual

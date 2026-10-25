@@ -2,18 +2,18 @@
 
 Current main experience is **Crewbie Unlocks**, preserving Crewbie Planner and
 campus-food flows. See [UNLOCKS.md](UNLOCKS.md) for the current workflow and expanded
-real-account checklist. The installation identifier remains `campus-pulse`; the
+real-account checklist. The installation identifier is `crewbie-unlocks`; the
 instructions below still apply, with Crewbie Unlocks in the installation summary.
 
-Current user-facing identity: **Crewbie Planner**. Installed identifier/folder stays
-`campus-pulse`. The Skill now handles time-first and intent-first personal/social
+The Crewbie Planner workflow is included in **Crewbie Unlocks**. The installed identifier/folder is
+`crewbie-unlocks`. The Skill now handles time-first and intent-first personal/social
 planning, with food discovery as an optional activity. See [PLANNER_HANDOFF.md](PLANNER_HANDOFF.md)
 for current local code, 40-test evidence, consent-gated A3/A4 readiness and schema
 extension proposal. Earlier Campus Pulse validation evidence below is historical.
 
 ## Package and permissions
 
-`skills/campus-pulse/SKILL.md` is the entire installable package. It uses the Agent Skills format described in the supplied [October 19, 2026 guide](HACKATHON_GUIDE.pdf), pages 2–3. Frontmatter has a lowercase matching name and a quoted description. Instructions use Cubbie's native abilities in plain words.
+`skills/crewbie-unlocks/SKILL.md` is the entire installable package. It uses the Agent Skills format described in the supplied [October 19, 2026 guide](HACKATHON_GUIDE.pdf), pages 2–3. Frontmatter has a lowercase matching name and a quoted description. Instructions use Cubbie's native abilities in plain words.
 
 No scripts or cubbie.yaml are necessary: Cubbie already browses, remembers preferences and schedules check-ins. No dependencies, declared script hosts, secrets, custom login, backend, organization key, file outside the installed folder or connected account is required. Native browsing is not a script network permission request. Connected calendar use is optional, permissioned, and has a manual-availability fallback. Memory and recurring alerts require the student's consent. The Skill never directly texts other students.
 
@@ -25,16 +25,16 @@ Origin is `https://github.com/Param2k23/Crewbie.git`; working branch is `agent-0
 
 Prepared branch folder URL:
 
-https://github.com/Param2k23/Crewbie/tree/agent-01-cubbie/skills/campus-pulse
+https://github.com/Param2k23/Crewbie/tree/agent-01-cubbie/skills/crewbie-unlocks
 
 **This URL is a publication target, not proof the folder is remotely available.** No push has been authorized or performed during this task, and public repository visibility has not been checked. After explicit approval, publish the Skill on this branch in a public repository. Do not merge to master for installation.
 
 1. Text that public folder URL to Cubbie (guide p. 5). Alternatively send the public SKILL.md URL.
-2. Inspect Cubbie's summary: Crewbie Planner purpose, campus-pulse identifier, exact commit, and no added script packages, hosts, keys or logins. Reply yes to install. Installation is per student; no account-wide rollout occurs.
-3. Ask: "Use Campus Pulse to find campus events in Tempe today between noon and 1:30 pm. I'm vegetarian. Check food opportunities, but don't schedule anything yet." Resolve date/time if needed and inspect source evidence.
-4. Ask: "Send me a daily Campus Pulse check-in at 9 am America/Phoenix for my noon to 1:30 pm gap. Send a short no-matches note if nothing fits." This is explicit consent for those settings; clarify start date or other missing details without duplicating consent already given.
+2. Inspect Cubbie's summary: Crewbie Unlocks purpose, crewbie-unlocks identifier, exact commit, and no added script packages, hosts, keys or logins. Reply yes to install. Installation is per student; no account-wide rollout occurs.
+3. Ask: "Use Crewbie Unlocks to find campus events in Tempe today between noon and 1:30 pm. I'm vegetarian. Check food opportunities, but don't schedule anything yet." Resolve date/time if needed and inspect source evidence.
+4. Ask: "Send me a daily Crewbie Unlocks check-in at 9 am America/Phoenix for my noon to 1:30 pm gap. Send a short no-matches note if nothing fits." This is explicit consent for those settings; clarify start date or other missing details without duplicating consent already given.
 5. Confirm only the schedule result actually returned by Cubbie. A scheduled task is not evidence of delivery: wait for a real authorized occurrence and record its outcome. Test stop/cancellation afterward.
-6. For a later approved update, publish the revised commit and text `update campus-pulse`; review the new summary and confirm. `What Skills do I have?` lists installs; `remove campus-pulse` removes this Skill. Cancel check-ins separately and verify they stopped; do not assume uninstall cancels schedules.
+6. For a later approved update, publish the revised commit and text `update crewbie-unlocks`; review the new summary and confirm. `What Skills do I have?` lists installs; `remove crewbie-unlocks` removes this Skill. Cancel check-ins separately and verify they stopped; do not assume uninstall cancels schedules.
 
 For the current main flow, ask "I have two free hours tomorrow" and provide an exact
 window/location if requested; expect researched personal activity choices. Then ask
@@ -43,7 +43,7 @@ overnight needs. Try "Find a crew" and verify activity-scoped consent plus the h
 service-unavailable fallback. A native one-time reminder and recurring planning
 check-in each require authorization and an observed successful native tool outcome.
 
-For submission, replace the branch name in the folder link with the actual published 40-character commit SHA: `https://github.com/Param2k23/Crewbie/tree/<published-commit-sha>/skills/campus-pulse`. Do not submit this placeholder. Cubbie pins the installation commit. Exact submission form/cutoff and test accounts still need organizer confirmation.
+For submission, replace the branch name in the folder link with the actual published 40-character commit SHA: `https://github.com/Param2k23/Crewbie/tree/<published-commit-sha>/skills/crewbie-unlocks`. Do not submit this placeholder. Cubbie pins the installation commit. Exact submission form/cutoff and test accounts still need organizer confirmation.
 
 ## Real-account checklist and expected results
 
@@ -51,7 +51,7 @@ Every row is **NOT RUN in Cubbie**. Static checks cannot verify instruction adhe
 
 | Case | Input / action | Expected result |
 |---|---|---|
-| 1. Install | Text the public folder link; inspect summary; reply yes | Valid name/description, commit-pinned Campus Pulse install, no extra script permissions or credentials; Skill appears in list. No installation before yes. |
+| 1. Install | Text the public folder link; inspect summary; reply yes | Valid name/description, commit-pinned Crewbie Unlocks install, no extra script permissions or credentials; Skill appears in list. No installation before yes. |
 | 2. Find campus events | Ask for relevant Tempe events in an explicit date/time gap, including non-food events | Uses native browsing, opens original sources, returns at most three concise recommendations with original title/time/location/link, local timezone and relevant warnings; food is not mandatory for a general event request. If none fit, returns honest no-results. |
 | 3. Daily alert | Authorize daily 9 am Phoenix check-in and an availability gap; repeat request; then stop | Native check-in confirms creation and next run only after success, re-verifies sources each run, updates rather than duplicates an existing task, respects notification settings and cancels when asked. Verify one real occurrence and cancellation outcome; no calls. |
 | 4. Vegetarian uncertainty | Ask for vegetarian free-food opportunities; use a listing saying only "food provided" | Says vegetarian options are not verified; does not equate food provided or free entry with confirmed free food. If verified vegetarian is mandatory, excludes unknown menus. No inventory guarantee. |
@@ -67,7 +67,7 @@ Run from the repository root:
 ```powershell
 python -B -m unittest discover -s tests/cubbie -p test_campus_pulse.py -v
 python -B -m unittest discover -s tests/cubbie -v
-python -B -m integrations.cubbie.validate_skill skills/campus-pulse
+python -B -m integrations.cubbie.validate_skill skills/crewbie-unlocks
 python -B -m integrations.cubbie.demo --simulate-schedule
 ```
 

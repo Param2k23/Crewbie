@@ -16,7 +16,7 @@ are documented in [PLANNER_HANDOFF.md](PLANNER_HANDOFF.md). Forty automated test
 actual installation, browsing, memory, reminders, connected-calendar access and
 scheduled delivery remain UNVERIFIED in a real Cubbie account.
 
-Updated: 2026-10-24 against the supplied **Build a Cubbie Skill — Hackathon Guide**, October 19, 2026, @ziyou ([local PDF](HACKATHON_GUIDE.pdf)). **Actual Cubbie Skill execution: UNVERIFIED. Track 1 is incomplete until public GitHub installation and the main flow succeed on a real account.** An instruction-only Skill now exists at `skills/campus-pulse/SKILL.md`; the preserved Python simulator is a separate local test component.
+Updated: 2026-10-24 against the supplied **Build a Cubbie Skill — Hackathon Guide**, October 19, 2026, @ziyou ([local PDF](HACKATHON_GUIDE.pdf)). **Actual Cubbie Skill execution: UNVERIFIED. Track 1 is incomplete until public GitHub installation and the main flow succeed on a real account.** An instruction-only Skill now exists at `skills/crewbie-unlocks/SKILL.md`; the preserved Python simulator is a separate local test component.
 
 ## Evidence and discovery
 

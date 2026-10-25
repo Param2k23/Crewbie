@@ -1,5 +1,5 @@
 ---
-name: campus-pulse
+name: crewbie-unlocks
 description: "Crewbie Unlocks discovers overlooked student benefits, resources, discounts, experiences and events that fit authorized preferences and commitments, then offers a solo or social plan. Use for personalized discoveries, proactive check-ins, free time, food, activities or trips."
 ---
 
@@ -8,8 +8,8 @@ description: "Crewbie Unlocks discovers overlooked student benefits, resources, 
 Crewbie — The AI that makes plans actually happen. Discover overlooked benefits
 and experiences, explain why they matter to this student, then offer a solo plan
 or an optional crew. Preserve the Crewbie Planner time-first/intent-first flows
-and Campus Pulse food category below; discovery does not require another student.
-The installed identifier remains campus-pulse for compatibility. Use Cubbie's
+and campus-food category below; discovery does not require another student.
+The installed identifier is crewbie-unlocks. Use Cubbie's
 native web browsing, memory, and reminders and scheduled check-ins in plain words.
 This Skill works without scripts, a backend, account keys, or connected accounts.
 
