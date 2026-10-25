@@ -91,7 +91,7 @@ Pending (needs the owner and test accounts):
 
 Open questions: none.
 
-## Phase 5: Deployment on AWS EC2 (deployed and accepted; down/up check pending)
+## Phase 5: Deployment on AWS EC2 (done, committed 9acabf4; docs update uncommitted)
 
 Done:
 - Part A with the owner (A2 skipped, region Ohio `us-east-2`; see DECISIONS.md). `crewbie-ops` profile works.
@@ -104,9 +104,13 @@ Done:
 - AS-1 and AS-2 pass against the public URL, run by the owner with two Discord accounts.
 - `/healthz` also answers HEAD for uptime monitors (needs one `deploy.sh` run).
 
-Pending:
-- Task 7: a full `down` then `up` cycle that shows rooms and installs survive, the URL is unchanged and Caddy
-  reuses its certificate. Needs the owner's go-ahead because the bot is offline for a few minutes.
-- Commit and push of the `crew.py` URL change and the HEAD fix, then `deploy.sh`.
+- Task 7 verified: one full `down` then `up` took 189 s from stop to a healthy `discord: connected`. Row counts
+  in every table were identical before and after (2 installs, 1 active room with thread and card, 8 done outbox
+  jobs). Same URL, same certificate serial and fingerprint, and Caddy's issuance count stayed at 1, so no new
+  certificate was requested.
+- The `crew.py` URL change and the HEAD fix are committed, pushed and deployed.
+
+Pending: Part F teardown after the hackathon (release the Elastic IP, terminate the instance, delete the
+`crewbie-ops` keys). The instance is left running.
 
 Open questions: none.
