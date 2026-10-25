@@ -1,0 +1,189 @@
+{
+  "scenario": "A",
+  "mode": "offline_fixture_demo",
+  "query_mode": "time_first",
+  "window_horizon": "short_break",
+  "recommendations": [
+    {
+      "candidate_id": "demo_coffee",
+      "record_type": "synthetic_fixture",
+      "title": "Coffee conversation \u2014 DEMO ONLY",
+      "synthetic": true,
+      "source_url": "https://example.org/crewbie-demo/activity/coffee",
+      "categories": [
+        "coffee"
+      ],
+      "horizon": "short_break",
+      "opportunity": {
+        "opportunity_id": "demo_coffee",
+        "title": "Coffee conversation \u2014 DEMO ONLY",
+        "campus": "Tempe",
+        "start_at": "2026-10-26T12:00:00-07:00",
+        "end_at": "2026-10-26T14:00:00-07:00",
+        "source_url": "https://example.org/crewbie-demo/activity/coffee",
+        "checked_at": "2026-10-24T18:00:00Z",
+        "synthetic": true,
+        "food_status": "unknown",
+        "access_status": "public",
+        "dietary_suitability": "unknown",
+        "location_label": "Fictional activity location \u2014 DEMO ONLY",
+        "organizer": null,
+        "access_restrictions": null,
+        "rsvp_required": null,
+        "food_detail": "Food provision not verified; activity category does not imply food included",
+        "evidence": {},
+        "free_food_evidence": false,
+        "food_availability": "unknown",
+        "provenance": {
+          "provider": "demo_fixture",
+          "source_url": "https://example.org/crewbie-demo/activity/coffee",
+          "checked_at": "2026-10-24T18:00:00Z",
+          "access": "fixture"
+        },
+        "activity": {
+          "kind": "venue",
+          "location_context": "local",
+          "categories": [
+            "coffee"
+          ],
+          "interests": [
+            "social"
+          ],
+          "source_claims": {},
+          "source_verified": false,
+          "duration_minutes": [
+            90,
+            90
+          ],
+          "duration_basis": "planning_estimate",
+          "price_cents": null,
+          "opening_windows": [
+            {
+              "start_at": "2026-10-26T12:00:00-07:00",
+              "end_at": "2026-10-26T14:00:00-07:00"
+            }
+          ]
+        },
+        "stale": false,
+        "expired": false,
+        "warnings": [
+          "Food remaining and dietary safety are not guaranteed.",
+          "DEMO ONLY: fictional listing; no actual event or inventory.",
+          "Verify RSVP and entry requirements with organizer."
+        ],
+        "distance_m": 250,
+        "distance_basis": "caller_supplied_grounded_metres"
+      },
+      "known": {
+        "location": "Fictional activity location \u2014 DEMO ONLY",
+        "campus": "Tempe",
+        "price_cents": null,
+        "source_claims": {}
+      },
+      "fit": {
+        "proposed_slot": {
+          "start_at": "2026-10-26T19:00:00+00:00",
+          "end_at": "2026-10-26T20:30:00+00:00"
+        },
+        "duration_minutes": 90,
+        "basis": "estimated_visit_within_listed_opening_window",
+        "availability_confirmed": false
+      },
+      "requires_verification": [
+        "current availability",
+        "transport and travel time",
+        "entry and RSVP requirements",
+        "price and total cost"
+      ]
+    },
+    {
+      "candidate_id": "demo_games",
+      "record_type": "synthetic_fixture",
+      "title": "Casual board games \u2014 DEMO ONLY",
+      "synthetic": true,
+      "source_url": "https://example.org/crewbie-demo/activity/games",
+      "categories": [
+        "games"
+      ],
+      "horizon": "short_break",
+      "opportunity": {
+        "opportunity_id": "demo_games",
+        "title": "Casual board games \u2014 DEMO ONLY",
+        "campus": "Tempe",
+        "start_at": "2026-10-26T12:30:00-07:00",
+        "end_at": "2026-10-26T13:30:00-07:00",
+        "source_url": "https://example.org/crewbie-demo/activity/games",
+        "checked_at": "2026-10-24T18:00:00Z",
+        "synthetic": true,
+        "food_status": "unknown",
+        "access_status": "public",
+        "dietary_suitability": "unknown",
+        "location_label": "Fictional activity location \u2014 DEMO ONLY",
+        "organizer": null,
+        "access_restrictions": null,
+        "rsvp_required": null,
+        "food_detail": "Food provision not verified; activity category does not imply food included",
+        "evidence": {},
+        "free_food_evidence": false,
+        "food_availability": "unknown",
+        "provenance": {
+          "provider": "demo_fixture",
+          "source_url": "https://example.org/crewbie-demo/activity/games",
+          "checked_at": "2026-10-24T18:00:00Z",
+          "access": "fixture"
+        },
+        "activity": {
+          "kind": "event",
+          "location_context": "local",
+          "categories": [
+            "games"
+          ],
+          "interests": [
+            "games",
+            "social"
+          ],
+          "source_claims": {},
+          "source_verified": false,
+          "duration_minutes": [
+            60,
+            60
+          ],
+          "duration_basis": "planning_estimate",
+          "price_cents": 0,
+          "opening_windows": []
+        },
+        "stale": false,
+        "expired": false,
+        "warnings": [
+          "Food remaining and dietary safety are not guaranteed.",
+          "DEMO ONLY: fictional listing; no actual event or inventory.",
+          "Verify RSVP and entry requirements with organizer."
+        ],
+        "distance_m": 400,
+        "distance_basis": "caller_supplied_grounded_metres"
+      },
+      "known": {
+        "location": "Fictional activity location \u2014 DEMO ONLY",
+        "campus": "Tempe",
+        "price_cents": 0,
+        "source_claims": {}
+      },
+      "fit": {
+        "proposed_slot": {
+          "start_at": "2026-10-26T12:30:00-07:00",
+          "end_at": "2026-10-26T13:30:00-07:00"
+        },
+        "duration_minutes": 60.0,
+        "basis": "listed_event_times",
+        "availability_confirmed": false
+      },
+      "requires_verification": [
+        "current availability",
+        "transport and travel time",
+        "entry and RSVP requirements"
+      ]
+    }
+  ],
+  "diagnostics": [],
+  "notice": "Suggestions require verification; no booking, inventory or transport availability is confirmed."
+}

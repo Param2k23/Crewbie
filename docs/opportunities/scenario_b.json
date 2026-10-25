@@ -1,0 +1,133 @@
+{
+  "scenario": "B",
+  "mode": "offline_fixture_demo",
+  "query_mode": "intent_first",
+  "window_horizon": "weekend",
+  "recommendations": [
+    {
+      "candidate_id": "demo_weekend",
+      "record_type": "synthetic_fixture",
+      "title": "Two-day trip candidate \u2014 DEMO ONLY",
+      "synthetic": true,
+      "source_url": "https://example.org/crewbie-demo/activity/weekend",
+      "categories": [
+        "getaway",
+        "trip"
+      ],
+      "horizon": "weekend",
+      "opportunity": {
+        "opportunity_id": "demo_weekend",
+        "title": "Two-day trip candidate \u2014 DEMO ONLY",
+        "campus": "Off campus",
+        "start_at": "2026-10-31T08:00:00-07:00",
+        "end_at": "2026-11-02T08:00:00-07:00",
+        "source_url": "https://example.org/crewbie-demo/activity/weekend",
+        "checked_at": "2026-10-24T18:00:00Z",
+        "synthetic": true,
+        "food_status": "unknown",
+        "access_status": "public",
+        "dietary_suitability": "unknown",
+        "location_label": "Fictional activity location \u2014 DEMO ONLY",
+        "organizer": null,
+        "access_restrictions": null,
+        "rsvp_required": null,
+        "food_detail": "Food provision not verified; activity category does not imply food included",
+        "evidence": {},
+        "free_food_evidence": false,
+        "food_availability": "unknown",
+        "provenance": {
+          "provider": "demo_fixture",
+          "source_url": "https://example.org/crewbie-demo/activity/weekend",
+          "checked_at": "2026-10-24T18:00:00Z",
+          "access": "fixture"
+        },
+        "activity": {
+          "kind": "event",
+          "location_context": "regional",
+          "categories": [
+            "getaway",
+            "trip"
+          ],
+          "interests": [
+            "nature",
+            "travel"
+          ],
+          "source_claims": {},
+          "source_verified": false,
+          "duration_minutes": [
+            2880,
+            2880
+          ],
+          "duration_basis": "planning_estimate",
+          "price_cents": null,
+          "opening_windows": []
+        },
+        "stale": false,
+        "expired": false,
+        "warnings": [
+          "Food remaining and dietary safety are not guaranteed.",
+          "DEMO ONLY: fictional listing; no actual event or inventory.",
+          "Verify RSVP and entry requirements with organizer."
+        ],
+        "distance_m": null
+      },
+      "known": {
+        "location": "Fictional activity location \u2014 DEMO ONLY",
+        "campus": "Off campus",
+        "price_cents": null,
+        "source_claims": {}
+      },
+      "fit": {
+        "proposed_slot": {
+          "start_at": "2026-10-31T08:00:00-07:00",
+          "end_at": "2026-11-02T08:00:00-07:00"
+        },
+        "duration_minutes": 2880.0,
+        "basis": "listed_event_times",
+        "availability_confirmed": false
+      },
+      "requires_verification": [
+        "current availability",
+        "transport and travel time",
+        "entry and RSVP requirements",
+        "price and total cost"
+      ]
+    },
+    {
+      "candidate_id": "idea_weekend",
+      "record_type": "planning_idea",
+      "title": "Two-day getaway planning idea",
+      "synthetic": false,
+      "source_url": null,
+      "categories": [
+        "getaway",
+        "trip"
+      ],
+      "horizon": "weekend",
+      "known": {
+        "location_context": "regional",
+        "price_cents": null
+      },
+      "fit": {
+        "duration_minutes": [
+          2880,
+          4320
+        ],
+        "basis": "planning_estimate",
+        "availability_confirmed": false,
+        "proposed_slot": null
+      },
+      "requires_verification": [
+        "venue or destination",
+        "opening hours and schedule",
+        "price and total cost",
+        "transport and travel time",
+        "admission and availability",
+        "lodging if overnight",
+        "weather and accessibility"
+      ]
+    }
+  ],
+  "diagnostics": [],
+  "notice": "Suggestions require verification; no booking, inventory or transport availability is confirmed."
+}
