@@ -33,13 +33,13 @@ the same crew.
 | 4 | Ask for an activity that has a student discount | Student-exclusive options are searched and ranked **first**; public options only after; a near-match is offered as "Student unlock if you're flexible" | PASS (A) | Student price $10.81 (ID) vs $14.59 public, sourced, conditions stated. B did not say it had checked student perks (variance, watch). |
 | 5 | Confirm an activity (A), say yes to "find other students" | Before the first send, Cubbie lists exactly what is shared and what stays private, and waits for a yes | PASS (A) | First wording said the limits stay with the agent, then Cubbie corrected itself. Fixed: SKILL.md now says they reach the server encrypted and are never shown. |
 | 6 | A: submit, then accept | `new_room` offer, then accept asks A to link Discord with a code; after `/crew link` accept says joined, a card appears on `#crew-board`, no chat yet ("opens when someone joins") | PASS (A) | Link needed two tries: the owner's Discord account was already linked and the Replace button was missed. Hint added to SKILL.md. Card appeared on the board; check-in set at 15 minutes (Cubbie's limit). |
-| 7 | B asks about the same event in their **own words, with no link** (a different page is fine) | Cubbie looks it up through `crew.py events`, says it looks like the event A started, with the count, and asks whether it is the same | | |
-| 8 | B: submit, accept, link | A `join` offer is described in plain words; after the yes and the link, B is in a private thread with the icebreaker; both get a DM | | |
-| 9 | A accepts a scheduled check-in, then B joins | A's check-in texts a plain-words update ("someone joined", then the chat link), and nothing when there is nothing new | | |
-| 10 | B leaves (Cubbie or `/crew leave`) | Thread notice "member-2 left"; A is told in the next check-in | | |
-| 11 | Solo plan with the service down: `bash scripts/ops/down.sh --yes`, then ask Cubbie for a plan | Cubbie says crew matching is unavailable and still gives the full solo plan. Then `bash scripts/ops/up.sh` | | |
-| 12 | Tone check after all this | Roast Me still teases only hidden perks or optional adventures, never about being alone, other students or someone leaving | | |
-| 13 | Nothing private leaked | Discord thread and DMs show no flex times and no budget cap; Cubbie sent no dietary, calendar or course details | | |
+| 7 | B asks about the same event in their **own words, with no link** (a different page is fine) | Cubbie looks it up through `crew.py events`, says it looks like the event A started, with the count, and asks whether it is the same | PASS (B) | After the look-alike search was added, B's Cubbie found A's crew without the original link and asked for confirmation. |
+| 8 | B: submit, accept, link | A `join` offer is described in plain words; after the yes and the link, B is in a private thread with the icebreaker; both get a DM | PASS (B) | Thread created for B's join; owner reported the test worked. |
+| 9 | A accepts a scheduled check-in, then B joins | A's check-in texts a plain-words update ("someone joined", then the chat link), and nothing when there is nothing new | not reported | |
+| 10 | B leaves (Cubbie or `/crew leave`) | Thread notice "member-2 left"; A is told in the next check-in | not reported | |
+| 11 | Solo plan with the service down: `bash scripts/ops/down.sh --yes`, then ask Cubbie for a plan | Cubbie says crew matching is unavailable and still gives the full solo plan. Then `bash scripts/ops/up.sh` | not reported | |
+| 12 | Tone check after all this | Roast Me still teases only hidden perks or optional adventures, never about being alone, other students or someone leaving | not reported | |
+| 13 | Nothing private leaked | Discord thread and DMs show no flex times and no budget cap; Cubbie sent no dietary, calendar or course details | not reported | |
 
 Step 11 takes the bot offline for about three minutes; do it last.
 

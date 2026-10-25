@@ -115,7 +115,7 @@ Pending: Part F teardown after the hackathon (release the Elastic IP, terminate 
 
 Open questions: none.
 
-## Phase 6: Skill update and live Cubbie test (SKILL.md and tests done; live test pending)
+## Phase 6: Skill update and live Cubbie test (live test passed for steps 1 to 8; merge to master awaiting approval)
 
 Done:
 - `SKILL.md` updated in exactly three places: the header sentence, one optional "Going" line on the Unlock
@@ -130,3 +130,10 @@ Done:
 
 Pending: the live checklist with two Cubbie students (needs I-06), then the owner's approval to merge
 `crewbie-v2` into `master`.
+
+Live test (owner, two real Cubbie students): install, tone question first, Roast Me consent, student-price
+ranking, disclosure, crew start with Discord linking, look-alike event search, B joining and the private
+thread all worked. Findings fixed along the way: precise private-data wording, Replace-link hint, check-in
+rhythm, `crew.py`-only rule, and Cubbie-assisted event matching. Steps 9 to 13 of `LIVE_TEST.md`
+(check-in delivery, leave, solo plan with the service down, tone check, privacy check) were not individually
+reported; the owner to confirm. Merge of `crewbie-v2` into `master` still needs the owner's explicit approval.
