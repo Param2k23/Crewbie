@@ -87,6 +87,11 @@
 .logo { display: block; width: 183px; height: auto; flex-shrink: 0; color: var(--ink); }
 .logoSymbol { color: var(--accent); }
 .logoWordmark { font-family: var(--display); font-size: 32px; font-weight: 800; letter-spacing: -1.4px; }
+.lockup { display: inline-flex; align-items: center; gap: 10px; }
+.cubbieWord { font-family: var(--display); font-size: 32px; font-weight: 800; letter-spacing: -1.4px; line-height: 1; color: var(--ink); }
+.times { font-family: var(--display); font-size: 26px; line-height: 1; color: var(--accent); }
+.install { margin: 46px auto 0; max-width: 760px; text-align: center; }
+.installCode { display: block; margin-top: 14px; padding: 18px 22px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); color: var(--ink); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: clamp(12px, 1.5vw, 15px); line-height: 1.6; overflow-wrap: anywhere; user-select: all; }
 .brandSuffix { font-size: 14px; font-weight: 500; letter-spacing: 0; color: var(--muted); }
 .navLink { font-size: 14px; min-height: 44px; display: flex; align-items: center; gap: 25px; }
 .section { padding: clamp(72px, 9vw, 140px) 7vw; border-bottom: 1px solid var(--line); scroll-margin-top: 24px; }
@@ -184,6 +189,12 @@
 }
 @media (max-width: 480px) {
   .brandSuffix { display: none; }
+  .cubbieWord { font-size: 22px; }
+  .times { font-size: 18px; }
+  .lockup { gap: 6px; }
+  .lockup .logo { width: 128px; }
+  .navLink { white-space: nowrap; }
+  .navLink span { display: none; }
   .nav { padding: 18px 7vw; }
   .heroVisual { min-height: 400px; }
   .messageCard { width: 92%; padding: 22px; }

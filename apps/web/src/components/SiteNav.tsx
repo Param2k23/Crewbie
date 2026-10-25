@@ -11,11 +11,11 @@ export function SiteNav() {
   );
   return (
     <header className="sitenav">
-      <Link href="/" className="brand" aria-label="Crewbie home">
+      <Link href="/unlocks" className="brand" aria-label="Cubbie and Crewbie home">
         <span className="brand-dot" aria-hidden /> Crewbie
       </Link>
       <nav aria-label="Primary">
-        {item("/", "Discover")}
+        {item("/demo", "Discover")}
         {item("/arena", "Mission Control")}
       </nav>
       <span className="pill pill-synth" title="All bundled data is fictional">Synthetic data</span>

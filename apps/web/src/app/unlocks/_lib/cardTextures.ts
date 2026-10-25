@@ -19,7 +19,7 @@ export function makeCardTexture(label: string, index: number, palette: ScenePale
   context.fillRect(45, 350, 678, 2);
   context.font = "500 20px " + palette.font;
   context.fillText("CHECK ELIGIBILITY & TERMS", 45, 400);
-  context.fillText("CREWBIE", 45, 438);
+  context.fillText("CUBBIE × CREWBIE", 45, 438);
   const texture = new CanvasTexture(canvas);
   texture.colorSpace = SRGBColorSpace;
   texture.anisotropy = 2;

@@ -1,5 +1,5 @@
 export const planningExamples = [
-  ["Two hours free tomorrow. What could I do?", "Confirm the date, starting point, budget and return time.", "Explore a campus workshop. Check access and availability first."],
-  ["Help me plan dinner Friday, within my budget.", "Check the time, total cost, travel and any dietary requirements.", "Compare suitable dinner options. You decide what to book yourself."],
-  ["I want to try something creative this weekend.", "Check your free window, student access, fees and travel.", "Explore an arts activity. Keep it solo, or ask about company."],
+  ["Two hours free tomorrow. What could I do?", "Cubbie confirms the date, starting point, budget and return time, then looks for student-only options first.", "A campus workshop that fits the gap. Cubbie flags what still needs checking."],
+  ["Help me plan dinner Friday, within my budget.", "Cubbie checks the time, total cost, travel and any dietary requirements against original sources.", "A few suitable dinner options with the real cost. You decide what to book yourself."],
+  ["I want to try something creative this weekend.", "Cubbie checks your free window, student access, fees and travel.", "An arts activity, solo or with company. Cubbie asks before looking for a crew."],
 ] as const;

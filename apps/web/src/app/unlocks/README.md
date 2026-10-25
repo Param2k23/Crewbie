@@ -3,9 +3,18 @@
 From `apps/web`, run `npm run dev` and open `http://localhost:3000/unlocks`.
 For a production preview, run `npm run build`, then `npm start`.
 
-The six acts are server-rendered in `page.tsx`. Marketing content follows
-`../CREWBIE_BRIEF.md` relative to the repository root. Conversations and the
-Unlock Card are illustrative; the CTA opens the on-page walkthrough.
+The acts are server-rendered in `page.tsx`. The page is "Cubbie x Crewbie": Cubbie, the
+iMessage assistant, is presented as the base and the single connection point, and Crewbie as the
+Skill built on it. Every claim must be something the Skill really does (see
+`skills/crewbie-unlocks/SKILL.md`); `tests/unlocks-page.test.tsx` guards the key wording and that
+the install message points at the real Skill folder. Conversations and the Unlock Card are
+illustrative and labeled as such. The install message lives in `_lib/install.ts`.
+
+`CubbieLockup.tsx` draws "Cubbie" as a text wordmark next to the Crewbie logo. If the Cubbie team
+supplies an official logo, replace the wordmark in that one file.
+
+Routes: `/` redirects to `/unlocks` (see `next.config.mjs`). The Mission Control demo stays at
+`/demo` (Campus Pulse) and `/arena`.
 
 Tokens and responsive layouts live in `unlocks.module.css`. Its `:has()` selector
 hides only the inherited header while this route's marker is present. The root
