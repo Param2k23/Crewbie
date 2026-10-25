@@ -1,7 +1,7 @@
 # Crewbie Planner implementation and handoff
 
 Crewbie — The AI that makes plans actually happen. Current user-facing identity
-is Crewbie Planner; `campus-pulse` remains the install/update identifier and folder.
+is Crewbie Unlocks; `crewbie-unlocks` is the install/update identifier and folder.
 The final Agent 01 prompt supersedes food-first product scope. Food discovery is
 preserved as an optional category; no canonical intent or schema was changed.
 
@@ -95,7 +95,7 @@ for the student to share. This Skill never directly messages another student.
 
 ```powershell
 python -B -m unittest discover -s tests/cubbie -v
-python -B -m integrations.cubbie.validate_skill skills/campus-pulse
+python -B -m integrations.cubbie.validate_skill skills/crewbie-unlocks
 python -B -m integrations.cubbie.planner_demo
 python -B -m integrations.cubbie.demo --simulate-schedule
 ```
