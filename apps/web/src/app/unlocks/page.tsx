@@ -16,11 +16,11 @@ export const metadata: Metadata = {
 
 const cubbieBase = [
   ["01", "Your messages are the app.", "Cubbie already lives in iMessage, so Crewbie needs no download. One text adds the Skill, and updates arrive the same way.", "iMessage"],
-  ["02", "Cubbie remembers you.", "With permission, it keeps your campus, tone and preferences, so Chill, Playful or Roast Me is a choice you make once.", "Memory"],
-  ["03", "Cubbie knows your week.", "It checks your calendar and Canvas deadlines when you allow it, so plans respect class, work and rest.", "Calendar and Canvas"],
+  ["02", "Cubbie remembers you.", "With permission, it keeps your campus, tone and preferences, be it chill or playful. Or, if you are up for it, try Roast Me for some friendly banter with Cubbie.", "Memory"],
+  ["03", "Cubbie knows your week.", "It checks your calendar and Canvas deadlines.", "Calendar and Canvas"],
   ["04", "Cubbie does the research.", "It opens the original listings and verifies student eligibility, prices and hours before it suggests anything.", "Browsing"],
-  ["05", "Cubbie follows up.", "Scheduled check-ins text you when a crew forms or the plan moves, and say nothing when there is nothing new.", "Check-ins"],
-  ["06", "Cubbie keeps you in charge.", "It asks before anything is shared, texts only you, and never books, buys or joins without your yes.", "Consent"],
+  ["05", "Cubbie follows up.", "Scheduled check-ins text you when a crew forms or the plan changes. No news, no noise.", "Check-ins"],
+  ["06", "Cubbie keeps you in charge.", "It respects your privacy, asks for consent and never shares personal info apart from the logistics.", "Consent"],
 ];
 
 const layers = [
@@ -69,8 +69,8 @@ export default function UnlocksPage() {
         <div className={styles.heroFoot}><span>Starting with students at ASU</span><span>Text ↓ Plan ↓ Maybe a crew</span></div>
       </section>
 
-      <div className={styles.marquee} aria-label="Illustrative unlock categories">
-        <p className={styles.eyebrow}>A world of possibilities · Illustrative categories</p>
+      <div className={styles.marquee} aria-label="Unlock categories">
+        <p className={styles.eyebrow}>Endless opportunities, endless possibilities</p>
         <div className={styles.marqueeWindow}><div className={styles.marqueeTrack} data-marquee-track>
           {[0, 1].map((copy) => <div className={styles.marqueeSequence} key={copy} aria-hidden={copy === 1 || undefined}>
             {["Campus", "Software", "Culture", "Travel", "Food"].map((label) => <span key={label}>{label}<i aria-hidden="true">↗</i></span>)}
@@ -111,7 +111,6 @@ export default function UnlocksPage() {
           <p className={styles.eyebrow}>03 / Make it fit</p>
           <h2 id="plan-title" data-headline>Start with free time. Or something in mind.</h2>
           <p className={styles.sectionIntro}>Text Cubbie like you would a friend. “I have two hours” and “Help me plan dinner Friday” are both good places to start.</p>
-          <p className={styles.caption}>Illustrative walkthrough · Nothing is sent to Cubbie from this page</p>
         </div>
         <PlanningPanel />
       </section>
@@ -122,7 +121,6 @@ export default function UnlocksPage() {
           <span className={styles.cardSheen} data-card-sheen aria-hidden="true" />
           <div className={styles.cardTop}>EXAMPLE UNLOCK <span aria-hidden="true">↗</span></div>
           <h3 id="example-title">An evening around a board-game table.</h3>
-          <p className={styles.caption}>Illustrative activity · Not a verified event listing</p>
           <dl>
             <div data-reveal-card><dt>Why it fits</dt><dd>A relaxed option to explore in your free window.</dd></div>
             <div data-reveal-card><dt>Access & cost</dt><dd>Student eligibility, fees and availability need checking.</dd></div>
@@ -135,7 +133,7 @@ export default function UnlocksPage() {
       <section className={`${styles.section} ${styles.crew}`} aria-labelledby="crew-title">
         <p className={styles.eyebrow}>05 / Company, when you want it</p>
         <h2 id="crew-title" data-headline>Keep the plan. Add a crew if you want.</h2>
-        <p className={styles.sectionIntro}>Once you’ve chosen an activity, Cubbie can ask whether you want to find other students going to it. You say yes first, and going solo stays a good plan.</p>
+        <p className={styles.sectionIntro}>Once you’ve chosen an activity, Cubbie can ask whether you want to find other students going to it. You can say yes, or going solo is also a good plan.</p>
         <div className={styles.crewComposition} data-crew-composition>
           <article className={styles.soloCard} data-solo-card data-tilt>
             <span className={styles.cardSheen} data-card-sheen aria-hidden="true" />
@@ -147,7 +145,7 @@ export default function UnlocksPage() {
           <ol className={styles.crewSteps}>
             <li data-crew-card><span>01 / Your permission</span><h3>Cubbie lists what is shared.</h3><p>It names exactly what goes to Crewbie, what stays private, and waits for your yes.</p></li>
             <li data-crew-card><span>02 / Your limits</span><h3>Agents work within your limits.</h3><p>Your private agent answers small time changes inside the flexibility you gave. Those limits are stored encrypted and never shown to anyone.</p></li>
-            <li data-crew-card><span>03 / Your decision</span><h3>Say yes. Then say hi.</h3><p>Cubbie asks “Join?” and nothing happens until you answer. A private Discord thread opens once a crew has two members, and Cubbie keeps you posted.</p></li>
+            <li data-crew-card><span>03 / Your decision</span><h3>Say yes. Then say hi.</h3><p>Cubbie asks “Join?” and nothing happens until you answer. A private Discord thread opens once a crew has two members, and Cubbie keeps you posted while the Crewbie bot breaks the ice!</p></li>
           </ol>
         </div>
         <p className={styles.smallNote}>Crew matching is live in preview for students using the Crewbie Skill with Cubbie. A companion is never guaranteed.</p>
@@ -169,7 +167,7 @@ export default function UnlocksPage() {
       </section>
 
       <section className={`${styles.section} ${styles.finale}`} aria-labelledby="final-title" data-finale>
-        <p className={styles.eyebrow} data-final-reveal>Cubbie × Crewbie</p>
+        <p className={styles.finaleBrand} data-final-reveal>Cubbie <span aria-hidden="true">×</span> Crewbie</p>
         <h2 id="final-title" data-headline>Your next unlock is one text away.</h2>
         <p className={styles.lede} data-final-reveal>Your time, your budget, your decision.<br />Cubbie does the legwork. Company is optional.</p>
         <div className={styles.install} data-final-reveal>

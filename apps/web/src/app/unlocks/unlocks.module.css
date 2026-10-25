@@ -168,6 +168,8 @@
 .crewSteps p { font-size: 15px; line-height: 1.65; }
 .finale { text-align: center; padding-top: 140px; padding-bottom: 140px; }
 .finale h2 { max-width: 860px; margin-inline: auto; }
+.finaleBrand { font-family: var(--display); font-size: clamp(32px, 4.6vw, 62px); font-weight: 800; line-height: 1.05; letter-spacing: -.035em; margin: 0 0 28px !important; color: var(--ink); }
+.finaleBrand span { color: var(--accent); }
 .finale .lede, .finale .caption { margin-inline: auto; }
 .footer { display: flex; justify-content: space-between; align-items: center; gap: 25px; padding: 35px 7vw; }
 .footer p, .footer a { font-size: 12px; line-height: 1.6; color: var(--muted); }

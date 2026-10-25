@@ -38,7 +38,8 @@ describe("Cubbie x Crewbie landing page", () => {
   it("makes no claims the product cannot back", () => {
     expect(text).not.toMatch(/still being connected|does not match students/i);
     expect(text).toContain("A companion is never guaranteed");
-    expect(text).toContain("never books, buys or joins without your yes");
+    expect(text).toContain("asks for consent and never shares personal info apart from the logistics");
+    expect(text).toContain("No booking, payment or automatic crew membership");
     expect(text).not.toMatch(/guarantee[sd]? (a )?(match|companion)|official partner|endorsed by|\d+ ?%|\$\d/i);
   });
 
@@ -48,9 +49,14 @@ describe("Cubbie x Crewbie landing page", () => {
     expect(text).toContain("You text Cubbie");
   });
 
-  it("keeps every illustrative item labeled as illustrative", () => {
-    expect(text).toContain("Illustrative activity · Not a verified event listing");
-    expect(text).toContain("Illustrative walkthrough");
+  it("labels the sample card as an example and keeps the page free of fine-print noise", () => {
+    expect(text).toContain("EXAMPLE UNLOCK");
+    expect(text).toContain("Endless opportunities, endless possibilities");
+    expect(text).not.toMatch(/Illustrative (categories|walkthrough|activity)|An illustrative example/);
+  });
+
+  it("makes the closing lockup a headline, not fine print", () => {
+    expect(html).toMatch(/class="[^"]*finaleBrand[^"]*"[^>]*>Cubbie <span[^>]*>×<\/span> Crewbie/);
   });
 
   it("explains the six things Cubbie brings, in Cubbie's own capabilities", () => {

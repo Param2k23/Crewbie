@@ -198,7 +198,7 @@ CREWBIE_HOSTNAME=<35-88-12-45.sslip.io>
 SSH_KEY_PATH=<~/.ssh/crewbie-key.pem>
 SSH_USER=ubuntu
 REMOTE_DIR=/opt/crewbie
-GIT_BRANCH=crewbie-v2
+GIT_BRANCH=master
 ```
 
 None of these are secrets. The access keys stay in the AWS CLI's own credentials file, never in the repo.
