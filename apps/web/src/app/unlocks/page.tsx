@@ -5,19 +5,28 @@ import { CubbieLockup } from "./_components/CubbieLockup";
 import { PlanningPanel } from "./_components/PlanningPanel";
 import { UnlockCTA } from "./_components/UnlockCTA";
 import { UnlockSceneLoader } from "./_components/UnlockSceneLoader";
-import { INSTALL_MESSAGE } from "./_lib/install";
+import { DEMO_VIDEO_URL, INSTALL_MESSAGE, REPO_URL } from "./_lib/install";
 import styles from "./unlocks.module.css";
 
 export const metadata: Metadata = {
   title: "Cubbie × Crewbie — Text Cubbie. Plans actually happen.",
-  description: "Crewbie is a Skill built on Cubbie, your iMessage assistant. Text Cubbie to discover student perks, plan around your week, and find a crew if you want company.",
-  openGraph: { title: "Cubbie × Crewbie", description: "Built on Cubbie. Text Cubbie, and plans actually happen." },
+  description: "Crewbie is built entirely on Cubbie, your iMessage assistant. Text Cubbie to discover student perks, plan around your week, and find a crew if you want company.",
+  openGraph: { title: "Cubbie × Crewbie", description: "Built entirely on Cubbie. Text Cubbie, and plans actually happen." },
 };
 
 const cubbieBase = [
-  ["01", "One text to install.", "Send Cubbie a link and it adds Crewbie as a Skill, asking before it fetches anything. Updates arrive the same way.", "Install"],
-  ["02", "Cubbie does the legwork.", "With your permission it uses your calendar, Canvas deadlines and remembered preferences, then opens the original listings to check student eligibility and prices.", "Context and research"],
-  ["03", "Cubbie keeps you in charge.", "It asks before anything is shared, texts only you, and never books, buys or joins anything without your yes.", "Consent"],
+  ["01", "Your messages are the app.", "Cubbie already lives in iMessage, so Crewbie needs no download. One text adds the Skill, and updates arrive the same way.", "iMessage"],
+  ["02", "Cubbie remembers you.", "With permission, it keeps your campus, tone and preferences, so Chill, Playful or Roast Me is a choice you make once.", "Memory"],
+  ["03", "Cubbie knows your week.", "It checks your calendar and Canvas deadlines when you allow it, so plans respect class, work and rest.", "Calendar and Canvas"],
+  ["04", "Cubbie does the research.", "It opens the original listings and verifies student eligibility, prices and hours before it suggests anything.", "Browsing"],
+  ["05", "Cubbie follows up.", "Scheduled check-ins text you when a crew forms or the plan moves, and say nothing when there is nothing new.", "Check-ins"],
+  ["06", "Cubbie keeps you in charge.", "It asks before anything is shared, texts only you, and never books, buys or joins without your yes.", "Consent"],
+];
+
+const layers = [
+  ["01", "The Skill.", "Discovery and solo planning that work on their own, with Cubbie’s Chill, Playful and Roast Me tones and student-exclusive offers ranked first.", "Track 1 · Cubbie Skill"],
+  ["02", "The agents.", "Every student gets a private agent. When a crew forms, the agents negotiate a time that works, inside limits only the student knows.", "Track 2 · Agents"],
+  ["03", "The group chat.", "When a crew has two people, a bot opens a private Discord thread, breaks the ice and keeps everyone on the same plan.", "Track 3 · Group chat"],
 ];
 
 const categories = [
@@ -39,9 +48,9 @@ export default function UnlocksPage() {
       <section className={`${styles.section} ${styles.hero}`} data-hero aria-labelledby="hero-title">
         <div className={styles.heroAtmosphere} aria-hidden="true"><div data-parallax-background><i data-blob /><i data-blob /></div></div>
         <div className={styles.heroCopy}>
-          <p className={styles.eyebrow}>Cubbie × Crewbie · Student life, a little more unlocked</p>
+          <p className={styles.eyebrow}>Built on Cubbie · For the Cubbie hackathon</p>
           <h1 id="hero-title" data-headline>Text Cubbie. Plans actually happen.</h1>
-          <p className={styles.lede}>Crewbie is built on Cubbie, your iMessage assistant. One text to add it, then Cubbie finds student perks, plans around your week and brings a crew if you want one.</p>
+          <p className={styles.lede}>Crewbie is built entirely on Cubbie: no app, no signup, just your iMessage thread. One text adds it, then Cubbie finds student perks, plans around your week and brings a crew if you want one.</p>
           <UnlockCTA />
           <p className={styles.caption}>Everything happens in your Cubbie thread · Made for the Cubbie hackathon</p>
         </div>
@@ -71,8 +80,8 @@ export default function UnlocksPage() {
 
       <section className={styles.section} id="cubbie" aria-labelledby="cubbie-title">
         <p className={styles.eyebrow}>01 / Cubbie is the base</p>
-        <h2 id="cubbie-title" data-headline>Everything starts with one text to Cubbie.</h2>
-        <p className={styles.sectionIntro}>Crewbie is not another app to download. It is a Skill that lives inside Cubbie, so every step happens in the iMessage thread you already use. Cubbie is the one place you talk to, and the one thing that connects the rest.</p>
+        <h2 id="cubbie-title" data-headline>We built Crewbie on Cubbie. Here is why it works.</h2>
+        <p className={styles.sectionIntro}>Cubbie already lives where students are: in their messages. So we did not build an app. We built a Skill, and Cubbie’s memory, calendar access, browsing and check-ins did the heavy lifting. Cubbie is the one place you talk to, and the one thing that connects every part of Crewbie.</p>
         <div className={styles.categoryGrid} data-reveal-group="cubbie">
           {cubbieBase.map(([number, title, copy, tag]) => <article className={styles.category} key={number} data-reveal-card data-tilt>
             <span className={styles.cardSheen} data-card-sheen aria-hidden="true" />
@@ -144,6 +153,21 @@ export default function UnlocksPage() {
         <p className={styles.smallNote}>Crew matching is live in preview for students using the Crewbie Skill with Cubbie. A companion is never guaranteed.</p>
       </section>
 
+      <section className={styles.section} id="layers" aria-labelledby="layers-title">
+        <p className={styles.eyebrow}>06 / Built on Cubbie, for the hackathon</p>
+        <h2 id="layers-title" data-headline>Three layers. One Cubbie.</h2>
+        <p className={styles.sectionIntro}>Crewbie shows how far a Skill can go when the platform underneath is this capable. Cubbie stays the front door at every layer.</p>
+        <div className={styles.categoryGrid} data-reveal-group="layers">
+          {layers.map(([number, title, copy, tag]) => <article className={styles.category} key={number} data-reveal-card data-tilt>
+            <span className={styles.cardSheen} data-card-sheen aria-hidden="true" />
+            <div className={styles.categoryTop}><span>{number}</span><span>{tag}</span></div>
+            <div className={styles.categoryMark} aria-hidden="true">{number}</div>
+            <h3>{title}</h3><p>{copy}</p>
+          </article>)}
+        </div>
+        <p className={styles.smallNote}>Thank you to the Cubbie team for sponsoring the hackathon and for building something worth building on. Crewbie is open source: <a href={REPO_URL}>see the code on GitHub</a>.</p>
+      </section>
+
       <section className={`${styles.section} ${styles.finale}`} aria-labelledby="final-title" data-finale>
         <p className={styles.eyebrow} data-final-reveal>Cubbie × Crewbie</p>
         <h2 id="final-title" data-headline>Your next unlock is one text away.</h2>
@@ -152,9 +176,13 @@ export default function UnlocksPage() {
           <p className={styles.eyebrow}>Text this to Cubbie</p>
           <code className={styles.installCode}>{INSTALL_MESSAGE}</code>
           <p className={styles.caption}>Cubbie shows the repository and asks before it installs. No signup, and no connected account needed.</p>
+          <p className={styles.caption}>
+            {DEMO_VIDEO_URL && <><a href={DEMO_VIDEO_URL}>Watch Cubbie × Crewbie</a> · </>}
+            <a href={REPO_URL}>See the code on GitHub ↗</a>
+          </p>
         </div>
       </section>
-      <footer className={styles.footer}><span className={styles.brand}><CubbieLockup /></span><p>Built on Cubbie for the Cubbie hackathon.<br />No booking, payment or automatic crew membership.</p><Link href="#hero-title">Back to top ↑</Link></footer>
+      <footer className={styles.footer}><span className={styles.brand}><CubbieLockup /></span><p>Built on Cubbie for the Cubbie hackathon. Thank you to the Cubbie team for sponsoring it.<br />No booking, payment or automatic crew membership.</p><Link href="#hero-title">Back to top ↑</Link></footer>
     </ScrollStory>
   );
 }
