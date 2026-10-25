@@ -115,7 +115,7 @@ Pending: Part F teardown after the hackathon (release the Elastic IP, terminate 
 
 Open questions: none.
 
-## Phase 6: Skill update and live Cubbie test (live test passed for steps 1 to 8; merge to master awaiting approval)
+## Phase 6: Skill update and live Cubbie test (done; merged to master)
 
 Done:
 - `SKILL.md` updated in exactly three places: the header sentence, one optional "Going" line on the Unlock
@@ -137,3 +137,12 @@ thread all worked. Findings fixed along the way: precise private-data wording, R
 rhythm, `crew.py`-only rule, and Cubbie-assisted event matching. Steps 9 to 13 of `LIVE_TEST.md`
 (check-in delivery, leave, solo plan with the service down, tone check, privacy check) were not individually
 reported; the owner to confirm. Merge of `crewbie-v2` into `master` still needs the owner's explicit approval.
+
+Update 2026-10-25: step 9 confirmed (A's Cubbie reported two students going) and the owner reported the other
+steps as working. Deferred to the end by the owner: step 11 (solo plan with the service offline) and a Join from
+the Discord board card with a fresh account. The owner approved merging `crewbie-v2` into `master`.
+
+## Website (landing page)
+`apps/web` now serves the "Cubbie x Crewbie" landing page at `/unlocks` (`/` redirects there; the Mission Control
+demo is at `/demo` and `/arena`). Content is written around Cubbie as the base, tests guard the claims, and a
+`web` CI job runs typecheck, tests and build. Deployment to Vercel follows the merge.

@@ -35,11 +35,11 @@ the same crew.
 | 6 | A: submit, then accept | `new_room` offer, then accept asks A to link Discord with a code; after `/crew link` accept says joined, a card appears on `#crew-board`, no chat yet ("opens when someone joins") | PASS (A) | Link needed two tries: the owner's Discord account was already linked and the Replace button was missed. Hint added to SKILL.md. Card appeared on the board; check-in set at 15 minutes (Cubbie's limit). |
 | 7 | B asks about the same event in their **own words, with no link** (a different page is fine) | Cubbie looks it up through `crew.py events`, says it looks like the event A started, with the count, and asks whether it is the same | PASS (B) | After the look-alike search was added, B's Cubbie found A's crew without the original link and asked for confirmation. |
 | 8 | B: submit, accept, link | A `join` offer is described in plain words; after the yes and the link, B is in a private thread with the icebreaker; both get a DM | PASS (B) | Thread created for B's join; owner reported the test worked. |
-| 9 | A accepts a scheduled check-in, then B joins | A's check-in texts a plain-words update ("someone joined", then the chat link), and nothing when there is nothing new | not reported | |
-| 10 | B leaves (Cubbie or `/crew leave`) | Thread notice "member-2 left"; A is told in the next check-in | not reported | |
-| 11 | Solo plan with the service down: `bash scripts/ops/down.sh --yes`, then ask Cubbie for a plan | Cubbie says crew matching is unavailable and still gives the full solo plan. Then `bash scripts/ops/up.sh` | not reported | |
-| 12 | Tone check after all this | Roast Me still teases only hidden perks or optional adventures, never about being alone, other students or someone leaving | not reported | |
-| 13 | Nothing private leaked | Discord thread and DMs show no flex times and no budget cap; Cubbie sent no dietary, calendar or course details | not reported | |
+| 9 | A accepts a scheduled check-in, then B joins | A's check-in texts a plain-words update ("someone joined", then the chat link), and nothing when there is nothing new | PASS | A's Cubbie texted that two students were now going for the event. |
+| 10 | B leaves (Cubbie or `/crew leave`) | Thread notice "member-2 left"; A is told in the next check-in | PASS (owner-reported) | Owner reported the remaining steps worked. |
+| 11 | Solo plan with the service down: `bash scripts/ops/down.sh --yes`, then ask Cubbie for a plan | Cubbie says crew matching is unavailable and still gives the full solo plan. Then `bash scripts/ops/up.sh` | DEFERRED | Solo plan with the service offline: to be run at the end. Covered meanwhile by `crew.py` exit code 3 tests and the Skill's solo-plan rule. |
+| 12 | Tone check after all this | Roast Me still teases only hidden perks or optional adventures, never about being alone, other students or someone leaving | PASS (owner-reported) | Owner reported the tone check held. |
+| 13 | Nothing private leaked | Discord thread and DMs show no flex times and no budget cap; Cubbie sent no dietary, calendar or course details | PASS (owner-reported) | Owner reported no private values in the thread, DMs or Cubbie messages. |
 
 Step 11 takes the bot offline for about three minutes; do it last.
 
@@ -61,7 +61,7 @@ turns each finding into a fix, pushes it, and the students text the install link
 
 ## Sign-off
 
-- [ ] The owner confirms the checklist above.
+- [x] The owner confirms the checklist above, except step 11 and a Join from the Discord board card, which are deferred to the end (2026-10-25).
 - [ ] The Track 1 Skill still produces solo plans (steps 4 and 11).
-- [ ] The owner approves merging `crewbie-v2` into `master`. The merge makes this the Track 1 entry, because
+- [x] The owner approves merging `crewbie-v2` into `master`. The merge makes this the Track 1 entry, because
       the Skill installs from `master`.
