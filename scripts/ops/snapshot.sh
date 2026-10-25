@@ -6,7 +6,9 @@ load_ops_env AWS_PROFILE AWS_REGION INSTANCE_ID
 
 volume="$(aws_cmd ec2 describe-instances --instance-ids "${INSTANCE_ID}" \
     --query 'Reservations[0].Instances[0].BlockDeviceMappings[0].Ebs.VolumeId' --output text)"
-[ -n "${volume}" ] && [ "${volume}" != "None" ] || die "could not find the root volume of ${INSTANCE_ID}"
+if [ -z "${volume}" ] || [ "${volume}" = "None" ]; then
+    die "could not find the root volume of ${INSTANCE_ID}"
+fi
 tag="crewbie-$(date +%Y-%m-%d)"
 say "Snapshotting ${volume} as ${tag}"
 aws_cmd ec2 create-snapshot --volume-id "${volume}" --description "${tag}" \
