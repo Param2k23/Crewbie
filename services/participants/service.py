@@ -73,7 +73,7 @@ def identifier(value):
     return value
 
 
-def validate_plan(plan):
+def validate_plan(plan, cost_ref=None):
     """Validate the canonical envelope before reading any student's policy."""
     required = {"session_id", "plan_id", "version", "opportunity_id", "title", "member_refs",
                 "start_at", "end_at", "estimated_cost_cents_by_ref", "activities",
@@ -96,7 +96,8 @@ def validate_plan(plan):
     if not members or any(not m for m in members) or len(members) != len(set(members)):
         raise PrivacyError("INVALID_INPUT")
     costs = plan["estimated_cost_cents_by_ref"]
-    if (not isinstance(costs, dict) or set(costs) != set(members)
+    expected_cost_refs = {cost_ref} if cost_ref is not None else set(members)
+    if (not isinstance(costs, dict) or set(costs) != expected_cost_refs
             or any(type(c) is not int or c < 0 for c in costs.values())):
         raise PrivacyError("INVALID_INPUT")
     facts = plan.get("verified_conditions", {})
@@ -271,10 +272,10 @@ class ParticipantService:
         """Trusted bootstrap only; production must verify session identity first."""
         return Owner(self, verified_student_ref)
 
-    def evaluator(self, session_id):
+    def evaluator(self, session_id, *, minimized_costs=False):
         if session_id not in self._sessions:
             raise PrivacyError("AUTHORIZATION_FAILED")
-        return Evaluator(self, session_id)
+        return Evaluator(self, session_id, minimized_costs=minimized_costs)
 
     def _active(self, ref, scope, matching=False):
         p = self._repo.get(ref, scope)
@@ -522,11 +523,17 @@ class Owner:
 
 
 class Evaluator:
-    def __init__(self, service, session):
+    def __init__(self, service, session, *, minimized_costs=False):
         self._s, self._session = service, session
+        self._minimized_costs = minimized_costs
 
     def _authorize(self, ref, plan):
-        validate_plan(plan)
+        if not isinstance(plan, Mapping):
+            raise PrivacyError("INVALID_INPUT")
+        # The session-bound evaluator needs only this participant's cost line.
+        # Complete canonical envelopes remain accepted for existing callers.
+        costs = plan.get("estimated_cost_cents_by_ref", {})
+        validate_plan(plan, ref if self._minimized_costs and isinstance(costs, dict) and set(costs) == {ref} else None)
         scope, members = self._s._sessions[self._session]
         proposed_members = plan.get("member_refs", [])
         if not isinstance(proposed_members, list) or not all(isinstance(m, str) for m in proposed_members):
