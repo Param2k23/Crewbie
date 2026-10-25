@@ -5,3 +5,11 @@ __pycache__/
 .env
 .env.*
 !.env.example
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+data/
+scripts/ops/ops.env
+.env.prod
+backups/

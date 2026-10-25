@@ -1,0 +1,47 @@
+# Run from the repo root so `.env` (secrets, written by scripts/ops/push-env) is found:
+#   docker compose --env-file .env -f deploy/docker-compose.yml up -d --build
+# `--env-file` also supplies ${CREWBIE_HOSTNAME} to Caddy below.
+services:
+  crewbie:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    env_file: ../.env
+    environment:
+      CREWBIE_DATABASE_URL: sqlite:////data/crewbie.db
+      # Only Caddy can reach this container (no published port), so its forwarded client
+      # address is the real one and per-IP rate limits work.
+      CREWBIE_TRUST_PROXY: "true"
+    volumes:
+      - crewbie_data:/data
+    expose:
+      - "8000"
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+  caddy:
+    image: caddy:2.11.6
+    depends_on:
+      - crewbie
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      CREWBIE_HOSTNAME: ${CREWBIE_HOSTNAME}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      # The certificate lives here. Keep this volume across stop/start and rebuilds, or
+      # Let's Encrypt rate limits will block re-issuing.
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+volumes:
+  crewbie_data:
+  caddy_data:
+  caddy_config:

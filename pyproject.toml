@@ -1,0 +1,125 @@
+[project]
+name = "crewbie"
+version = "0.1.0"
+description = "Crewbie: agent-negotiated student crews for campus activities"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "alembic>=1.14",
+    "cryptography>=43",
+    "discord-py>=2.6",
+    "fastapi>=0.115",
+    "pydantic-settings>=2.6",
+    "sqlalchemy>=2.0",
+    "uvicorn>=0.32",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.27",
+    "hypothesis>=6.100",
+    "import-linter>=2.1",
+    "mypy>=1.13",
+    "pytest>=8.3",
+    "pytest-cov>=6.0",
+    "ruff>=0.8",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/crewbie"]
+
+[tool.uv]
+# Standards 09 section 5: only use releases that are at least 14 days old.
+exclude-newer = "2026-10-11T00:00:00Z"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+extend-exclude = ["legacy", "apps", "docs"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "N", "T20", "RUF"]
+
+[tool.ruff.lint.isort]
+# tests/discord/ would otherwise make ruff treat the discord.py library as first-party.
+known-third-party = ["discord"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/crewbie/domain/errors.py" = ["N818"]  # names mirror the API error codes
+"tests/**" = ["T20"]
+# crew.py runs in Cubbie on an unknown older Python 3 and must print to stdout.
+"skills/**" = ["UP", "T20", "B904", "N818", "RUF059"]
+"scripts/**" = ["T20"]
+
+[tool.mypy]
+python_version = "3.12"
+files = ["src"]
+warn_unused_ignores = true
+warn_redundant_casts = true
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = ["crewbie.domain.*", "crewbie.agents.*", "crewbie.matching.*"]
+strict = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-m 'not e2e and not discord_live'"
+filterwarnings = [
+    "ignore:Using .httpx. with .starlette.testclient",
+    "ignore:.audioop. is deprecated:DeprecationWarning",
+]
+markers = [
+    "e2e: needs a running server (opt in with -m e2e)",
+    "discord_live: posts to a real Discord test channel (opt in with -m discord_live)",
+]
+
+[tool.coverage.run]
+source = ["src/crewbie"]
+
+[tool.importlinter]
+root_package = "crewbie"
+include_external_packages = true
+
+[[tool.importlinter.contracts]]
+name = "Layering (09 section 1)"
+type = "layers"
+layers = [
+    "crewbie.api",  # composition root: starts the bot and workers in its lifespan
+    "crewbie.discord_bot | crewbie.workers",
+    "crewbie.services",
+    "crewbie.matching",  # orchestrates agents
+    "crewbie.agents | crewbie.persistence | crewbie.telemetry",
+    "crewbie.domain",
+]
+
+[[tool.importlinter.contracts]]
+name = "Pure layers do not touch frameworks"
+type = "forbidden"
+source_modules = ["crewbie.domain", "crewbie.matching", "crewbie.agents"]
+forbidden_modules = ["sqlalchemy", "discord", "fastapi", "starlette"]
+allow_indirect_imports = true
+
+[[tool.importlinter.contracts]]
+name = "Only agents.llm imports the Anthropic SDK"
+type = "forbidden"
+source_modules = [
+    "crewbie.domain",
+    "crewbie.matching",
+    "crewbie.services",
+    "crewbie.persistence",
+    "crewbie.telemetry",
+    "crewbie.api",
+    "crewbie.discord_bot",
+    "crewbie.workers",
+    "crewbie.agents.protocol",
+    "crewbie.agents.delegate",
+    "crewbie.agents.host",
+    "crewbie.agents.aliases",
+]
+forbidden_modules = ["anthropic"]
+allow_indirect_imports = true

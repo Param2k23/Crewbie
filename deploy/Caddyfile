@@ -1,0 +1,11 @@
+{$CREWBIE_HOSTNAME} {
+	encode gzip
+	reverse_proxy crewbie:8000 {
+		# Do not buffer: /v1/stream is Server-Sent Events.
+		flush_interval -1
+	}
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		-Server
+	}
+}
