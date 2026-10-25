@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { SCENARIOS } from "@/lib/demo/scenarios";
 import { DemoAdapter, FixtureAdapter, MissionAdapter, NetworkAdapter } from "@/lib/adapters";
 import { MissionControl } from "./MissionControl";
+import { normalizeBaseUrl, normalizeSessionId } from "@/lib/adapters/sse";
 
 type Mode = "quick" | "weekend" | "fixture" | "live";
 const ENV_API = process.env.NEXT_PUBLIC_CREWBIE_API_URL ?? "";
@@ -64,7 +65,13 @@ export function MissionControlApp({ initialMode = "quick", initialView }: { init
           <span>Backend scenarios · synthetic students, scripted consent</span>
           {(["evening", "weekend", "unlocks"] as const).map((s) => <button key={s} className="btn" type="button" disabled={creating} onClick={() => void createSession(s)}>Start {s}</button>)}
           {createError && <span role="alert">{createError}</span>}
-          {applied && !adapter && <span className="pill pill-bad" role="alert">Invalid URL or session id</span>}
+          {applied && !adapter && <span className="pill pill-bad" role="alert">{
+            !normalizeBaseUrl(applied.api)
+              ? "Invalid API base URL. Enter an http:// or https:// URL, for example http://127.0.0.1:8787."
+              : !normalizeSessionId(applied.session)
+                ? "Invalid session id. Enter the session_… identifier from Discord (1–64 letters, digits, _, ., :, or -)."
+                : "Unable to attach to this session."
+          }</span>}
         </form>
       )}
       {adapter ? <MissionControl key={`${mode}-${applied?.api}-${applied?.session}`} adapter={adapter} initialView={initialView} /> : (

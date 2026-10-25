@@ -4,7 +4,7 @@ import { LocalSimulator } from "../demo/simulator";
 import type { PlanPreview, PlanningIntent, ScenarioDef, WindowPreset } from "../demo/types";
 import { ReplayController } from "../replay/controller";
 import { HttpJudgeAdapter, JudgeAdapter } from "./judge";
-import { ConnectionStatus, connectSse, normalizeBaseUrl } from "./sse";
+import { ConnectionStatus, connectSse, normalizeBaseUrl, normalizeSessionId } from "./sse";
 import type { PublicSnapshot } from "../events/types";
 
 export interface AdapterHandlers {
@@ -154,8 +154,9 @@ export class NetworkAdapter implements MissionAdapter {
   }
   static create(baseUrlInput: string, sessionId: string): NetworkAdapter | null {
     const base = normalizeBaseUrl(baseUrlInput);
-    if (!base || !/^[A-Za-z0-9_.:-]{1,64}$/.test(sessionId)) return null;
-    return new NetworkAdapter(base, sessionId);
+    const id = normalizeSessionId(sessionId);
+    if (!base || !id) return null;
+    return new NetworkAdapter(base, id);
   }
   connect(h: AdapterHandlers) {
     h.onReset();
@@ -183,7 +184,14 @@ export class NetworkAdapter implements MissionAdapter {
       } catch { /* The event stream remains authoritative; no success is inferred. */ }
     };
     const close = connectSse(this.baseUrl, this.sessionId, {
-      onEvent: (raw) => { h.onEvent(raw); void refresh(); }, onStatus: h.onStatus, onMalformed: h.onMalformed,
+      onEvent: (raw) => { if (!disposed) { h.onEvent(raw); void refresh(); } },
+      onStatus: (status) => {
+        if (disposed) return;
+        h.onStatus(status);
+        // Reconcile previews and snapshot checks after reconnect, even without a new event.
+        if (status === "open") void refresh();
+      },
+      onMalformed: h.onMalformed,
     });
     void refresh();
     return () => { disposed = true; close(); };

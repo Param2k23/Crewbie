@@ -18,6 +18,12 @@ export function normalizeBaseUrl(input: string): string | null {
   }
 }
 
+/** Match the API route after removing whitespace introduced by copy/paste. */
+export function normalizeSessionId(input: string): string | null {
+  const id = input.trim();
+  return /^[A-Za-z0-9_.:-]{1,64}$/.test(id) ? id : null;
+}
+
 export interface EventSourceLike {
   addEventListener(type: string, fn: (e: MessageEvent) => void): void;
   close(): void;
