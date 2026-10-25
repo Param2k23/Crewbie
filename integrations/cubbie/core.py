@@ -56,11 +56,11 @@ def classify_intent(message):
     if not isinstance(message, str) or not message.strip():
         raise PulseError("VALIDATION_ERROR", "A request is required")
     text = message.lower()
-    if re.search(r"\b(company|companions?|friends?|someone to go|find a crew|find people|people to join)\b", text):
+    if re.search(r"\b(company|companions?|friends?|someone to go|find a crew|start a crew|find people|people to join)\b", text):
         return "find_companion"
     if re.search(r"\b(food|pizza|tacos|lunch)\b", text) and not re.search(r"\b(plan|organize)\b", text):
         return "find_campus_food"
-    if re.search(r"\b(trip|travel|weekend|group activity|dinner|coffee|badminton|hiking|events?|activities|hours? free|free hours?|what can i do)\b", text):
+    if re.search(r"\b(trip|travel|weekend|group activity|dinner|coffee|badminton|hiking|events?|activities|hours? free|free hours?|what can i do|unlocks?|benefits?|resources?|discounts?|experiences|opportunities)\b", text):
         return "plan_group_activity"
     raise PulseError("VALIDATION_ERROR", "Unrecognized Crewbie planning intent")
 

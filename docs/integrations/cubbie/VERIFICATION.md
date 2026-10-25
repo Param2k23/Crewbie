@@ -1,4 +1,14 @@
-# Crewbie Planner provider verification
+# Crewbie Unlocks provider verification
+
+Current upgrade: [UNLOCKS.md](UNLOCKS.md) documents personalized benefit discovery,
+permissioned calendar/Canvas context, protected commitments, optional consented
+personalities, Unlock Cards and backend-independent solo fallbacks. These are native
+Skill instructions and locally tested policy models; **real-account behavior remains
+UNVERIFIED**, including account access, memory, reminders and scheduled delivery.
+
+Current local verification: **64 tests passed** (all prior 40 plus 24 Unlocks tests),
+instruction-only package validation passed, and Unlocks/Planner/food demos completed.
+The 40-test results below describe the prior planning milestone.
 
 Final planning scope update: the Skill now supports free-time planning, dinner/sports,
 multi-day trips and optional campus food. Local planner and consent-gated A3/A4 gateway
@@ -30,6 +40,10 @@ The earlier [Cubbie API developer page](https://www.cubbie.com/developers) descr
 |---|---|---|
 | Frozen OpportunityBrief parser | VERIFIED locally | Fixture scenario and parser tests; not sponsor execution |
 | General planning and multi-day constraints | VERIFIED locally | Time-first/intent-first routing, private detail sidecar and clarification tests; no live venue or price claims |
+| Unlock Cards, benefit restrictions and freshness | VERIFIED locally | Fictional evidence record tests; no live benefit inventory or entitlement verified |
+| Calendar/Canvas availability safeguards | VERIFIED locally; native abilities documented | Authorized minimal snapshot tests, protected commitments and explicit availability confirmation; no actual account access |
+| Chill / Playful / Roast Me | VERIFIED local rendering only | Explicit roast permission and revocation; factual card content unchanged across modes |
+| Proactive Unlocks preferences | VERIFIED local draft only | Exact setting consent, cadence/timezone/day choices; scheduled=false until native execution succeeds |
 | A3/A4 handoff consent gate | VERIFIED locally / mock | Activity/brief-bound sharing and separate matching/coordination opt-in; no real service connected |
 | Campus/time/food/freshness selection | VERIFIED locally | Automated tests against shared fictional opportunities |
 | Private source-linked preview and uncertainty copy | VERIFIED locally | Runnable demo, source/diet/access tests |

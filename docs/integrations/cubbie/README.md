@@ -1,4 +1,10 @@
-# Crewbie Planner handoff
+# Crewbie Unlocks handoff
+
+Current primary Track 1 flow is **Crewbie Unlocks**: personalized overlooked benefits,
+resources, discounts and experiences, followed by an optional solo/social plan.
+Start with [UNLOCKS.md](UNLOCKS.md) for account/privacy safeguards, personality consent,
+Unlock Cards, proactive check-ins, local tests and real-account acceptance checks.
+Food discovery and Crewbie Planner are preserved. The install name stays campus-pulse.
 
 Current product scope: time-first and intent-first personal/social planning, with
 campus food retained as an optional category. Start with [PLANNER_HANDOFF.md](PLANNER_HANDOFF.md)
@@ -17,6 +23,7 @@ python -B -m integrations.cubbie.demo
 python -B -m integrations.cubbie.demo --simulate-schedule
 python -B -m integrations.cubbie.validate_skill skills/campus-pulse
 python -B -m integrations.cubbie.planner_demo
+python -B -m integrations.cubbie.unlocks_demo
 ```
 
 The fixture path can be overridden with `--fixtures PATH`. The fixture adapter rejects non-synthetic events. Demo clock is pinned to 2026-10-26 09:00 Phoenix to make the supplied fictional events reproducible. The simulator loads the three supplied opportunities and selects the Tempe lunch event; the evening social and West Valley workshop do not fit that request.

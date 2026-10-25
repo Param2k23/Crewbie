@@ -1,4 +1,9 @@
-# Native Crewbie Planner Skill
+# Native Crewbie Unlocks Skill
+
+Current main experience is **Crewbie Unlocks**, preserving Crewbie Planner and
+campus-food flows. See [UNLOCKS.md](UNLOCKS.md) for the current workflow and expanded
+real-account checklist. The installation identifier remains `campus-pulse`; the
+instructions below still apply, with Crewbie Unlocks in the installation summary.
 
 Current user-facing identity: **Crewbie Planner**. Installed identifier/folder stays
 `campus-pulse`. The Skill now handles time-first and intent-first personal/social
