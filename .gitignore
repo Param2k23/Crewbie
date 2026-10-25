@@ -10,3 +10,6 @@ __pycache__/
 .pytest_cache/
 .coverage
 data/
+scripts/ops/ops.env
+.env.prod
+backups/

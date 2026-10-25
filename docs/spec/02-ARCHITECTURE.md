@@ -31,6 +31,10 @@ state, so they can be split into two processes later without code changes.
 ├── uv.lock
 ├── Dockerfile
 ├── .env.example
+├── deploy/
+│   ├── docker-compose.yml          # crewbie + caddy
+│   ├── Caddyfile
+│   └── bootstrap.sh                # one-time EC2 setup
 ├── src/
 │   └── crewbie/
 │       ├── __init__.py
@@ -122,9 +126,12 @@ state, so they can be split into two processes later without code changes.
 ├── apps/
 │   └── web/                        # Mission Control (existing)
 ├── scripts/
-│   └── dev/
-│       ├── seed.py
-│       └── simulate.py             # drive N synthetic intents against a local server
+│   ├── dev/
+│   │   ├── seed.py
+│   │   └── simulate.py             # drive N synthetic intents against a local server
+│   └── ops/                        # AWS on/off, deploy, logs, backup (.sh and .ps1)
+│       ├── ops.env.example
+│       └── up | down | status | ssh | deploy | logs | push-env | backup | snapshot | allow-my-ip
 ├── tests/
 │   ├── conftest.py
 │   ├── unit/                       # domain, agents, matching

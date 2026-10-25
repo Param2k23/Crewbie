@@ -21,6 +21,7 @@ The full specification lives in `docs/spec/`. Read it before writing code:
 8. `docs/spec/07-IMPLEMENTATION-PLAN.md` (phases, tasks, definition of done)
 9. `docs/spec/08-INPUTS-FROM-OWNER.md` (what to ask the owner for, and when)
 10. `docs/spec/09-ENGINEERING-STANDARDS.md`
+11. `docs/spec/10-AWS-DEPLOYMENT.md` (Phase 5)
 
 If the spec and the code disagree, the spec wins. If the spec is ambiguous or contradicts itself, stop and ask
 the owner one specific question instead of guessing. Record the answer in `docs/spec/DECISIONS.md`
@@ -37,6 +38,9 @@ the owner one specific question instead of guessing. Record the answer in `docs/
   reports only whether each variable is present and well formed.
 - Reference requirement IDs in commit messages and test names, for example
   `test_fr_match_04_rejects_budget_two_bands_apart`.
+- The owner is new to AWS. During Phase 5, walk them through `10-AWS-DEPLOYMENT.md` Part A one section at a
+  time, wait for confirmation after each, and never create, modify or delete AWS resources beyond what the
+  `scripts/ops/` scripts do.
 - Keep a short progress log in `docs/spec/PROGRESS.md`: phase, what was done, what is left, open questions.
 
 ## Repository rules
@@ -58,6 +62,9 @@ uv run pytest -m e2e                     # needs a running server; see 07-IMPLEM
 uv run python -m crewbie.config check    # verify .env without printing secrets
 uv run python -m crewbie                 # run API + Discord bot in one process
 uv run python scripts/dev/seed.py        # seed demo data (requires CREWBIE_ENV=dev)
+
+# AWS (after Phase 5; values from scripts/ops/ops.env)
+scripts/ops/up.sh | down.sh | status.sh | deploy.sh | logs.sh | backup.sh   # .ps1 versions on Windows
 ```
 
 ## Definition of done for any change

@@ -16,3 +16,49 @@ jobs:
       - run: uv run ruff format --check .
       - run: uv run mypy src
       - run: uv run pytest --cov=crewbie.domain --cov=crewbie.agents --cov=crewbie.matching --cov-fail-under=85
+
+  ops-scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: shellcheck the bash scripts
+        run: shellcheck -x --source-path=SCRIPTDIR -S style scripts/ops/*.sh deploy/bootstrap.sh
+      - name: PowerShell scripts parse
+        shell: pwsh
+        run: |
+          $failed = $false
+          foreach ($file in Get-ChildItem scripts/ops/*.ps1) {
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($file.FullName, [ref]$null, [ref]$errors) | Out-Null
+            if ($errors) { $failed = $true; $errors | ForEach-Object { "$($file.Name): $($_.Message)" } }
+          }
+          if ($failed) { exit 1 }
+
+  compose:
+    runs-on: ubuntu-latest
+    needs: checks
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and start crewbie and caddy
+        run: |
+          printf 'CREWBIE_ENV=dev\nCREWBIE_HOSTNAME=localhost\n' > .env
+          docker compose --env-file .env -f deploy/docker-compose.yml up -d --build
+      - name: HTTPS through Caddy, non-root process
+        run: |
+          compose="docker compose --env-file .env -f deploy/docker-compose.yml"
+          for i in $(seq 1 60); do curl -fsSk https://localhost/healthz && break || sleep 2; done
+          curl -fsSk https://localhost/healthz | grep '"status":"ok"'
+          curl -fsSkI https://localhost/healthz | grep -i strict-transport-security
+          test "$($compose exec -T crewbie id -u)" != "0"
+      - name: Data survives a down and up
+        run: |
+          compose="docker compose --env-file .env -f deploy/docker-compose.yml"
+          token="$(head -c 32 /dev/urandom | base64 | tr '+/' '-_' | tr -d '=\n')"
+          curl -fsSk -X POST -H "Authorization: Bearer $token" -H 'Content-Type: application/json' -d '{}' https://localhost/v1/installs
+          $compose down
+          $compose up -d
+          for i in $(seq 1 60); do curl -fsSk https://localhost/healthz && break || sleep 2; done
+          curl -fsSk -H "Authorization: Bearer $token" https://localhost/v1/installs/me
+      - name: Logs
+        if: always()
+        run: docker compose --env-file .env -f deploy/docker-compose.yml logs --no-color --tail 100

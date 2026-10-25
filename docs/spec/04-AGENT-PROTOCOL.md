@@ -22,7 +22,6 @@ class Proposal:
     round: int
     from_kind: Literal["delegate", "host"]
 
-
 @dataclass(frozen=True)
 class Reply:
     verdict: Literal["accept", "reject", "counter"]

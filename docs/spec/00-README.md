@@ -11,6 +11,7 @@
 | `07-IMPLEMENTATION-PLAN.md` | Phases, tasks, acceptance criteria |
 | `08-INPUTS-FROM-OWNER.md` | Accounts, keys and decisions needed from the owner, with instructions |
 | `09-ENGINEERING-STANDARDS.md` | Code style, layering, testing, logging, security rules |
+| `10-AWS-DEPLOYMENT.md` | EC2 deployment with on/off scripts; first-time AWS setup steps for the owner |
 
 Hackathon context: https://hackathon.cubbie.ai. Track 1 (Cubbie Skill) is submitted. This spec targets one
 submission covering Track 2 (agent-to-agent coordination) and Track 3 (group chat assistant), while keeping the

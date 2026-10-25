@@ -69,7 +69,7 @@ injection tests P-3/AS-10 (Phase 7); `/v1/stream` over `public_events` (Phase 7)
 
 Open questions: none.
 
-## Phase 4: Discord bot (code done; live checks with test accounts pending)
+## Phase 4: Discord bot (done, committed 2f881b5; live checks passed by the owner)
 
 Done:
 - `discord_bot/`: client with guild-synced `/crew link|status|leave|help|meetpoint`, persistent Join button on
@@ -88,5 +88,24 @@ Pending (needs the owner and test accounts):
 - Set `CREWBIE_DISCORD_ENABLED=true` in `.env`, run `uv run python -m crewbie`, and walk the live checklist in
   the Phase 4 summary (AS-2, AS-7, AS-8 with two Discord accounts).
 - Optional: `CREWBIE_DISCORD_TEST_CHANNEL_ID`, then `uv run pytest -m discord_live`.
+
+Open questions: none.
+
+## Phase 5: Deployment on AWS EC2 (Part B done; Part A and C pending with the owner)
+
+Done (Part B, task 2 to 4):
+- `Dockerfile` (non-root, healthcheck), `deploy/docker-compose.yml` (crewbie + caddy), `deploy/Caddyfile`,
+  `deploy/bootstrap.sh`, `scripts/ops/` with `.sh` and `.ps1` for up, down, status, ssh, deploy, logs,
+  push-env, backup, snapshot, allow-my-ip, `ops.env.example`, `.gitignore` entries.
+- Production start-up checks, `--help`, proxy-header trust, `scripts/dev/smoke.py`.
+- Tests: ops scripts against recording stubs (bash), PowerShell parse and behavior checks, start-up checks.
+  CI: shellcheck, PowerShell parse, and a Compose job (build, HTTPS through Caddy, non-root, data survives
+  down/up).
+
+Not done / pending:
+- Part A (AWS console steps A1 to A11) with the owner, one section at a time.
+- Part C first deployment, then task 6 (`DEFAULT_API_URL` in `crew.py`) and task 7 (down/up cycle check).
+- The Compose stack and the image have not been built in the development environment (no Docker there);
+  CI is the first build.
 
 Open questions: none.

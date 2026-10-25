@@ -9,8 +9,8 @@ secret's value in chat; ask the owner to put it in `.env` (local) or the host's 
 | I-01 | Phase 0 | Branch strategy confirmation (`crewbie-v2` from `master`, legacy moved) and team members who will push | Decision |
 | I-02 | Phase 4 | Discord application, bot token, application ID, guild ID, channel IDs, permanent invite link | Secrets + IDs |
 | I-03 | Phase 4 | Two or more Discord test accounts (teammates) | People |
-| I-04 | Phase 5 | Hosting choice and account | Decision + account |
-| I-05 | Phase 5 | Public HTTPS URL | Config |
+| I-04 | Phase 5 | AWS account with credits redeemed, MFA, budget alarm (10-AWS-DEPLOYMENT.md A1 to A3) | Account |
+| I-05 | Phase 5 | Non-secret AWS values in `scripts/ops/ops.env` (A11) and the `crewbie-ops` CLI profile (A10) | Config |
 | I-06 | Phase 6 | Cubbie accounts for at least two students with the Skill installed | People |
 | I-07 | Phase 7 | Anthropic API key with a spend limit | Secret |
 | I-08 | Phase 7 | Mission Control scope: adapter only, or also new negotiation view | Decision |
@@ -18,13 +18,14 @@ secret's value in chat; ask the owner to put it in `.env` (local) or the host's 
 | I-10 | Phase 8 | Who submits Tracks 2/3 and the closing time | Decision |
 | I-11 | Phase 1 | Envelope encryption key for prod | Secret |
 | I-12 | Phase 2 | Admin token | Secret |
+| I-13 | Phase 5 | Whether the GitHub repo is public or private (private needs a deploy key on the server) | Decision |
 
 ## How to obtain each
 
 ### I-02 Discord
 
 1. Create (or reuse) a Discord server for Crewbie. Create channels `#welcome`, `#crew-board`, `#crews`.
-   - `#crew-board`: in channel settings → Permissions → `@everyone`: deny Send Messages. Then add the bot (its role) with an explicit allow for View Channel, Send Messages, Embed Links, Read Message History and Manage Messages; without it the bot cannot post cards (error 50013).
+   - `#crew-board`: in channel settings → Permissions → `@everyone`: deny Send Messages. Then add the bot (its role) with an explicit allow for View Channel, Send Messages, Embed Links, Read Message History and Manage Messages; without it the bot cannot post cards (Discord error 50013).
    - `#crews`: `@everyone`: deny Send Messages, allow Send Messages in Threads.
 2. Go to https://discord.com/developers/applications → New Application → name it "Crewbie".
 3. General Information: copy **Application ID** → `CREWBIE_DISCORD_APP_ID`.
@@ -42,19 +43,14 @@ secret's value in chat; ask the owner to put it in `.env` (local) or the host's 
 Note: Discord permission names and limits change occasionally. If thread creation fails with a permissions
 error, compare against Discord's current docs for private threads.
 
-### I-04 / I-05 Hosting
+### I-04 / I-05 / I-13 Hosting on AWS
 
-Need: public HTTPS on port 443, a persistent disk for SQLite, an always-on process (the bot holds a gateway
-connection). Options:
+Hosting is one EC2 instance that can be turned on and off. Follow `10-AWS-DEPLOYMENT.md` Part A step by step
+(about 45 minutes the first time). It covers account security, credits, budget alarm, launching the instance,
+the fixed IP and hostname, a limited CLI user, and the values Claude Code needs.
 
-| Option | Steps | Notes |
-|---|---|---|
-| Railway | New project → Deploy from GitHub repo → add a Volume mounted at `/data` → set variables → Settings → Networking → Generate Domain | Simple; paid usage after trial credit |
-| Render | New → Web Service from repo → Docker → add Disk at `/data` (paid instance type) → env vars | Free tier sleeps; use a paid instance for the demo |
-| Fly.io | `fly launch` → `fly volumes create data --size 1` → mount in `fly.toml` → `fly secrets set ...` → `fly deploy` | CLI driven; good control |
-| Cloudflare Tunnel from a laptop | `cloudflared tunnel --url http://localhost:8000` | Fastest for testing; the URL changes each run unless you set up a named tunnel; laptop must stay on |
-
-Whatever you choose, the resulting URL becomes `CREWBIE_PUBLIC_URL` and `DEFAULT_API_URL` in `crew.py`.
+For local development before Phase 5, a Cloudflare quick tunnel (`cloudflared tunnel --url http://localhost:8000`)
+is enough to test the bot and `crew.py`, with the URL passed via `CREWBIE_API_URL`.
 
 ### I-07 Anthropic API key
 

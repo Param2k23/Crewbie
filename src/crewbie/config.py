@@ -29,6 +29,8 @@ class Settings(BaseSettings):
     timezone: str = Field("America/Phoenix", validation_alias="CREWBIE_TIMEZONE")
     host: str = Field("127.0.0.1", validation_alias="CREWBIE_HOST")
     port: int = Field(8000, validation_alias=AliasChoices("PORT", "CREWBIE_PORT"), gt=0)
+    # Behind a platform proxy the socket peer is the proxy, so rate limits need X-Forwarded-For.
+    trust_proxy: bool = Field(False, validation_alias="CREWBIE_TRUST_PROXY")
     envelope_key: str = Field("", validation_alias="CREWBIE_ENVELOPE_KEY")
     admin_token: str = Field("", validation_alias="CREWBIE_ADMIN_TOKEN")
 
@@ -118,6 +120,7 @@ SPECS: tuple[VarSpec, ...] = (
     VarSpec("CREWBIE_TIMEZONE", _non_empty, _never),
     VarSpec("CREWBIE_HOST", _non_empty, _never),
     VarSpec("CREWBIE_PORT", _is_positive_int, _never),
+    VarSpec("CREWBIE_TRUST_PROXY", lambda v: v.lower() in {"true", "false"}, _never),
     VarSpec("CREWBIE_ENVELOPE_KEY", _is_fernet_key, _prod),
     VarSpec("CREWBIE_ADMIN_TOKEN", _long_token, _never),
     VarSpec("CREWBIE_DISCORD_TOKEN", _non_empty, _discord_on),
@@ -155,6 +158,22 @@ def check(values: Mapping[str, str]) -> list[tuple[str, str]]:
         else:
             rows.append((spec.name, "ok" if spec.validator(raw) else "invalid"))
     return rows
+
+
+def startup_problems(values: Mapping[str, str]) -> list[str]:
+    """What stops a production start: required variables that are missing or malformed.
+
+    Development is lenient (a key is generated, Discord is optional); production fails fast.
+    """
+    if values.get("CREWBIE_ENV") != "prod":
+        return []
+    problems = [
+        f"{name}: {status}" for name, status in check(values) if status in {"missing", "invalid"}
+    ]
+    public_url = values.get("CREWBIE_PUBLIC_URL", "")
+    if public_url and not public_url.startswith("https://"):
+        problems.append("CREWBIE_PUBLIC_URL: must be https in production")
+    return problems
 
 
 def main(argv: list[str]) -> int:

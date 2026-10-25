@@ -80,19 +80,27 @@ Tasks:
 
 DoD: AS-2, AS-7, AS-8 pass with two Discord test accounts on a local server.
 
-## Phase 5: Deployment
+## Phase 5: Deployment (AWS EC2)
 
-Inputs: I-04 (hosting choice and account), I-05 (domain or provided URL), secrets set in the host's dashboard.
+Inputs: I-04 (AWS account with credits), I-05 (values from `10-AWS-DEPLOYMENT.md` A11), I-13 (repo visibility
+for cloning on the server), secrets filled by the owner in `.env.prod`.
 
 Tasks:
-1. Dockerfile (python:3.12-slim, non-root user, `uv sync --frozen --no-dev`).
-2. Persistent volume for SQLite at `/data/crewbie.db`.
-3. Health check on `/healthz`.
-4. Set `DEFAULT_API_URL` in `crew.py` to the public URL.
-5. Smoke test from a laptop with `crew.py` and from the bot.
+1. Walk the owner through `10-AWS-DEPLOYMENT.md` Part A, one section at a time, waiting for confirmation.
+   Part A runs in parallel with tasks 2 to 4.
+2. Create Part B files: `Dockerfile`, `deploy/docker-compose.yml`, `deploy/Caddyfile`, `deploy/bootstrap.sh`,
+   `scripts/ops/*` (`.sh` and `.ps1`), `scripts/ops/ops.env.example`, `docs/spec/env.prod.example`,
+   `.gitignore` entries.
+3. Test locally: `docker compose -f deploy/docker-compose.yml up --build` with `CREWBIE_HOSTNAME=localhost`
+   (Caddy serves a local certificate), `/healthz` ok.
+4. Lint shell scripts with `shellcheck`; test PowerShell scripts parse with `pwsh -NoProfile -Command` if
+   available.
+5. Run Part C with the owner.
+6. Set `DEFAULT_API_URL` in `crew.py` to `https://<CREWBIE_HOSTNAME>`.
+7. Verify `up` and `down` cycle: data survives, URL unchanged, certificate reused (no new issuance in Caddy logs).
 
-DoD: `curl https://<url>/healthz` returns ok with `discord: connected`; AS-1 and AS-2 pass against the deployed
-URL.
+DoD: `scripts/ops/status` shows running and healthy with `discord: connected`; AS-1 and AS-2 pass against the
+public URL; a full `down` → `up` cycle preserves rooms and installs.
 
 ## Phase 6: Skill update and live Cubbie test
 
