@@ -1,1 +1,9 @@
-"""Placeholder; implemented in a later phase (see docs/spec/07-IMPLEMENTATION-PLAN.md)."""
+"""Vibe values."""
+
+from enum import StrEnum
+
+
+class Vibe(StrEnum):
+    CHILL = "chill"
+    SOCIAL = "social"
+    ACTIVE = "active"
