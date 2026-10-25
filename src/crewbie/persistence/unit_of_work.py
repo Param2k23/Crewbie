@@ -7,8 +7,10 @@ from sqlalchemy.orm import Session, sessionmaker
 from crewbie.persistence.crypto import EnvelopeCipher
 from crewbie.persistence.outbox import Outbox
 from crewbie.persistence.repositories.events import EventRepository
+from crewbie.persistence.repositories.idempotency import IdempotencyRepository
 from crewbie.persistence.repositories.installs import InstallRepository
 from crewbie.persistence.repositories.intents import IntentRepository
+from crewbie.persistence.repositories.links import LinkRepository
 from crewbie.persistence.repositories.offers import OfferRepository
 from crewbie.persistence.repositories.rooms import RoomRepository
 from crewbie.persistence.repositories.updates import UpdateRepository
@@ -31,6 +33,8 @@ class UnitOfWork:
         self.rooms = RoomRepository(session)
         self.offers = OfferRepository(session)
         self.updates = UpdateRepository(session)
+        self.links = LinkRepository(session)
+        self.idempotency = IdempotencyRepository(session)
         self.outbox = Outbox(session)
         return self
 
@@ -41,6 +45,8 @@ class UnitOfWork:
         traceback: TracebackType | None,
     ) -> None:
         assert self._session is not None
+        # Detach first so rows read inside the block stay readable (rollback would expire them).
+        self._session.expunge_all()
         self._session.rollback()
         self._session.close()
         self._session = None

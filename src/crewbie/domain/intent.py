@@ -87,9 +87,16 @@ class IntentState(StrEnum):
 LIVE_STATES = frozenset({IntentState.MATCHING, IntentState.OFFERED, IntentState.JOINED})
 
 _TRANSITIONS: dict[IntentState, frozenset[IntentState]] = {
-    IntentState.MATCHING: frozenset({IntentState.OFFERED}),
+    # A student may withdraw (or resubmit, which supersedes) before ever joining a room.
+    IntentState.MATCHING: frozenset({IntentState.OFFERED, IntentState.WITHDRAWN}),
     IntentState.OFFERED: frozenset(
-        {IntentState.JOINED, IntentState.DECLINED, IntentState.MATCHING, IntentState.EXPIRED}
+        {
+            IntentState.JOINED,
+            IntentState.DECLINED,
+            IntentState.MATCHING,
+            IntentState.EXPIRED,
+            IntentState.WITHDRAWN,
+        }
     ),
     IntentState.JOINED: frozenset({IntentState.WITHDRAWN}),
     IntentState.EXPIRED: frozenset({IntentState.MATCHING}),

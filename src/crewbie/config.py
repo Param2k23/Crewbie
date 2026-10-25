@@ -27,6 +27,8 @@ class Settings(BaseSettings):
         "sqlite:///./data/crewbie.db", validation_alias="CREWBIE_DATABASE_URL"
     )
     timezone: str = Field("America/Phoenix", validation_alias="CREWBIE_TIMEZONE")
+    host: str = Field("127.0.0.1", validation_alias="CREWBIE_HOST")
+    port: int = Field(8000, validation_alias=AliasChoices("PORT", "CREWBIE_PORT"), gt=0)
     envelope_key: str = Field("", validation_alias="CREWBIE_ENVELOPE_KEY")
     admin_token: str = Field("", validation_alias="CREWBIE_ADMIN_TOKEN")
 
@@ -113,6 +115,8 @@ SPECS: tuple[VarSpec, ...] = (
     VarSpec("CREWBIE_PUBLIC_URL", _is_http_url, _prod),
     VarSpec("CREWBIE_DATABASE_URL", lambda v: v.startswith("sqlite:///"), _never),
     VarSpec("CREWBIE_TIMEZONE", _non_empty, _never),
+    VarSpec("CREWBIE_HOST", _non_empty, _never),
+    VarSpec("CREWBIE_PORT", _is_positive_int, _never),
     VarSpec("CREWBIE_ENVELOPE_KEY", _is_fernet_key, _prod),
     VarSpec("CREWBIE_ADMIN_TOKEN", _long_token, _never),
     VarSpec("CREWBIE_DISCORD_TOKEN", _non_empty, _discord_on),

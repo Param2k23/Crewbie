@@ -90,3 +90,13 @@ class Outbox:
             )
             or 0
         )
+
+    def by_state(self, state: OutboxState, limit: int = 100) -> list[OutboxRow]:
+        return list(
+            self._session.scalars(
+                select(OutboxRow)
+                .where(OutboxRow.state == state.value)
+                .order_by(OutboxRow.created_at, OutboxRow.id)
+                .limit(limit)
+            )
+        )

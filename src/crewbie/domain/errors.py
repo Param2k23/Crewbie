@@ -56,3 +56,21 @@ class OfferClosed(DomainError):
 
 class EventStarted(DomainError):
     code = "EVENT_STARTED"
+
+
+class LinkCodeInvalid(DomainError):
+    """Bot-facing: `details["reason"]` is expired, used or unknown."""
+
+    code = "LINK_CODE_INVALID"
+
+
+class LinkConflict(DomainError):
+    """Discord user or install is linked elsewhere; the bot must confirm a re-link."""
+
+    code = "LINK_CONFLICT"
+
+
+class Forbidden(DomainError):
+    """Operation refused in this environment (for example seeding in prod)."""
+
+    code = "FORBIDDEN"

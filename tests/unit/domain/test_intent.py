@@ -101,6 +101,8 @@ def test_intent_state_machine_follows_architecture_diagram() -> None:
     ):
         ensure_transition(IntentState.OFFERED, target)
     ensure_transition(IntentState.JOINED, IntentState.WITHDRAWN)
+    ensure_transition(IntentState.MATCHING, IntentState.WITHDRAWN)
+    ensure_transition(IntentState.OFFERED, IntentState.WITHDRAWN)
     ensure_transition(IntentState.EXPIRED, IntentState.MATCHING)
     for current, target in [
         (IntentState.MATCHING, IntentState.JOINED),

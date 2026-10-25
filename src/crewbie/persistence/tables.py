@@ -219,3 +219,16 @@ class PublicEventRow(Timestamps, Base):
     seq: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     type: Mapped[str] = mapped_column(String(48))
     payload: Mapped[dict[str, Any]] = mapped_column(default=dict)
+
+
+class IdempotencyKeyRow(Timestamps, Base):
+    """Stored public-safe responses for `Idempotency-Key` replays (03-API-CONTRACT section 1)."""
+
+    __tablename__ = "idempotency_keys"
+    install_id: Mapped[str] = mapped_column(
+        ForeignKey("installs.id", ondelete="CASCADE"), primary_key=True
+    )
+    key: Mapped[str] = mapped_column(String(64), primary_key=True)
+    scope: Mapped[str] = mapped_column(String(100))
+    response_status: Mapped[int]
+    response_body: Mapped[dict[str, Any]] = mapped_column(default=dict)

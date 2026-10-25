@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from datetime import datetime
 
 from sqlalchemy import func, select
@@ -7,7 +8,18 @@ from crewbie.domain.budget import BudgetBand
 from crewbie.domain.room import MemberState, RoomState, RoomStatus
 from crewbie.domain.vibe import Vibe
 from crewbie.domain.windows import TimeWindow
-from crewbie.persistence.tables import IntentRow, MembershipRow, RoomRow
+from crewbie.persistence.tables import InstallRow, IntentRow, MembershipRow, RoomRow
+
+
+@dataclass(frozen=True)
+class MemberRef:
+    """A current member with the ids services need to notify them."""
+
+    intent_id: str
+    install_id: str
+    alias: str
+    is_synthetic: bool
+    effective_window: TimeWindow
 
 
 class RoomRepository:
@@ -118,3 +130,39 @@ class RoomRepository:
             row.version += 1
         self._session.flush()
         return row
+
+    def members(self, room_id: str) -> list[MemberRef]:
+        rows = self._session.execute(
+            select(MembershipRow, IntentRow.install_id, InstallRow.is_synthetic)
+            .join(IntentRow, IntentRow.id == MembershipRow.intent_id)
+            .join(InstallRow, InstallRow.id == IntentRow.install_id)
+            .where(MembershipRow.room_id == room_id, MembershipRow.left_at.is_(None))
+            .order_by(MembershipRow.joined_at, MembershipRow.alias)
+        )
+        return [
+            MemberRef(
+                intent_id=m.intent_id,
+                install_id=install_id,
+                alias=m.alias,
+                is_synthetic=synthetic,
+                effective_window=TimeWindow(m.effective_start, m.effective_end),
+            )
+            for m, install_id, synthetic in rows
+        ]
+
+    def current_room_id(self, intent_id: str) -> str | None:
+        """The room the intent currently belongs to, if it has not left."""
+        return self._session.scalar(
+            select(MembershipRow.room_id).where(
+                MembershipRow.intent_id == intent_id, MembershipRow.left_at.is_(None)
+            )
+        )
+
+    def list_all(self) -> list[RoomRow]:
+        return list(self._session.scalars(select(RoomRow).order_by(RoomRow.created_at, RoomRow.id)))
+
+    def set_thread(self, room_id: str, thread_id: str) -> None:
+        row = self._session.get(RoomRow, room_id)
+        if row is not None:
+            row.discord_thread_id = thread_id
+            self._session.flush()

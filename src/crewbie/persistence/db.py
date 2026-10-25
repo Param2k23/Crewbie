@@ -24,6 +24,13 @@ def create_db_engine(database_url: str) -> Engine:
             cursor.execute("PRAGMA foreign_keys=ON")
             cursor.execute("PRAGMA busy_timeout=5000")
             cursor.close()
+            # Take control of transactions so writers queue on the busy timeout instead of
+            # failing when a read transaction tries to upgrade to a write.
+            dbapi_connection.isolation_level = None
+
+        @event.listens_for(engine, "begin")
+        def _begin_immediate(connection) -> None:  # type: ignore[no-untyped-def]
+            connection.exec_driver_sql("BEGIN IMMEDIATE")
 
     return engine
 

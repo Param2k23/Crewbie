@@ -12,7 +12,7 @@ Done:
 
 Left: nothing.
 
-## Phase 1: Domain and persistence (done, awaiting owner review)
+## Phase 1: Domain and persistence (done, committed 9b7462e)
 
 Done:
 - Domain: `event_key`, `TimeWindow`, `BudgetBand`, `Vibe`, `SharedIntent`, `PrivateEnvelope` (redacted repr),
@@ -24,5 +24,27 @@ Done:
 
 Left for later phases: `logging.py` redaction filter (Phase 2), link code and idempotency-key storage
 (Phase 2), services that call these repositories (Phase 2 and 3).
+
+Open questions: none.
+
+## Phase 2: API, auth, installs, discovery, intents (done, awaiting owner review)
+
+Done:
+- FastAPI app factory, error mapping (one place), request IDs, JSON logging with redaction filter.
+- Install auth (SHA-256 token hash, constant-time compare), in-memory rate limiting, `Idempotency-Key` replay.
+- Routers: health, installs, link-codes, rooms, rooms/lookup, intents (submit, get, withdraw), offers
+  (accept, decline), updates, admin (rooms, close, outbox, seed). `python -m crewbie` runs the server.
+- Services per use case. The matcher is a stub that always offers a new room (Phase 3 replaces it). Join
+  accept, stale rematch, leave, install deletion and the offer sweeper are implemented and tested with a
+  scripted matcher, so Phase 3 only has to supply real `MatchResult`s.
+- `skills/crewbie-unlocks/scripts/crew.py` complete (stdlib only); `scripts/dev/seed.py`.
+- Tests: API (installs, linking, intents, offers, room flows, discovery, admin), `tests/skill/` (crew.py as a
+  subprocess against a live server), `tests/privacy/` (sentinel envelope values scanned across responses,
+  logs and every table except `envelopes`; mutation-checked to fail on a planted leak).
+- AS-1 and AS-7 pass end to end through `crew.py`; AS-2, AS-3, AS-6, AS-8 pass at API level via scripted offers.
+
+Left for later phases: real matching (Phase 3); Discord worker that consumes the outbox and writes
+`discord_thread_id`/`room_active` (Phase 4); `DEFAULT_API_URL` in crew.py (Phase 5); SKILL.md rewrite (Phase 6);
+`/v1/stream` (Phase 7).
 
 Open questions: none.

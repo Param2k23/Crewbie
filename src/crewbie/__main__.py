@@ -1,11 +1,25 @@
-"""Entrypoint placeholder; the API and Discord bot are wired up in Phase 2 and Phase 4."""
+"""Run the API (and, from Phase 4, the Discord bot) in one process."""
 
 import sys
 
+import uvicorn
+
+from crewbie.config import Settings
+from crewbie.logging import configure_logging
+
 
 def main() -> int:
-    sys.stderr.write("crewbie server is not implemented yet (Phase 2).\n")
-    return 1
+    settings = Settings()
+    configure_logging()
+    uvicorn.run(
+        "crewbie.api.app:create_app",
+        factory=True,
+        host=settings.host,
+        port=settings.port,
+        log_config=None,
+        access_log=False,
+    )
+    return 0
 
 
 if __name__ == "__main__":

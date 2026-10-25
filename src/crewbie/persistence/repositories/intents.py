@@ -1,4 +1,6 @@
-from sqlalchemy import select
+from datetime import datetime
+
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from crewbie.domain.intent import LIVE_STATES, IntentState, PrivateEnvelope, SharedIntent
@@ -18,6 +20,7 @@ class IntentRepository:
         shared: SharedIntent,
         envelope: PrivateEnvelope,
         state: IntentState = IntentState.MATCHING,
+        created_at: datetime | None = None,
     ) -> IntentRow:
         """Store shared fields and the encrypted envelope together."""
         row = IntentRow(
@@ -31,6 +34,7 @@ class IntentRepository:
             vibe=shared.vibe.value,
             interests=list(shared.interests),
             state=state.value,
+            **({"created_at": created_at} if created_at else {}),
         )
         self._session.add(row)
         self._session.flush()  # no ORM relationship, so order the FK insert explicitly
@@ -62,3 +66,28 @@ class IntentRepository:
         """Decrypt one intent's envelope. Only the owning delegate may call this."""
         row = self._session.get(EnvelopeRow, intent_id)
         return None if row is None else self._cipher.decrypt(row.ciphertext)
+
+    def count_since(self, install_id: str, event_key: str, since: datetime) -> int:
+        """Submissions by one install for one event since `since` (FR-INT-05)."""
+        return (
+            self._session.scalar(
+                select(func.count())
+                .select_from(IntentRow)
+                .where(
+                    IntentRow.install_id == install_id,
+                    IntentRow.event_key == event_key,
+                    IntentRow.created_at >= since,
+                )
+            )
+            or 0
+        )
+
+    def list_for_install(self, install_id: str, states: frozenset[IntentState]) -> list[IntentRow]:
+        return list(
+            self._session.scalars(
+                select(IntentRow).where(
+                    IntentRow.install_id == install_id,
+                    IntentRow.state.in_([state.value for state in states]),
+                )
+            )
+        )

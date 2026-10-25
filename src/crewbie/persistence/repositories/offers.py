@@ -56,3 +56,13 @@ class OfferRepository:
                 )
             )
         )
+
+    def close_open_for_intent(self, intent_id: str, state: OfferState) -> None:
+        """Move every still-open offer of an intent to a closed state (superseded or withdrawn)."""
+        for row in self._session.scalars(
+            select(OfferRow).where(
+                OfferRow.intent_id == intent_id, OfferRow.state == OfferState.OPEN.value
+            )
+        ):
+            row.state = state.value
+        self._session.flush()
