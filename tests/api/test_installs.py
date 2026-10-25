@@ -70,6 +70,11 @@ def test_healthz_is_public_and_reports_state(client: TestClient) -> None:
     }
 
 
+def test_healthz_answers_head_requests_for_uptime_monitors(client: TestClient) -> None:
+    response = client.head("/healthz")
+    assert response.status_code == 200 and response.headers["X-Request-Id"]
+
+
 def test_fr_ins_04_per_install_rate_limit_returns_retry_after(limited_client: TestClient) -> None:
     student = Student(limited_client)  # registration is limited per IP, not per install
     codes = [student.get("/v1/installs/me").status_code for _ in range(5)]

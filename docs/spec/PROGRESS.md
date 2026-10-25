@@ -91,21 +91,22 @@ Pending (needs the owner and test accounts):
 
 Open questions: none.
 
-## Phase 5: Deployment on AWS EC2 (Part B done; Part A and C pending with the owner)
+## Phase 5: Deployment on AWS EC2 (deployed and accepted; down/up check pending)
 
-Done (Part B, task 2 to 4):
-- `Dockerfile` (non-root, healthcheck), `deploy/docker-compose.yml` (crewbie + caddy), `deploy/Caddyfile`,
-  `deploy/bootstrap.sh`, `scripts/ops/` with `.sh` and `.ps1` for up, down, status, ssh, deploy, logs,
-  push-env, backup, snapshot, allow-my-ip, `ops.env.example`, `.gitignore` entries.
-- Production start-up checks, `--help`, proxy-header trust, `scripts/dev/smoke.py`.
-- Tests: ops scripts against recording stubs (bash), PowerShell parse and behavior checks, start-up checks.
-  CI: shellcheck, PowerShell parse, and a Compose job (build, HTTPS through Caddy, non-root, data survives
-  down/up).
+Done:
+- Part A with the owner (A2 skipped, region Ohio `us-east-2`; see DECISIONS.md). `crewbie-ops` profile works.
+- Part B files, with CI green: shellcheck, PowerShell parse, and a Compose job that builds the image, serves
+  HTTPS through Caddy, runs non-root and keeps data across down/up.
+- Part C: server bootstrapped, `.env.prod` pushed (mode 600), first deploy healthy. Public URL
+  `https://18-220-104-252.sslip.io`: Let's Encrypt certificate, HTTP redirects to HTTPS, HSTS on,
+  `/healthz` returns `ok` with `discord: connected`.
+- `DEFAULT_API_URL` in `crew.py` points at the public URL (local development uses `CREWBIE_API_URL`).
+- AS-1 and AS-2 pass against the public URL, run by the owner with two Discord accounts.
+- `/healthz` also answers HEAD for uptime monitors (needs one `deploy.sh` run).
 
-Not done / pending:
-- Part A (AWS console steps A1 to A11) with the owner, one section at a time.
-- Part C first deployment, then task 6 (`DEFAULT_API_URL` in `crew.py`) and task 7 (down/up cycle check).
-- The Compose stack and the image have not been built in the development environment (no Docker there);
-  CI is the first build.
+Pending:
+- Task 7: a full `down` then `up` cycle that shows rooms and installs survive, the URL is unchanged and Caddy
+  reuses its certificate. Needs the owner's go-ahead because the bot is offline for a few minutes.
+- Commit and push of the `crew.py` URL change and the HEAD fix, then `deploy.sh`.
 
 Open questions: none.

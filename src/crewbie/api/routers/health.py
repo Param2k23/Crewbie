@@ -9,7 +9,7 @@ from crewbie.api.state import AppState
 router = APIRouter()
 
 
-@router.get("/healthz")
+@router.api_route("/healthz", methods=["GET", "HEAD"])  # HEAD for uptime monitors
 def healthz(state: Annotated[AppState, Depends(app_state)]) -> dict[str, Any]:
     try:
         with state.engine.connect() as connection:

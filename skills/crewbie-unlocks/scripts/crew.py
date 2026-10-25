@@ -33,7 +33,7 @@ import uuid
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-DEFAULT_API_URL = "http://localhost:8000"
+DEFAULT_API_URL = "https://18-220-104-252.sslip.io"
 CLIENT = "crew.py/1.0"
 TIMEOUT_SECONDS = 15
 

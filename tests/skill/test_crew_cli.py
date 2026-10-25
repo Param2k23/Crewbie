@@ -237,3 +237,14 @@ def test_crew_py_uses_only_the_standard_library() -> None:
     third_party = {m.split(".")[0] for m in imported} - set(sys.stdlib_module_names)
     assert third_party == set()
     assert "ANTHROPIC" not in CREW.read_text().upper()  # C-2: no team secrets in skills/
+
+
+def test_the_default_api_url_is_the_public_https_address_and_the_env_var_overrides_it() -> None:
+    crew = load_crew_module()
+    assert crew.DEFAULT_API_URL.startswith("https://") and "localhost" not in crew.DEFAULT_API_URL
+    os.environ["CREWBIE_API_URL"] = "http://localhost:9/"
+    try:
+        assert crew.api_url() == "http://localhost:9"
+    finally:
+        del os.environ["CREWBIE_API_URL"]
+    assert crew.api_url() == crew.DEFAULT_API_URL
