@@ -27,6 +27,27 @@ honored on every response and revoked immediately; humor targets a hidden perk,
 never finances, grades, essential commitments, support needs, identity or rest.
 No guilt or pressure to participate. No data sharing consent follows from tone.
 
+Real-account feedback refinement: the Skill now asks Chill / Playful / Roast Me
+as its first setup question, with a nonblocking Chill fallback and permissioned
+memory. It searches and ranks verified usable student-exclusive access/offers/
+pricing ahead of general public options. If none fit, the main public suggestion
+can end with one relevant verified near-match explaining the optional constraint
+change; hard limits and protected commitments remain intact. Any relevant activity,
+need, purchase or goal triggers domain-specific student-benefit research: identify
+the need, find appropriate memberships/discounts/access/resources, verify provider
+terms and compare total cost. Shopping and entertainment are examples, not special
+cases or limits. No brand or active offer is hard-coded. Offer consent-gated pairing
+when useful for the actual activity, with a solo or invitation-draft fallback.
+
+Manual acceptance cases for this refinement: first setup asks tone before planning;
+skip proceeds in Chill; returning permitted preference avoids repetitive setup;
+a fitting verified student offer appears before a public option; a public venue's
+student rate is described accurately; no-match output offers only relevant verified
+near-matches with clear cost/time differences and permission to adjust; a fixed
+budget is preserved; research across domains checks original provider terms and pairing
+does not claim a match or send a message. These instruction changes still need
+retesting in real Cubbie; local structural validation is not behavioral proof.
+
 Offer cadence/time/timezone/notification choices; obtain consent for exact settings,
 use native check-ins, recheck sources/permissions every run and avoid duplicate
 legacy tasks. Honor quiet hours and stop requests. Offering a reminder is not
