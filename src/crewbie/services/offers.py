@@ -1,5 +1,7 @@
 """Accepting, declining and expiring offers (FR-OFR-*, FR-LNK-04)."""
 
+import logging
+
 from crewbie.domain.errors import (
     EventStarted,
     LinkRequired,
@@ -20,7 +22,7 @@ from crewbie.domain.room import extend_effective_window
 from crewbie.domain.windows import TimeWindow
 from crewbie.persistence.tables import IntentRow, OfferRow
 from crewbie.persistence.unit_of_work import UnitOfWork
-from crewbie.services import intents, linking
+from crewbie.services import linking, matchmaking
 from crewbie.services._common import (
     RoomChange,
     add_update,
@@ -33,6 +35,8 @@ from crewbie.services._common import (
 )
 from crewbie.services.context import ServiceContext
 from crewbie.services.views import AcceptResult
+
+logger = logging.getLogger("crewbie.offers")
 
 
 def _owned_offer(uow: UnitOfWork, install_id: str, offer_id: str) -> tuple[OfferRow, IntentRow]:
@@ -50,7 +54,32 @@ def _expire(ctx: ServiceContext, uow: UnitOfWork, offer: OfferRow, intent: Inten
     add_update(uow, intent.install_id, "offer_expired", intent, offer_id=offer.id)
 
 
+class _StaleOffer(OfferStale):
+    """Internal: carries the intent to rematch once the lock and transaction are released."""
+
+    def __init__(self, intent_id: str) -> None:
+        super().__init__("The crew changed. A new offer is on its way.")
+        self.intent_id = intent_id
+
+
 def accept(ctx: ServiceContext, install_id: str, offer_id: str) -> AcceptResult:
+    with ctx.uow_factory() as uow:
+        offer = uow.offers.get(offer_id)
+        room_id = offer.room_id if offer else None
+    try:
+        with ctx.room_locks.hold([room_id] if room_id else []):
+            return _accept(ctx, install_id, offer_id)
+    except _StaleOffer as stale:
+        try:
+            matchmaking.run(ctx, stale.intent_id)  # FR-OFR-02: start a fresh matching run
+        except Exception:
+            logger.exception(
+                "rematch after stale offer failed", extra={"intent_id": stale.intent_id}
+            )
+        raise OfferStale(stale.message) from None
+
+
+def _accept(ctx: ServiceContext, install_id: str, offer_id: str) -> AcceptResult:
     now = ctx.clock()
     with ctx.uow_factory() as uow:
         offer, intent = _owned_offer(uow, install_id, offer_id)
@@ -69,9 +98,9 @@ def accept(ctx: ServiceContext, install_id: str, offer_id: str) -> AcceptResult:
             uow.commit()
             raise
         except OfferStale:
-            _rematch(ctx, uow, offer, intent)
+            _mark_stale(uow, offer, intent)
             uow.commit()
-            raise
+            raise _StaleOffer(intent.id) from None
 
         if uow.links.get_by_install(install_id) is None:
             # Commit first: the fresh code must survive the error response that carries it.
@@ -93,21 +122,20 @@ def accept(ctx: ServiceContext, install_id: str, offer_id: str) -> AcceptResult:
             except OfferStale:
                 uow.rollback()  # discard the half-applied join, then offer again
                 offer, intent = _owned_offer(uow, install_id, offer_id)
-                _rematch(ctx, uow, offer, intent)
+                _mark_stale(uow, offer, intent)
                 uow.commit()
-                raise
+                raise _StaleOffer(intent.id) from None
         else:
             result = _accept_new_room(ctx, uow, offer, intent)
         uow.commit()
         return result
 
 
-def _rematch(ctx: ServiceContext, uow: UnitOfWork, offer: OfferRow, intent: IntentRow) -> None:
-    """FR-OFR-02: the room moved, so close this offer and make a fresh one."""
+def _mark_stale(uow: UnitOfWork, offer: OfferRow, intent: IntentRow) -> None:
+    """The room moved: close this offer and put the intent back to matching (FR-OFR-02)."""
     uow.offers.set_state(offer.id, OfferState.STALE)
     ensure_transition(IntentState(intent.state), IntentState.MATCHING)
     uow.intents.set_state(intent.id, IntentState.MATCHING)
-    intents.make_offer(ctx, uow, intent)
 
 
 def _finish(uow: UnitOfWork, offer: OfferRow, intent: IntentRow) -> None:

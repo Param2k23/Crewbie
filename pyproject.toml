@@ -84,7 +84,8 @@ layers = [
     "crewbie.api",  # composition root: starts the bot and workers in its lifespan
     "crewbie.discord_bot | crewbie.workers",
     "crewbie.services",
-    "crewbie.matching | crewbie.agents | crewbie.persistence | crewbie.telemetry",
+    "crewbie.matching",  # orchestrates agents
+    "crewbie.agents | crewbie.persistence | crewbie.telemetry",
     "crewbie.domain",
 ]
 

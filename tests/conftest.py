@@ -51,6 +51,29 @@ def client(settings: Settings, clock: FakeClock, matcher: ScriptedMatcher) -> It
 
 
 @pytest.fixture
+def real_client(settings: Settings, clock: FakeClock) -> Iterator[TestClient]:
+    """The app with its default deterministic matcher, as deployed."""
+    with TestClient(create_app(settings, clock=clock, sweep_interval_seconds=3600)) as test_client:
+        yield test_client
+
+
+@pytest.fixture
+def real_ctx(real_client: TestClient) -> ServiceContext:
+    context: ServiceContext = real_client.app.state.crewbie.ctx  # type: ignore[attr-defined]
+    return context
+
+
+@pytest.fixture
+def make_real_student(real_client: TestClient):  # type: ignore[no-untyped-def]
+    counter = iter(range(1, 100))
+
+    def factory() -> Student:
+        return Student(real_client, f"real{next(counter)}")
+
+    return factory
+
+
+@pytest.fixture
 def ctx(client: TestClient) -> ServiceContext:
     context: ServiceContext = client.app.state.crewbie.ctx  # type: ignore[attr-defined]
     return context

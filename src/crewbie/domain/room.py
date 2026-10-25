@@ -2,7 +2,7 @@
 
 from collections import Counter
 from collections.abc import Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import datetime, timedelta
 from enum import StrEnum
 
@@ -92,3 +92,17 @@ def lifecycle_status(
     if window_end is not None and now >= window_end + CLOSE_AFTER_WINDOW_END:
         return RoomStatus.CLOSED
     return derived
+
+
+def state_after_join(
+    members: Sequence[MemberState], joiner: MemberState, agreed: TimeWindow
+) -> RoomState:
+    """The room as it would be once `joiner` joins on `agreed` (SRS 5.3, protocol section 5)."""
+    extended = [
+        replace(m, effective_window=extend_effective_window(m.effective_window, agreed))
+        for m in members
+    ]
+    joined = replace(
+        joiner, effective_window=extend_effective_window(joiner.effective_window, agreed)
+    )
+    return derive_room_state([*extended, joined])

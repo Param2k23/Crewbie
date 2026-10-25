@@ -11,7 +11,9 @@ from crewbie.persistence.repositories.idempotency import IdempotencyRepository
 from crewbie.persistence.repositories.installs import InstallRepository
 from crewbie.persistence.repositories.intents import IntentRepository
 from crewbie.persistence.repositories.links import LinkRepository
+from crewbie.persistence.repositories.negotiations import NegotiationRepository
 from crewbie.persistence.repositories.offers import OfferRepository
+from crewbie.persistence.repositories.public_events import PublicEventRepository
 from crewbie.persistence.repositories.rooms import RoomRepository
 from crewbie.persistence.repositories.updates import UpdateRepository
 
@@ -35,6 +37,8 @@ class UnitOfWork:
         self.updates = UpdateRepository(session)
         self.links = LinkRepository(session)
         self.idempotency = IdempotencyRepository(session)
+        self.negotiations = NegotiationRepository(session)
+        self.public_events = PublicEventRepository(session)
         self.outbox = Outbox(session)
         return self
 

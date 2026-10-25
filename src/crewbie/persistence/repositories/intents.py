@@ -91,3 +91,13 @@ class IntentRepository:
                 )
             )
         )
+
+    def matching_since(self, cutoff: datetime) -> list[IntentRow]:
+        """Intents left in `matching` since before `cutoff`: matching failed or was interrupted."""
+        return list(
+            self._session.scalars(
+                select(IntentRow).where(
+                    IntentRow.state == IntentState.MATCHING.value, IntentRow.updated_at <= cutoff
+                )
+            )
+        )

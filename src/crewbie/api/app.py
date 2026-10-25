@@ -19,7 +19,7 @@ from crewbie.api.routers import admin, health, installs, intents, offers, rooms,
 from crewbie.api.state import AppState
 from crewbie.config import Settings
 from crewbie.logging import install_ref_var, request_id_var
-from crewbie.matching.matcher import Matcher, NewRoomMatcher
+from crewbie.matching.matcher import DeterministicMatcher, Matcher
 from crewbie.persistence.crypto import load_cipher
 from crewbie.persistence.db import create_db_engine, make_session_factory, migrate_to_head
 from crewbie.persistence.unit_of_work import UnitOfWork
@@ -52,7 +52,12 @@ def build_state(
     )
     ctx = ServiceContext(
         uow_factory=lambda: UnitOfWork(sessions, cipher),
-        matcher=matcher or NewRoomMatcher(),
+        matcher=matcher
+        or DeterministicMatcher(
+            max_candidates=settings.max_candidate_rooms,
+            max_rounds=settings.max_rounds,
+            time_budget_seconds=settings.match_time_budget_seconds,
+        ),
         config=config,
         clock=clock or utc_now,
     )

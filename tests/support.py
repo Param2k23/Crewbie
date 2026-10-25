@@ -47,7 +47,7 @@ class ScriptedMatcher:
     def match(self, request: MatchRequest) -> MatchResult:
         if self.script:
             return self.script.pop(0)(request)
-        return MatchResult(OfferType.NEW_ROOM, request.shared.window)
+        return MatchResult(OfferType.NEW_ROOM, request.joiner.shared.window)
 
 
 def intent_body(
@@ -64,6 +64,7 @@ def intent_body(
     date: str = "2026-11-06",
     start_time: str = "18:00",
     url: str = EVENT_URL,
+    minutes: int = 90,
 ) -> dict[str, Any]:
     private: dict[str, Any] = {
         "flex": {
@@ -83,7 +84,7 @@ def intent_body(
         },
         "shared": {
             "window": {"start": at(start).isoformat(), "end": at(end).isoformat()},
-            "activity_min_minutes": 90,
+            "activity_min_minutes": minutes,
             "budget_band": band,
             "vibe": vibe,
             "interests": list(interests),

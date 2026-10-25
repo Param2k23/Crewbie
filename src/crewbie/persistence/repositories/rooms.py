@@ -62,7 +62,7 @@ class RoomRepository:
             id=membership_id,
             room_id=room_id,
             intent_id=intent_id,
-            alias=self._next_alias(room_id),
+            alias=self.next_alias(room_id),
             effective_start=effective_window.start,
             effective_end=effective_window.end,
             joined_at=joined_at,
@@ -71,7 +71,7 @@ class RoomRepository:
         self._session.flush()
         return row
 
-    def _next_alias(self, room_id: str) -> str:
+    def next_alias(self, room_id: str) -> str:
         """Aliases are never reused in a room, so `member-2` always means the same person."""
         count = self._session.scalar(
             select(func.count()).select_from(MembershipRow).where(MembershipRow.room_id == room_id)

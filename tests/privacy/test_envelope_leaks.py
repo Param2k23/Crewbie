@@ -165,3 +165,66 @@ def test_nfr_prv_01_exception_text_and_repr_never_carry_envelope_values() -> Non
     assert leaked(repr(envelope) + str(envelope) + f"{envelope!r:>80}") == []
     record = logging.LogRecord("t", logging.ERROR, __file__, 1, "failed for %s", (envelope,), None)
     assert leaked(JsonFormatter().format(record)) == []
+
+
+def forms(moment: datetime) -> list[str]:
+    """How a timestamp would look in a JSON response and in a SQLite row."""
+    return [moment.strftime("%Y-%m-%dT%H:%M:%S"), moment.strftime("%Y-%m-%d %H:%M:%S")]
+
+
+def test_p_2_negotiation_steps_and_public_events_never_contain_envelope_values(
+    real_client: TestClient,
+    real_ctx: ServiceContext,
+    make_real_student,  # type: ignore[no-untyped-def]
+) -> None:
+    """Counters are the risky part: a clipped window could equal a student's private bound."""
+    from datetime import timedelta
+
+    seen: list[str] = []
+    original = real_client.request
+
+    def recording(*args, **kwargs):  # type: ignore[no-untyped-def]
+        response = original(*args, **kwargs)
+        seen.append(response.text)
+        return response
+
+    real_client.request = recording  # type: ignore[method-assign]
+    member_latest = at(190) + timedelta(seconds=41)
+    joiner_earliest = at(125) + timedelta(seconds=19)
+    joiner_latest = at(300) + timedelta(seconds=23)
+    needles = [*forms(member_latest), *forms(joiner_earliest), *forms(joiner_latest), "913.37"]
+
+    # Negotiation that exchanges counters and fails (the member cannot stay late enough).
+    member, joiner = make_real_student(), make_real_student()
+    start_room(real_ctx, member, start=60, end=180, flex_latest=member_latest, cap=CAP)
+    offer = joiner.submit(
+        start=150, end=270, flex_earliest=joiner_earliest, flex_latest=joiner_latest, cap=CAP
+    )["offer"]
+    assert offer["type"] == "new_room"
+
+    # Negotiation that exchanges an extension and agrees.
+    other, newcomer = make_real_student(), make_real_student()
+    start_room(
+        real_ctx, other, start=60, end=180, flex_latest=at(240) + timedelta(seconds=41),
+        cap=CAP, url="https://other.test/e",
+    )  # fmt: skip
+    agreed = newcomer.submit(
+        start=150, end=270, flex_earliest=joiner_earliest, flex_latest=joiner_latest, cap=CAP,
+        url="https://other.test/e",
+    )["offer"]  # fmt: skip
+    assert agreed["type"] == "join"
+    needles += forms(at(240) + timedelta(seconds=41))
+
+    engine = real_client.app.state.crewbie.engine  # type: ignore[attr-defined]
+    with engine.connect() as connection:
+        steps = connection.execute(text("select * from negotiation_steps")).fetchall()
+        events = connection.execute(text("select * from public_events")).fetchall()
+        everything = {
+            table: repr(connection.execute(text(f'select * from "{table}"')).fetchall())
+            for (table,) in connection.execute(
+                text("select name from sqlite_master where type='table' and name != 'envelopes'")
+            )
+        }
+    assert len(steps) >= 6 and len(events) >= 10  # the scan covered real negotiations
+    for surface in (*seen, *everything.values()):
+        assert [n for n in needles if n in surface] == []

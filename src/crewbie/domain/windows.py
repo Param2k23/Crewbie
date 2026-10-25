@@ -52,3 +52,19 @@ def intersect_all(windows: Iterable[TimeWindow]) -> TimeWindow | None:
         if result is None:
             return None
     return result
+
+
+GRID_MINUTES = 15
+_GRID_SECONDS = GRID_MINUTES * 60
+
+
+def floor_to_grid(moment: datetime) -> datetime:
+    """Round down to a 15-minute boundary (UTC-aligned, which matches every common offset)."""
+    seconds = int(moment.timestamp())
+    return datetime.fromtimestamp(seconds - seconds % _GRID_SECONDS, tz=moment.tzinfo)
+
+
+def ceil_to_grid(moment: datetime) -> datetime:
+    """Round up to a 15-minute boundary."""
+    floored = floor_to_grid(moment)
+    return floored if floored == moment else floored + timedelta(minutes=GRID_MINUTES)

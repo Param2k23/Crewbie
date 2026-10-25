@@ -2,11 +2,12 @@
 
 import secrets
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import UTC, datetime
 
 from crewbie.matching.matcher import Matcher
 from crewbie.persistence.unit_of_work import UnitOfWork
+from crewbie.services.locks import RoomLocks
 
 
 @dataclass(frozen=True)
@@ -34,3 +35,4 @@ class ServiceContext:
     config: ServiceConfig = ServiceConfig()
     clock: Callable[[], datetime] = utc_now
     new_id: Callable[[str], str] = default_new_id
+    room_locks: RoomLocks = field(default_factory=RoomLocks)

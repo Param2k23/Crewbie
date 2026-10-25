@@ -27,7 +27,7 @@ Left for later phases: `logging.py` redaction filter (Phase 2), link code and id
 
 Open questions: none.
 
-## Phase 2: API, auth, installs, discovery, intents (done, awaiting owner review)
+## Phase 2: API, auth, installs, discovery, intents (done, committed b70c7be)
 
 Done:
 - FastAPI app factory, error mapping (one place), request IDs, JSON logging with redaction filter.
@@ -46,5 +46,25 @@ Done:
 Left for later phases: real matching (Phase 3); Discord worker that consumes the outbox and writes
 `discord_thread_id`/`room_active` (Phase 4); `DEFAULT_API_URL` in crew.py (Phase 5); SKILL.md rewrite (Phase 6);
 `/v1/stream` (Phase 7).
+
+Open questions: none.
+
+## Phase 3: Agents and matcher, deterministic (done, awaiting owner review)
+
+Done:
+- `agents/`: protocol messages, delegate (deterministic guard plus pluggable chooser), host (fan-out and
+  merge), aliases. The guard is the only path to `accept`, so no chooser can accept outside the private limits.
+- `matching/`: room snapshot, filters and pre-score, bounded negotiation, matcher (max 3 rooms, 3 rounds,
+  time budget, best-of-agreements by post-score with the FR-MAT-08 tie-breaks).
+- `services/matchmaking.py`: snapshot, negotiate outside any transaction, persist the offer with
+  `room_version`, negotiations, steps and public events in one transaction. Per-room locks. Stale offers
+  trigger a fresh matching run. Stranded intents are retried by the sweeper.
+- `telemetry/public_events.py`: allowlist serializer. `scripts/dev/simulate.py`: 50 intents over 3 events.
+- Tests: guard, host, negotiation, prescore and matcher units with Hypothesis (P-1, P-2, P-4); API-level
+  AS-2, AS-3, AS-4, AS-5, AS-6; FR-MAT-09 events; privacy harness extended to real negotiations (P-2),
+  mutation-checked; simulation run as a test. Coverage of domain, agents and matching: 99.8%.
+
+Left for later phases: Discord worker that consumes the outbox (Phase 4); LLM chooser, captions and prompt
+injection tests P-3/AS-10 (Phase 7); `/v1/stream` over `public_events` (Phase 7).
 
 Open questions: none.

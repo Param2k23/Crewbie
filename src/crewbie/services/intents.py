@@ -1,5 +1,6 @@
 """Submitting, reading and withdrawing intents (FR-INT-*)."""
 
+import logging
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 
@@ -13,23 +14,20 @@ from crewbie.domain.intent import (
     ensure_transition,
     validate_intent,
 )
-from crewbie.domain.offer import OfferState, OfferType, offer_expiry
+from crewbie.domain.offer import OfferState
 from crewbie.domain.text import LOCATION_MAX, TITLE_MAX, sanitize_required_text, sanitize_text
 from crewbie.domain.vibe import Vibe
 from crewbie.domain.windows import TimeWindow
-from crewbie.matching.matcher import MatchRequest
 from crewbie.persistence.tables import IntentRow
 from crewbie.persistence.unit_of_work import UnitOfWork
-from crewbie.services import rooms
+from crewbie.services import matchmaking, rooms
 from crewbie.services._common import (
-    add_update,
-    shared_from_row,
-    summarize_room,
     thread_url,
 )
 from crewbie.services.context import ServiceContext
-from crewbie.services.views import IntentView, OfferView, SubmitResult
+from crewbie.services.views import IntentView, SubmitResult
 
+logger = logging.getLogger("crewbie.intents")
 MAX_SUBMISSIONS_PER_EVENT_PER_DAY = 5  # FR-INT-05
 
 
@@ -85,10 +83,18 @@ def submit(ctx: ServiceContext, install_id: str, request: SubmitIntent) -> Submi
             end_time=event.end_time,
         )
         intent_id = ctx.new_id("i")
-        row = uow.intents.add(intent_id, install_id, shared, envelope, created_at=now)
-        offer = make_offer(ctx, uow, row)
+        uow.intents.add(intent_id, install_id, shared, envelope, created_at=now)
         uow.commit()
-        return SubmitResult(intent_id, IntentState.OFFERED.value, offer)
+
+    # Matching runs after the intent is safely stored. If it fails the intent stays in
+    # `matching` and the background sweep retries it (FR-INT-04).
+    try:
+        offer = matchmaking.run(ctx, intent_id)
+    except Exception:
+        logger.exception("matching failed", extra={"intent_id": intent_id})
+        offer = None
+    state = IntentState.OFFERED if offer else IntentState.MATCHING
+    return SubmitResult(intent_id, state.value, offer)
 
 
 def _supersede_live_intent(uow: UnitOfWork, install_id: str, key: str) -> None:
@@ -101,36 +107,6 @@ def _supersede_live_intent(uow: UnitOfWork, install_id: str, key: str) -> None:
     ensure_transition(IntentState(existing.state), IntentState.WITHDRAWN)
     uow.intents.set_state(existing.id, IntentState.WITHDRAWN)
     uow.offers.close_open_for_intent(existing.id, OfferState.STALE)
-
-
-def make_offer(ctx: ServiceContext, uow: UnitOfWork, intent: IntentRow) -> OfferView:
-    """Run the matcher for an intent in `matching` state and store the resulting offer."""
-    result = ctx.matcher.match(MatchRequest(intent.id, shared_from_row(intent)))
-    now = ctx.clock()
-    expires_at = offer_expiry(now, ctx.config.offer_ttl_minutes)
-    offer = uow.offers.add(
-        ctx.new_id("o"),
-        intent.id,
-        result.offer_type,
-        expires_at,
-        room_id=result.room_id,
-        room_version=result.room_version,
-        proposal=result.proposal,
-    )
-    ensure_transition(IntentState(intent.state), IntentState.OFFERED)
-    uow.intents.set_state(intent.id, IntentState.OFFERED)
-    add_update(
-        uow, intent.install_id, "offer_ready", intent, offer_id=offer.id, offer_type=offer.type
-    )
-    room = uow.rooms.get(result.room_id) if result.room_id else None
-    return OfferView(
-        offer_id=offer.id,
-        type=result.offer_type.value,
-        expires_at=expires_at,
-        room=summarize_room(room) if room and result.offer_type is OfferType.JOIN else None,
-        proposal=result.proposal,
-        window_changed_for_room=result.window_changed_for_room,
-    )
 
 
 def _owned_intent(uow: UnitOfWork, install_id: str, intent_id: str) -> IntentRow:
