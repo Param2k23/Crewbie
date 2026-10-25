@@ -150,3 +150,8 @@ demo is at `/demo` and `/arena`). Content is written around Cubbie as the base, 
 
 Deferred to the end by the owner: live test step 11 (service offline) and a Join from the Discord board card.
 Next: Phase 7 (LLM agents, facilitation, Mission Control), most of it optional.
+
+## Phase 7 (decided 2026-10-25)
+Skipped on this branch. Mission Control is dropped from the pitch. The LLM work is deferred to a separate branch
+to be created when it starts; `crewbie-v2` and `master` are the final version for the demo. `docs/DEMO_BRIEF.md`
+summarises what is live, what is safe to claim and a suggested 3-minute shape for the video script.

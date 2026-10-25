@@ -93,7 +93,11 @@
 .install { margin: 46px auto 0; max-width: 760px; text-align: center; }
 .installCode { display: block; margin-top: 14px; padding: 18px 22px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); color: var(--ink); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: clamp(12px, 1.5vw, 15px); line-height: 1.6; overflow-wrap: anywhere; user-select: all; }
 .brandSuffix { font-size: 14px; font-weight: 500; letter-spacing: 0; color: var(--muted); }
-.navLink { font-size: 14px; min-height: 44px; display: flex; align-items: center; gap: 25px; }
+.navLink { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 20px; border: 1px solid var(--ink); border-radius: 999px; color: var(--ink); font-size: 14px; font-weight: 600; text-decoration: none; transition: background-color .2s, color .2s; }
+.navLink span { display: inline-block; text-decoration: none; transition: transform .2s; }
+.navLink:hover, .navLink:focus-visible { background: var(--ink); color: var(--surface); text-decoration: none; }
+.navLink:hover span, .navLink:focus-visible span { transform: translate(2px, -2px); }
+.navLink:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .section { padding: clamp(72px, 9vw, 140px) 7vw; border-bottom: 1px solid var(--line); scroll-margin-top: 24px; }
 .eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: 11px; font-weight: 700; margin-bottom: 28px !important; }
 .page h1, .page h2 { font-family: var(--display); font-weight: 800; letter-spacing: -.065em; line-height: 1.02; text-wrap: balance; }
@@ -195,13 +199,24 @@
   .times { font-size: 18px; }
   .lockup { gap: 6px; }
   .lockup .logo { width: 128px; }
-  .navLink { white-space: nowrap; }
-  .navLink span { display: none; }
+  .navLink { white-space: nowrap; padding: 0 14px; gap: 6px; font-size: 13px; }
   .nav { padding: 18px 7vw; }
   .heroVisual { min-height: 400px; }
   .messageCard { width: 92%; padding: 22px; }
   .heroArt { min-height: 380px; }
   .finale { padding-block: 85px; }
+}
+@media (max-width: 400px) {
+  .nav { padding-inline: 4.5vw; gap: 4px 8px; }
+  .cubbieWord { font-size: 20px; }
+  .times { font-size: 16px; }
+  .lockup { gap: 5px; }
+  .lockup .logo { width: 112px; }
+  .navLink { padding: 0 11px; font-size: 12px; }
+  .navLink span { display: none; }
+}
+@media (max-width: 340px) {
+  .nav { flex-wrap: wrap; }
 }
 @media (prefers-reduced-motion: reduce) {
   .page *, .page *::before, .page *::after { animation: none !important; transition: none !important; }
