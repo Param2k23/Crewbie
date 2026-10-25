@@ -1,9 +1,10 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from sqlalchemy import Engine
 
 from crewbie.api.rate_limit import TokenBucketLimiter
 from crewbie.config import Settings
+from crewbie.discord_bot.runtime import BotStatus
 from crewbie.services.context import ServiceContext
 
 
@@ -14,4 +15,4 @@ class AppState:
     engine: Engine
     install_limiter: TokenBucketLimiter
     register_limiter: TokenBucketLimiter
-    discord_status: str = "disabled"
+    bot_status: BotStatus = field(default_factory=BotStatus)

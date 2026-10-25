@@ -22,7 +22,7 @@ def healthz(state: Annotated[AppState, Depends(app_state)]) -> dict[str, Any]:
     return {
         "status": "ok" if database == "ok" else "degraded",
         "db": database,
-        "discord": state.discord_status,
+        "discord": state.bot_status.value,
         "outbox_backlog": backlog,
         "llm_mode": state.settings.llm_mode,
     }

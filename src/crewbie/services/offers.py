@@ -214,12 +214,15 @@ def _notify_join(
     room = change.room
     room_id = room.id
     size = change.state.size
-    add_update(uow, joiner.install_id, "joined", joiner, room={"size": size})
+    url = thread_url(ctx, room)
+    add_update(uow, joiner.install_id, "joined", joiner, room={"size": size}, thread_url=url)
     for intent_id in existing_intent_ids:
         other = uow.intents.get(intent_id)
         if other is None:
             continue
-        add_update(uow, other.install_id, "member_joined", other, room={"size": size})
+        add_update(
+            uow, other.install_id, "member_joined", other, room={"size": size}, thread_url=url
+        )
         if change.window_changed:
             add_update(
                 uow, other.install_id, "window_changed", other,

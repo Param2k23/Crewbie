@@ -24,7 +24,7 @@ secret's value in chat; ask the owner to put it in `.env` (local) or the host's 
 ### I-02 Discord
 
 1. Create (or reuse) a Discord server for Crewbie. Create channels `#welcome`, `#crew-board`, `#crews`.
-   - `#crew-board`: in channel settings → Permissions → `@everyone`: deny Send Messages.
+   - `#crew-board`: in channel settings → Permissions → `@everyone`: deny Send Messages. Then add the bot (its role) with an explicit allow for View Channel, Send Messages, Embed Links, Read Message History and Manage Messages; without it the bot cannot post cards (error 50013).
    - `#crews`: `@everyone`: deny Send Messages, allow Send Messages in Threads.
 2. Go to https://discord.com/developers/applications → New Application → name it "Crewbie".
 3. General Information: copy **Application ID** → `CREWBIE_DISCORD_APP_ID`.

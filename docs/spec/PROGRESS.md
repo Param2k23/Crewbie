@@ -49,7 +49,7 @@ Left for later phases: real matching (Phase 3); Discord worker that consumes the
 
 Open questions: none.
 
-## Phase 3: Agents and matcher, deterministic (done, awaiting owner review)
+## Phase 3: Agents and matcher, deterministic (done, committed 3992834)
 
 Done:
 - `agents/`: protocol messages, delegate (deterministic guard plus pluggable chooser), host (fan-out and
@@ -66,5 +66,27 @@ Done:
 
 Left for later phases: Discord worker that consumes the outbox (Phase 4); LLM chooser, captions and prompt
 injection tests P-3/AS-10 (Phase 7); `/v1/stream` over `public_events` (Phase 7).
+
+Open questions: none.
+
+## Phase 4: Discord bot (code done; live checks with test accounts pending)
+
+Done:
+- `discord_bot/`: client with guild-synced `/crew link|status|leave|help|meetpoint`, persistent Join button on
+  board cards, Join modal, outbox worker for all seven job kinds, live gateway, runtime started from the API
+  lifespan (`CREWBIE_DISCORD_ENABLED=true`), `/healthz` reports `discord`.
+- Services for the bot: room view (public fields only), outbox job results, bot actions (status, leave, board
+  join), room lifecycle worker.
+- All user-facing strings in `messages.py`; untrusted event text is neutralised; no mentions unless asked.
+- Tests with a fake gateway that implements the production protocol: AS-2, AS-3, AS-7, AS-8, AS-11, retry and
+  backoff, idempotency, closed DMs, board card lifecycle, thread archive, synthetic members skipped, handlers
+  and modal, messages, runtime wiring; privacy scan extended to everything the bot says and logs.
+- A real connection check passed: the bot logged in, synced commands to the guild and `/healthz` showed
+  `discord: connected`.
+
+Pending (needs the owner and test accounts):
+- Set `CREWBIE_DISCORD_ENABLED=true` in `.env`, run `uv run python -m crewbie`, and walk the live checklist in
+  the Phase 4 summary (AS-2, AS-7, AS-8 with two Discord accounts).
+- Optional: `CREWBIE_DISCORD_TEST_CHANNEL_ID`, then `uv run pytest -m discord_live`.
 
 Open questions: none.

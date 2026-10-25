@@ -38,6 +38,7 @@ class Settings(BaseSettings):
     discord_board_channel_id: str = Field("", validation_alias="CREWBIE_DISCORD_BOARD_CHANNEL_ID")
     discord_crews_channel_id: str = Field("", validation_alias="CREWBIE_DISCORD_CREWS_CHANNEL_ID")
     discord_invite_url: str = Field("", validation_alias="CREWBIE_DISCORD_INVITE_URL")
+    discord_test_channel_id: str = Field("", validation_alias="CREWBIE_DISCORD_TEST_CHANNEL_ID")
     discord_enabled: bool = Field(False, validation_alias="CREWBIE_DISCORD_ENABLED")
 
     llm_mode: Literal["on", "off"] = Field("off", validation_alias="CREWBIE_LLM_MODE")
@@ -125,6 +126,7 @@ SPECS: tuple[VarSpec, ...] = (
     VarSpec("CREWBIE_DISCORD_BOARD_CHANNEL_ID", _is_snowflake, _discord_on),
     VarSpec("CREWBIE_DISCORD_CREWS_CHANNEL_ID", _is_snowflake, _discord_on),
     VarSpec("CREWBIE_DISCORD_INVITE_URL", _is_http_url, _discord_on),
+    VarSpec("CREWBIE_DISCORD_TEST_CHANNEL_ID", _is_snowflake, _never),
     VarSpec("CREWBIE_DISCORD_ENABLED", lambda v: v.lower() in {"true", "false"}, _never),
     VarSpec("CREWBIE_LLM_MODE", lambda v: v in {"on", "off"}, _never),
     VarSpec("CREWBIE_LLM_MODEL", _non_empty, _llm_on),

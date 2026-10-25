@@ -1,5 +1,6 @@
 """Helpers shared by API, skill and privacy tests."""
 
+import hashlib
 import secrets
 from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
@@ -104,6 +105,7 @@ class Student:
         response = client.post("/v1/installs", json={}, headers=self.headers)
         assert response.status_code == 201, response.text
         self.install_id: str = response.json()["install_id"]
+        self.discord_id: str = ""
 
     def get(self, path: str, **kw: Any) -> Any:
         return self.client.get(path, headers=self.headers, **kw)
@@ -119,14 +121,16 @@ class Student:
         result: dict[str, Any] = response.json()
         return result
 
-    def link(self, app_ctx: Any, discord_user_id: str | None = None) -> None:
-        """Link this install to a Discord user the way the bot would."""
+    def link(self, app_ctx: Any, discord_user_id: str | None = None) -> str:
+        """Link this install to a Discord user the way the bot would. Returns the Discord id."""
         from crewbie.services import linking
 
+        digest = int(hashlib.sha256(self.name.encode()).hexdigest()[:15], 16)
+        discord_id = discord_user_id or f"8{digest % 10**17:017d}"
         code = self.post("/v1/installs/me/link-codes").json()["code"]
-        linking.complete(
-            app_ctx, code, discord_user_id or f"9{abs(hash(self.name)) % 10**16:016d}", self.name
-        )
+        linking.complete(app_ctx, code, discord_id, self.name)
+        self.discord_id = discord_id
+        return discord_id
 
     def updates(self, cursor: int = 0) -> list[dict[str, Any]]:
         return list(self.get(f"/v1/updates?cursor={cursor}").json()["updates"])

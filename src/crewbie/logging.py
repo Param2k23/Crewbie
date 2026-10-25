@@ -73,5 +73,6 @@ def configure_logging(level: str = "INFO") -> None:
     root = logging.getLogger()
     root.handlers[:] = [handler]
     root.setLevel(level)
+    logging.getLogger("discord.client").setLevel(logging.ERROR)  # voice-library warnings
     for noisy in ("alembic", "httpx", "asyncio"):
         logging.getLogger(noisy).setLevel(logging.WARNING)

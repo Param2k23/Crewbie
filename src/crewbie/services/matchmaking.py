@@ -67,8 +67,11 @@ def build_snapshots(uow: UnitOfWork, event_key: str) -> list[RoomSnapshot]:
     return snapshots
 
 
-def run(ctx: ServiceContext, intent_id: str) -> OfferView | None:
-    """Match one intent that is in `matching`. Returns the new offer, or None if nothing to do."""
+def run(ctx: ServiceContext, intent_id: str, only_room_id: str | None = None) -> OfferView | None:
+    """Match one intent that is in `matching`. Returns the new offer, or None if nothing to do.
+
+    `only_room_id` limits candidates to one room (a join from the Discord board, FR-BOT-06).
+    """
     with ctx.uow_factory() as uow:
         intent = uow.intents.get(intent_id)
         if intent is None or intent.state != IntentState.MATCHING.value:
@@ -83,6 +86,8 @@ def run(ctx: ServiceContext, intent_id: str) -> OfferView | None:
     with ctx.room_locks.hold(room_ids):
         with ctx.uow_factory() as uow:
             snapshots = build_snapshots(uow, event_key)
+        if only_room_id is not None:
+            snapshots = [s for s in snapshots if s.room_id == only_room_id]
         result = ctx.matcher.match(
             MatchRequest(intent_id, event_key, joiner, tuple(snapshots), ctx.clock())
         )

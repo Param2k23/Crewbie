@@ -6,6 +6,7 @@ requires-python = ">=3.12,<3.13"
 dependencies = [
     "alembic>=1.14",
     "cryptography>=43",
+    "discord-py>=2.6",
     "fastapi>=0.115",
     "pydantic-settings>=2.6",
     "sqlalchemy>=2.0",
@@ -64,7 +65,10 @@ strict = true
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-m 'not e2e and not discord_live'"
-filterwarnings = ["ignore:Using .httpx. with .starlette.testclient"]
+filterwarnings = [
+    "ignore:Using .httpx. with .starlette.testclient",
+    "ignore:.audioop. is deprecated:DeprecationWarning",
+]
 markers = [
     "e2e: needs a running server (opt in with -m e2e)",
     "discord_live: posts to a real Discord test channel (opt in with -m discord_live)",

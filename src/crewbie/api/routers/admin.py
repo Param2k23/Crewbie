@@ -7,7 +7,7 @@ from crewbie.api.auth import app_state
 from crewbie.api.state import AppState
 from crewbie.domain.errors import NotFound, Unauthorized
 from crewbie.persistence.outbox import OutboxState
-from crewbie.services import admin, rooms, seed
+from crewbie.services import admin, outbox_jobs, rooms, seed
 
 
 def require_admin(
@@ -48,3 +48,9 @@ def list_outbox(
     outbox_state: Annotated[OutboxState, Query(alias="state")] = OutboxState.FAILED,
 ) -> dict[str, Any]:
     return {"jobs": admin.list_outbox(state.ctx, outbox_state)}
+
+
+@router.post("/outbox/retry")
+def retry_failed_jobs(state: Annotated[AppState, Depends(require_admin)]) -> dict[str, int]:
+    """Re-queue every failed job, for example after fixing a Discord permission."""
+    return {"requeued": outbox_jobs.retry_failed(state.ctx)}

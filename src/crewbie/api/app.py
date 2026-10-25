@@ -18,13 +18,14 @@ from crewbie.api.rate_limit import RateLimits, TokenBucketLimiter
 from crewbie.api.routers import admin, health, installs, intents, offers, rooms, updates
 from crewbie.api.state import AppState
 from crewbie.config import Settings
+from crewbie.discord_bot.runtime import BotRuntime
 from crewbie.logging import install_ref_var, request_id_var
 from crewbie.matching.matcher import DeterministicMatcher, Matcher
 from crewbie.persistence.crypto import load_cipher
 from crewbie.persistence.db import create_db_engine, make_session_factory, migrate_to_head
 from crewbie.persistence.unit_of_work import UnitOfWork
 from crewbie.services.context import ServiceConfig, ServiceContext, utc_now
-from crewbie.workers import offer_sweeper
+from crewbie.workers import offer_sweeper, room_lifecycle
 
 logger = logging.getLogger("crewbie.api")
 _REQUEST_ID = re.compile(r"^[A-Za-z0-9_\-]{8,64}$")
@@ -86,10 +87,18 @@ def create_app(
     @asynccontextmanager
     async def lifespan(_: FastAPI) -> AsyncIterator[None]:
         sweeper = asyncio.create_task(offer_sweeper.run(state.ctx, sweep_interval_seconds))
+        lifecycle = asyncio.create_task(
+            room_lifecycle.run(state.ctx, max(sweep_interval_seconds, 1.0) * 2)
+        )
+        bot = BotRuntime(state.ctx, state.settings, state.bot_status)
+        if state.settings.discord_enabled:
+            await bot.start()  # connects in the background; startup never waits on Discord
         try:
             yield
         finally:
             sweeper.cancel()
+            lifecycle.cancel()
+            await bot.stop()
             state.engine.dispose()
 
     app = FastAPI(

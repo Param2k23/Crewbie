@@ -54,7 +54,12 @@ class SubmitIntent:
     budget_cap_usd: float | None = None
 
 
-def submit(ctx: ServiceContext, install_id: str, request: SubmitIntent) -> SubmitResult:
+def submit(
+    ctx: ServiceContext,
+    install_id: str,
+    request: SubmitIntent,
+    only_room_id: str | None = None,
+) -> SubmitResult:
     """Validate, store and match an intent; returns the offer made within the time budget."""
     now = ctx.clock()
     event = request.event
@@ -89,7 +94,7 @@ def submit(ctx: ServiceContext, install_id: str, request: SubmitIntent) -> Submi
     # Matching runs after the intent is safely stored. If it fails the intent stays in
     # `matching` and the background sweep retries it (FR-INT-04).
     try:
-        offer = matchmaking.run(ctx, intent_id)
+        offer = matchmaking.run(ctx, intent_id, only_room_id)
     except Exception:
         logger.exception("matching failed", extra={"intent_id": intent_id})
         offer = None

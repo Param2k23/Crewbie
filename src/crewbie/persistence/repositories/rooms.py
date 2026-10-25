@@ -166,3 +166,6 @@ class RoomRepository:
         if row is not None:
             row.discord_thread_id = thread_id
             self._session.flush()
+
+    def get_by_thread(self, thread_id: str) -> RoomRow | None:
+        return self._session.scalar(select(RoomRow).where(RoomRow.discord_thread_id == thread_id))

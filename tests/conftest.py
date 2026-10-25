@@ -1,6 +1,7 @@
+import asyncio
 import threading
 import time
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -11,7 +12,9 @@ from fastapi.testclient import TestClient
 from crewbie.api.app import create_app
 from crewbie.api.rate_limit import RateLimits
 from crewbie.config import Settings
+from crewbie.discord_bot.worker import OutboxWorker, WorkerConfig
 from crewbie.services.context import ServiceContext
+from tests.discord.fakes import FakeGateway
 from tests.support import FakeClock, ScriptedMatcher, Student
 
 ADMIN_TOKEN = "test-admin-token-" + "x" * 24
@@ -126,3 +129,30 @@ def live_server(tmp_path: Path) -> Iterator[LiveServer]:
     yield LiveServer(f"http://127.0.0.1:{port}", app.state.crewbie.ctx)
     server.should_exit = True
     thread.join(timeout=5)
+
+
+@pytest.fixture
+def gateway() -> FakeGateway:
+    return FakeGateway()
+
+
+@pytest.fixture
+def worker(real_ctx: ServiceContext, gateway: FakeGateway) -> OutboxWorker:
+    return OutboxWorker(real_ctx, gateway, WorkerConfig("111111111111111111", "America/Phoenix"))
+
+
+@pytest.fixture
+def drain(clock: FakeClock) -> Callable[[OutboxWorker], int]:
+    """Run the worker until nothing is due, letting retry backoff elapse between passes."""
+
+    def run(worker: OutboxWorker, rounds: int = 10) -> int:
+        total = 0
+        for _ in range(rounds):
+            handled = asyncio.run(worker.process_once())
+            total += handled
+            if handled == 0:
+                break
+            clock.advance(seconds=20)
+        return total
+
+    return run

@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from enum import StrEnum
 from typing import Any
 
-from sqlalchemy import func, select
+from sqlalchemy import func, select, update
 from sqlalchemy.orm import Session
 
 from crewbie.persistence.tables import OutboxRow
@@ -100,3 +100,13 @@ class Outbox:
                 .limit(limit)
             )
         )
+
+    def requeue_failed(self, now: datetime) -> int:
+        """Give every failed job a fresh set of attempts (after the cause has been fixed)."""
+        result = self._session.execute(
+            update(OutboxRow)
+            .where(OutboxRow.state == OutboxState.FAILED.value)
+            .values(state=OutboxState.PENDING.value, attempts=0, next_attempt_at=now)
+        )
+        self._session.flush()
+        return int(result.rowcount or 0)  # type: ignore[attr-defined]

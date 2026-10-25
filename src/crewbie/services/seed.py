@@ -10,7 +10,7 @@ from crewbie.domain.event_key import event_key
 from crewbie.domain.intent import IntentState, PrivateEnvelope, SharedIntent
 from crewbie.domain.vibe import Vibe
 from crewbie.domain.windows import TimeWindow
-from crewbie.services._common import recompute_room
+from crewbie.services._common import enqueue, recompute_room
 from crewbie.services.context import ServiceContext
 
 SEED_URL = "https://sundevilcentral.eoss.asu.edu/events/demo-board-game-night"
@@ -57,6 +57,10 @@ def seed_demo(ctx: ServiceContext) -> dict[str, Any]:
             uow.intents.add(intent_id, install.id, shared, envelope, IntentState.JOINED)
             uow.rooms.add_member(ctx.new_id("m"), room_ids[room], intent_id, window, now)
         for room_id in room_ids:
-            recompute_room(ctx, uow, room_id)
+            change = recompute_room(ctx, uow, room_id)
+            enqueue(
+                ctx, uow, "upsert_board_card", {"room_id": room_id},
+                f"board:{room_id}:v{change.room.version}",
+            )  # fmt: skip
         uow.commit()
     return {"event_key": key, "rooms": room_ids}
