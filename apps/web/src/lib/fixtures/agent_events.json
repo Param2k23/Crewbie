@@ -1,0 +1,160 @@
+{
+  "fixture_notice": "Synthetic event replay, not simulated hidden chain of thought.",
+  "events": [
+    {
+      "event_id": "ev_0001",
+      "session_id": "session_trip_001",
+      "timestamp": "2026-10-24T18:01:00Z",
+      "type": "negotiation_started",
+      "actor_ref": "coordination_engine",
+      "visibility": "group_safe",
+      "payload": {
+        "group_size": 4
+      },
+      "synthetic": true
+    },
+    {
+      "event_id": "ev_0002",
+      "session_id": "session_trip_001",
+      "timestamp": "2026-10-24T18:02:00Z",
+      "type": "candidate_proposed",
+      "actor_ref": "coordination_engine",
+      "visibility": "group_safe",
+      "payload": {
+        "plan_id": "plan_flagstaff_001",
+        "version": 1
+      },
+      "synthetic": true
+    },
+    {
+      "event_id": "ev_0003",
+      "session_id": "session_trip_001",
+      "timestamp": "2026-10-24T18:03:00Z",
+      "type": "proposal_rejected",
+      "actor_ref": "coordination_engine",
+      "visibility": "group_safe",
+      "payload": {
+        "plan_id": "plan_flagstaff_001",
+        "version": 1,
+        "reason_category": "constraint_conflict"
+      },
+      "synthetic": true
+    },
+    {
+      "event_id": "ev_0004",
+      "session_id": "session_trip_001",
+      "timestamp": "2026-10-24T18:04:00Z",
+      "type": "counteroffer_proposed",
+      "actor_ref": "coordination_engine",
+      "visibility": "group_safe",
+      "payload": {
+        "version": 2,
+        "summary": "Alternative day and reduced estimated cost"
+      },
+      "synthetic": true
+    },
+    {
+      "event_id": "ev_0005",
+      "session_id": "session_trip_001",
+      "timestamp": "2026-10-24T18:05:00Z",
+      "type": "proposal_ready",
+      "actor_ref": "coordination_engine",
+      "visibility": "group_safe",
+      "payload": {
+        "plan_id": "plan_flagstaff_002",
+        "version": 2,
+        "approval_state": "pending"
+      },
+      "synthetic": true
+    },
+    {
+      "event_id": "ev_0006",
+      "session_id": "session_trip_001",
+      "timestamp": "2026-10-24T18:06:00Z",
+      "type": "approval_requested",
+      "actor_ref": "coordination_engine",
+      "visibility": "group_safe",
+      "payload": {
+        "plan_id": "plan_flagstaff_002",
+        "version": 2,
+        "required_count": 4
+      },
+      "synthetic": true
+    },
+    {
+      "event_id": "ev_0007",
+      "session_id": "session_trip_001",
+      "timestamp": "2026-10-24T18:07:00Z",
+      "type": "member_response_received",
+      "actor_ref": "group_host",
+      "visibility": "group_safe",
+      "payload": {
+        "plan_id": "plan_flagstaff_002",
+        "version": 2,
+        "member_ref": "stu_alex",
+        "state": "accepted"
+      },
+      "synthetic": true
+    },
+    {
+      "event_id": "ev_0008",
+      "session_id": "session_trip_001",
+      "timestamp": "2026-10-24T18:08:00Z",
+      "type": "member_response_received",
+      "actor_ref": "group_host",
+      "visibility": "group_safe",
+      "payload": {
+        "plan_id": "plan_flagstaff_002",
+        "version": 2,
+        "member_ref": "stu_maya",
+        "state": "accepted"
+      },
+      "synthetic": true
+    },
+    {
+      "event_id": "ev_0009",
+      "session_id": "session_trip_001",
+      "timestamp": "2026-10-24T18:09:00Z",
+      "type": "member_response_received",
+      "actor_ref": "group_host",
+      "visibility": "group_safe",
+      "payload": {
+        "plan_id": "plan_flagstaff_002",
+        "version": 2,
+        "member_ref": "stu_jordan",
+        "state": "accepted"
+      },
+      "synthetic": true
+    },
+    {
+      "event_id": "ev_0010",
+      "session_id": "session_trip_001",
+      "timestamp": "2026-10-24T18:10:00Z",
+      "type": "member_response_received",
+      "actor_ref": "group_host",
+      "visibility": "group_safe",
+      "payload": {
+        "plan_id": "plan_flagstaff_002",
+        "version": 2,
+        "member_ref": "stu_taylor",
+        "state": "accepted"
+      },
+      "synthetic": true
+    },
+    {
+      "event_id": "ev_0011",
+      "session_id": "session_trip_001",
+      "timestamp": "2026-10-24T18:11:00Z",
+      "type": "proposal_confirmed",
+      "actor_ref": "coordination_engine",
+      "visibility": "group_safe",
+      "payload": {
+        "plan_id": "plan_flagstaff_002",
+        "version": 2,
+        "accepted_count": 4,
+        "required_count": 4
+      },
+      "synthetic": true
+    }
+  ]
+}
