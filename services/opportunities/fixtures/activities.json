@@ -1,0 +1,241 @@
+{
+  "fixture_notice": "All activities, prices, hours and venues are fictional DEMO ONLY values, not live offers.",
+  "opportunities": [
+    {
+      "opportunity_id": "demo_coffee",
+      "title": "Coffee conversation \u2014 DEMO ONLY",
+      "campus": "Tempe",
+      "start_at": "2026-10-26T12:00:00-07:00",
+      "end_at": "2026-10-26T14:00:00-07:00",
+      "location_label": "Fictional activity location \u2014 DEMO ONLY",
+      "food_status": "unknown",
+      "food_detail": "Food provision not verified; activity category does not imply food included",
+      "dietary_suitability": "unknown",
+      "access_status": "public",
+      "rsvp_required": null,
+      "source_url": "https://example.org/crewbie-demo/activity/coffee",
+      "checked_at": "2026-10-24T18:00:00Z",
+      "synthetic": true,
+      "activity": {
+        "kind": "venue",
+        "categories": [
+          "coffee"
+        ],
+        "interests": [
+          "social"
+        ],
+        "duration_minutes": [
+          90,
+          90
+        ],
+        "price_cents": null,
+        "opening_windows": [
+          {
+            "start_at": "2026-10-26T12:00:00-07:00",
+            "end_at": "2026-10-26T14:00:00-07:00"
+          }
+        ],
+        "location_context": "local"
+      }
+    },
+    {
+      "opportunity_id": "demo_games",
+      "title": "Casual board games \u2014 DEMO ONLY",
+      "campus": "Tempe",
+      "start_at": "2026-10-26T12:30:00-07:00",
+      "end_at": "2026-10-26T13:30:00-07:00",
+      "location_label": "Fictional activity location \u2014 DEMO ONLY",
+      "food_status": "unknown",
+      "food_detail": "Food provision not verified; activity category does not imply food included",
+      "dietary_suitability": "unknown",
+      "access_status": "public",
+      "rsvp_required": null,
+      "source_url": "https://example.org/crewbie-demo/activity/games",
+      "checked_at": "2026-10-24T18:00:00Z",
+      "synthetic": true,
+      "activity": {
+        "kind": "event",
+        "categories": [
+          "games"
+        ],
+        "interests": [
+          "games",
+          "social"
+        ],
+        "duration_minutes": [
+          60,
+          60
+        ],
+        "price_cents": 0,
+        "opening_windows": [],
+        "location_context": "local"
+      }
+    },
+    {
+      "opportunity_id": "demo_bowling",
+      "title": "Evening bowling \u2014 DEMO ONLY",
+      "campus": "Tempe",
+      "start_at": "2026-10-26T18:00:00-07:00",
+      "end_at": "2026-10-26T21:00:00-07:00",
+      "location_label": "Fictional activity location \u2014 DEMO ONLY",
+      "food_status": "unknown",
+      "food_detail": "Food provision not verified; activity category does not imply food included",
+      "dietary_suitability": "unknown",
+      "access_status": "public",
+      "rsvp_required": null,
+      "source_url": "https://example.org/crewbie-demo/activity/bowling",
+      "checked_at": "2026-10-24T18:00:00Z",
+      "synthetic": true,
+      "activity": {
+        "kind": "event",
+        "categories": [
+          "bowling"
+        ],
+        "interests": [
+          "social"
+        ],
+        "duration_minutes": [
+          180,
+          180
+        ],
+        "price_cents": 2500,
+        "opening_windows": [],
+        "location_context": "local"
+      }
+    },
+    {
+      "opportunity_id": "demo_workshop",
+      "title": "Half-day workshop \u2014 DEMO ONLY",
+      "campus": "Tempe",
+      "start_at": "2026-10-26T13:00:00-07:00",
+      "end_at": "2026-10-26T17:00:00-07:00",
+      "location_label": "Fictional activity location \u2014 DEMO ONLY",
+      "food_status": "unknown",
+      "food_detail": "Food provision not verified; activity category does not imply food included",
+      "dietary_suitability": "unknown",
+      "access_status": "public",
+      "rsvp_required": null,
+      "source_url": "https://example.org/crewbie-demo/activity/workshop",
+      "checked_at": "2026-10-24T18:00:00Z",
+      "synthetic": true,
+      "activity": {
+        "kind": "event",
+        "categories": [
+          "workshop",
+          "campus"
+        ],
+        "interests": [
+          "learning"
+        ],
+        "duration_minutes": [
+          240,
+          240
+        ],
+        "price_cents": null,
+        "opening_windows": [],
+        "location_context": "local"
+      }
+    },
+    {
+      "opportunity_id": "demo_sports",
+      "title": "Casual sports \u2014 DEMO ONLY",
+      "campus": "Tempe",
+      "start_at": "2026-10-26T17:00:00-07:00",
+      "end_at": "2026-10-26T19:00:00-07:00",
+      "location_label": "Fictional activity location \u2014 DEMO ONLY",
+      "food_status": "unknown",
+      "food_detail": "Food provision not verified; activity category does not imply food included",
+      "dietary_suitability": "unknown",
+      "access_status": "public",
+      "rsvp_required": null,
+      "source_url": "https://example.org/crewbie-demo/activity/sports",
+      "checked_at": "2026-10-24T18:00:00Z",
+      "synthetic": true,
+      "activity": {
+        "kind": "event",
+        "categories": [
+          "sports",
+          "recreation"
+        ],
+        "interests": [
+          "fitness"
+        ],
+        "duration_minutes": [
+          120,
+          120
+        ],
+        "price_cents": null,
+        "opening_windows": [],
+        "location_context": "local"
+      }
+    },
+    {
+      "opportunity_id": "demo_hike",
+      "title": "Day-out hike \u2014 DEMO ONLY",
+      "campus": "Off campus",
+      "start_at": "2026-10-31T09:00:00-07:00",
+      "end_at": "2026-10-31T15:00:00-07:00",
+      "location_label": "Fictional activity location \u2014 DEMO ONLY",
+      "food_status": "unknown",
+      "food_detail": "Food provision not verified; activity category does not imply food included",
+      "dietary_suitability": "unknown",
+      "access_status": "public",
+      "rsvp_required": null,
+      "source_url": "https://example.org/crewbie-demo/activity/hike",
+      "checked_at": "2026-10-24T18:00:00Z",
+      "synthetic": true,
+      "activity": {
+        "kind": "event",
+        "categories": [
+          "hike",
+          "day_out",
+          "outdoors"
+        ],
+        "interests": [
+          "nature"
+        ],
+        "duration_minutes": [
+          360,
+          360
+        ],
+        "price_cents": null,
+        "opening_windows": [],
+        "location_context": "regional"
+      }
+    },
+    {
+      "opportunity_id": "demo_weekend",
+      "title": "Two-day trip candidate \u2014 DEMO ONLY",
+      "campus": "Off campus",
+      "start_at": "2026-10-31T08:00:00-07:00",
+      "end_at": "2026-11-02T08:00:00-07:00",
+      "location_label": "Fictional activity location \u2014 DEMO ONLY",
+      "food_status": "unknown",
+      "food_detail": "Food provision not verified; activity category does not imply food included",
+      "dietary_suitability": "unknown",
+      "access_status": "public",
+      "rsvp_required": null,
+      "source_url": "https://example.org/crewbie-demo/activity/weekend",
+      "checked_at": "2026-10-24T18:00:00Z",
+      "synthetic": true,
+      "activity": {
+        "kind": "event",
+        "categories": [
+          "trip",
+          "getaway"
+        ],
+        "interests": [
+          "nature",
+          "travel"
+        ],
+        "duration_minutes": [
+          2880,
+          2880
+        ],
+        "price_cents": null,
+        "opening_windows": [],
+        "location_context": "regional"
+      }
+    }
+  ]
+}

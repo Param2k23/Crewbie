@@ -1,0 +1,81 @@
+[
+  {
+    "scenario": "unlocks",
+    "mode": "DEMO/SYNTHETIC",
+    "state": "confirmed",
+    "private_agent_calls": 4,
+    "version": 1,
+    "event_types": [
+      "opportunity_discovered",
+      "match_requested",
+      "match_suggested",
+      "negotiation_started",
+      "candidate_proposed",
+      "fairness_evaluated",
+      "proposal_ready",
+      "approval_requested",
+      "member_response_received",
+      "member_response_received",
+      "member_response_received",
+      "member_response_received",
+      "member_response_received",
+      "proposal_confirmed",
+      "session_completed"
+    ],
+    "booking_confirmed": false
+  },
+  {
+    "scenario": "evening",
+    "mode": "DEMO/SYNTHETIC",
+    "state": "confirmed",
+    "private_agent_calls": 12,
+    "version": 2,
+    "event_types": [
+      "negotiation_started",
+      "candidate_proposed",
+      "proposal_rejected",
+      "counteroffer_proposed",
+      "counteroffer_proposed",
+      "fairness_evaluated",
+      "fairness_evaluated",
+      "proposal_ready",
+      "approval_requested",
+      "member_response_received",
+      "member_response_received",
+      "member_response_received",
+      "member_response_received",
+      "member_response_received",
+      "proposal_confirmed",
+      "session_completed"
+    ],
+    "booking_confirmed": false
+  },
+  {
+    "scenario": "weekend",
+    "mode": "DEMO/SYNTHETIC",
+    "state": "confirmed",
+    "private_agent_calls": 12,
+    "version": 3,
+    "event_types": [
+      "negotiation_started",
+      "candidate_proposed",
+      "proposal_rejected",
+      "counteroffer_proposed",
+      "proposal_rejected",
+      "counteroffer_proposed",
+      "fairness_evaluated",
+      "proposal_ready",
+      "approval_requested",
+      "member_response_received",
+      "member_response_received",
+      "member_response_received",
+      "member_response_received",
+      "member_response_received",
+      "proposal_confirmed",
+      "session_completed"
+    ],
+    "booking_confirmed": false,
+    "after_change": "approval_pending",
+    "after_change_version": 6
+  }
+]

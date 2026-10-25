@@ -1,0 +1,23 @@
+{
+  "fixture_notice": "Synthetic stand-in for A4 get_public_snapshot output (redacted). Not real negotiation output.",
+  "snapshots": {
+    "plan_flagstaff_001:1": {
+      "session_id": "session_trip_001", "plan_id": "plan_flagstaff_001", "version": 1, "validated": true,
+      "title": "Flagstaff day trip (DEMO)", "member_refs": ["stu_alex", "stu_maya", "stu_jordan", "stu_taylor"],
+      "start_at": "2026-11-01T08:00:00-08:00", "end_at": "2026-11-01T19:00:00-08:00",
+      "activities": ["Scenic stop", "Lunch", "Return trip"],
+      "cost_summary": "about $70 per person (estimate)",
+      "estimate_disclaimer": "Costs and travel times are demonstration estimates, not live offers.",
+      "synthetic": true
+    },
+    "plan_flagstaff_002:2": {
+      "session_id": "session_trip_001", "plan_id": "plan_flagstaff_002", "version": 2, "validated": true,
+      "title": "Flagstaff day trip, later start (DEMO)", "member_refs": ["stu_alex", "stu_maya", "stu_jordan", "stu_taylor"],
+      "start_at": "2026-11-01T10:00:00-08:00", "end_at": "2026-11-01T19:00:00-08:00",
+      "activities": ["Scenic stop", "Low-cost lunch", "Return trip"],
+      "cost_summary": "about $52 per person (estimate)",
+      "estimate_disclaimer": "Costs and travel times are demonstration estimates, not live offers.",
+      "synthetic": true
+    }
+  }
+}

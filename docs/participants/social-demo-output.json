@@ -1,0 +1,50 @@
+﻿{
+  "synthetic": true,
+  "notice": "Offline synthetic agents; no live provider integration",
+  "scenario_a": {
+    "candidates": [
+      {
+        "student_ref": "stu_maya",
+        "shared_interests": [
+          "games"
+        ],
+        "synthetic": true
+      }
+    ],
+    "before_introduction_consent": "CONSENT_REQUIRED",
+    "mutually_approved_introduction": {
+      "member_refs": [
+        "stu_alex",
+        "stu_maya"
+      ],
+      "synthetic": true
+    },
+    "after_activity_decline": []
+  },
+  "scenario_b": {
+    "existing_group_public_matching_required": false,
+    "plans": [
+      {
+        "version": 1,
+        "all_feasible": false,
+        "public": {
+          "reason_category": "constraint_conflict",
+          "synthetic": true
+        }
+      },
+      {
+        "version": 2,
+        "all_feasible": true,
+        "public": {
+          "reason_category": "constraints_satisfied",
+          "synthetic": true
+        }
+      }
+    ],
+    "exception_request": {
+      "status": "pending",
+      "synthetic": true
+    },
+    "request_did_not_approve_plan": true
+  }
+}

@@ -1,0 +1,177 @@
+{
+  "fixture_notice": "All profiles, plans and numbers are synthetic; do not send real participant data to UI or group chat.",
+  "scenarios": [
+    {
+      "id": "campus_pulse",
+      "description": "Lunch alert and consented companion introduction",
+      "student_brief": {
+        "brief_id": "brief_demo_001",
+        "student_ref": "stu_alex",
+        "intent": "find_campus_food",
+        "campus": "Tempe",
+        "availability_start": "2026-10-26T12:00:00-07:00",
+        "availability_end": "2026-10-26T13:30:00-07:00",
+        "opportunity_id": "opp_demo_pizza",
+        "wants_companion": false,
+        "requirements_to_verify": [
+          "vegetarian_options",
+          "event_entry_policy"
+        ],
+        "source": "cubbie_skill",
+        "synthetic": true
+      },
+      "expected_results": [
+        "opp_demo_pizza is candidate",
+        "dietary suitability remains unknown",
+        "no introductions without mutual consent"
+      ]
+    },
+    {
+      "id": "flagstaff_private_negotiation",
+      "description": "Four synthetic friends, one with $60 hard cap and another with Saturday work",
+      "profiles": [
+        {
+          "student_ref": "stu_alex",
+          "activity_scope": "trip_flagstaff_001",
+          "authorized": true,
+          "matching_opt_in": true,
+          "introduction_opt_in": false,
+          "hard_budget_cap_cents": 6000,
+          "blocked_windows": [],
+          "soft_preferences": {
+            "avoid_before_local_hour": 9,
+            "prefers_low_cost": true
+          },
+          "shareable_interests": [
+            "backend",
+            "hiking"
+          ],
+          "synthetic": true
+        },
+        {
+          "student_ref": "stu_maya",
+          "activity_scope": "trip_flagstaff_001",
+          "authorized": true,
+          "matching_opt_in": true,
+          "introduction_opt_in": false,
+          "hard_budget_cap_cents": 10000,
+          "blocked_windows": [
+            {
+              "start_at": "2026-10-31T08:00:00-07:00",
+              "end_at": "2026-10-31T18:00:00-07:00"
+            }
+          ],
+          "soft_preferences": {
+            "avoid_before_local_hour": 8,
+            "prefers_low_cost": false
+          },
+          "shareable_interests": [
+            "design",
+            "photography"
+          ],
+          "synthetic": true
+        },
+        {
+          "student_ref": "stu_jordan",
+          "activity_scope": "trip_flagstaff_001",
+          "authorized": true,
+          "matching_opt_in": true,
+          "introduction_opt_in": false,
+          "hard_budget_cap_cents": 9000,
+          "blocked_windows": [],
+          "soft_preferences": {
+            "avoid_before_local_hour": 10,
+            "prefers_low_cost": false
+          },
+          "shareable_interests": [
+            "frontend",
+            "coffee"
+          ],
+          "synthetic": true
+        },
+        {
+          "student_ref": "stu_taylor",
+          "activity_scope": "trip_flagstaff_001",
+          "authorized": true,
+          "matching_opt_in": true,
+          "introduction_opt_in": false,
+          "hard_budget_cap_cents": 7500,
+          "blocked_windows": [],
+          "soft_preferences": {
+            "avoid_before_local_hour": 9,
+            "prefers_low_cost": true
+          },
+          "shareable_interests": [
+            "AI",
+            "nature"
+          ],
+          "synthetic": true
+        }
+      ],
+      "candidate_plans": [
+        {
+          "plan_id": "plan_flagstaff_001",
+          "version": 1,
+          "start_at": "2026-10-31T07:00:00-07:00",
+          "end_at": "2026-10-31T17:30:00-07:00",
+          "estimated_cost_cents_by_ref": {
+            "stu_alex": 7000,
+            "stu_maya": 7000,
+            "stu_jordan": 7000,
+            "stu_taylor": 7000
+          },
+          "session_id": "session_trip_001",
+          "opportunity_id": null,
+          "title": "Flagstaff day trip (DEMO)",
+          "member_refs": [
+            "stu_alex",
+            "stu_maya",
+            "stu_jordan",
+            "stu_taylor"
+          ],
+          "activities": [
+            "Scenic stop",
+            "Low-cost lunch",
+            "Return trip"
+          ],
+          "estimate_disclaimer": "Synthetic estimates only; not live prices or travel quotes",
+          "synthetic": true
+        },
+        {
+          "plan_id": "plan_flagstaff_002",
+          "version": 2,
+          "start_at": "2026-11-01T10:00:00-08:00",
+          "end_at": "2026-11-01T19:00:00-08:00",
+          "estimated_cost_cents_by_ref": {
+            "stu_alex": 5200,
+            "stu_maya": 5200,
+            "stu_jordan": 5200,
+            "stu_taylor": 5200
+          },
+          "session_id": "session_trip_001",
+          "opportunity_id": null,
+          "title": "Flagstaff day trip (DEMO)",
+          "member_refs": [
+            "stu_alex",
+            "stu_maya",
+            "stu_jordan",
+            "stu_taylor"
+          ],
+          "activities": [
+            "Scenic stop",
+            "Low-cost lunch",
+            "Return trip"
+          ],
+          "estimate_disclaimer": "Synthetic estimates only; not live prices or travel quotes",
+          "synthetic": true
+        }
+      ],
+      "expected_results": [
+        "Plan version 1 fails due to private constraints",
+        "Plan version 2 is feasible if no other constraints",
+        "Fairness only ranks plans that pass hard constraints",
+        "Changing hard budget triggers material revision + approval invalidation"
+      ]
+    }
+  ]
+}

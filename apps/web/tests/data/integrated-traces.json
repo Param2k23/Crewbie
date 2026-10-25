@@ -1,0 +1,1626 @@
+{
+  "unlocks": {
+    "pending": [
+      {
+        "event_id": "integrated_00000001",
+        "session_id": "session_d8bf7d9dd31d",
+        "timestamp": "2026-10-24T19:00:01+00:00",
+        "type": "opportunity_discovered",
+        "actor_ref": "integration",
+        "visibility": "group_safe",
+        "payload": {
+          "opportunity_id": "asu_library_games_demo"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000002",
+        "session_id": "session_d8bf7d9dd31d",
+        "timestamp": "2026-10-24T19:00:02+00:00",
+        "type": "match_requested",
+        "actor_ref": "integration",
+        "visibility": "group_safe",
+        "payload": {
+          "opportunity_id": "asu_library_games_demo"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000003",
+        "session_id": "session_d8bf7d9dd31d",
+        "timestamp": "2026-10-24T19:00:03+00:00",
+        "type": "match_suggested",
+        "actor_ref": "integration",
+        "visibility": "group_safe",
+        "payload": {
+          "group_size": 4
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000004",
+        "session_id": "session_d8bf7d9dd31d",
+        "timestamp": "2026-10-24T19:00:04+00:00",
+        "type": "negotiation_started",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "group_size": 4
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000005",
+        "session_id": "session_d8bf7d9dd31d",
+        "timestamp": "2026-10-24T19:00:05+00:00",
+        "type": "candidate_proposed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "version": 1
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000006",
+        "session_id": "session_d8bf7d9dd31d",
+        "timestamp": "2026-10-24T19:00:06+00:00",
+        "type": "fairness_evaluated",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "version": 1,
+          "fairness_category": "balanced"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000007",
+        "session_id": "session_d8bf7d9dd31d",
+        "timestamp": "2026-10-24T19:00:07+00:00",
+        "type": "proposal_ready",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "version": 1,
+          "approval_state": "pending"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000008",
+        "session_id": "session_d8bf7d9dd31d",
+        "timestamp": "2026-10-24T19:00:08+00:00",
+        "type": "approval_requested",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "version": 1,
+          "required_count": 4
+        },
+        "synthetic": true
+      }
+    ],
+    "confirmed": [
+      {
+        "event_id": "integrated_00000001",
+        "session_id": "session_d8bf7d9dd31d",
+        "timestamp": "2026-10-24T19:00:01+00:00",
+        "type": "opportunity_discovered",
+        "actor_ref": "integration",
+        "visibility": "group_safe",
+        "payload": {
+          "opportunity_id": "asu_library_games_demo"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000002",
+        "session_id": "session_d8bf7d9dd31d",
+        "timestamp": "2026-10-24T19:00:02+00:00",
+        "type": "match_requested",
+        "actor_ref": "integration",
+        "visibility": "group_safe",
+        "payload": {
+          "opportunity_id": "asu_library_games_demo"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000003",
+        "session_id": "session_d8bf7d9dd31d",
+        "timestamp": "2026-10-24T19:00:03+00:00",
+        "type": "match_suggested",
+        "actor_ref": "integration",
+        "visibility": "group_safe",
+        "payload": {
+          "group_size": 4
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000004",
+        "session_id": "session_d8bf7d9dd31d",
+        "timestamp": "2026-10-24T19:00:04+00:00",
+        "type": "negotiation_started",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "group_size": 4
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000005",
+        "session_id": "session_d8bf7d9dd31d",
+        "timestamp": "2026-10-24T19:00:05+00:00",
+        "type": "candidate_proposed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "version": 1
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000006",
+        "session_id": "session_d8bf7d9dd31d",
+        "timestamp": "2026-10-24T19:00:06+00:00",
+        "type": "fairness_evaluated",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "version": 1,
+          "fairness_category": "balanced"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000007",
+        "session_id": "session_d8bf7d9dd31d",
+        "timestamp": "2026-10-24T19:00:07+00:00",
+        "type": "proposal_ready",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "version": 1,
+          "approval_state": "pending"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000008",
+        "session_id": "session_d8bf7d9dd31d",
+        "timestamp": "2026-10-24T19:00:08+00:00",
+        "type": "approval_requested",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "version": 1,
+          "required_count": 4
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000009",
+        "session_id": "session_d8bf7d9dd31d",
+        "timestamp": "2026-10-24T19:00:09+00:00",
+        "type": "member_response_received",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "member_ref": "stu_alex",
+          "version": 1,
+          "state": "accepted"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000010",
+        "session_id": "session_d8bf7d9dd31d",
+        "timestamp": "2026-10-24T19:00:10+00:00",
+        "type": "member_response_received",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "member_ref": "stu_maya",
+          "version": 1,
+          "state": "accepted"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000011",
+        "session_id": "session_d8bf7d9dd31d",
+        "timestamp": "2026-10-24T19:00:11+00:00",
+        "type": "member_response_received",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "member_ref": "stu_jordan",
+          "version": 1,
+          "state": "accepted"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000012",
+        "session_id": "session_d8bf7d9dd31d",
+        "timestamp": "2026-10-24T19:00:12+00:00",
+        "type": "member_response_received",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "member_ref": "stu_taylor",
+          "version": 1,
+          "state": "accepted"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000013",
+        "session_id": "session_d8bf7d9dd31d",
+        "timestamp": "2026-10-24T19:00:13+00:00",
+        "type": "proposal_confirmed",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "version": 1,
+          "required_count": 4,
+          "accepted_count": 4
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000014",
+        "session_id": "session_d8bf7d9dd31d",
+        "timestamp": "2026-10-24T19:00:14+00:00",
+        "type": "session_completed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {},
+        "synthetic": true
+      }
+    ],
+    "snapshot": {
+      "session_id": "session_d8bf7d9dd31d",
+      "state": "confirmed",
+      "version": 1,
+      "plan": {
+        "plan_id": "plan_001",
+        "session_id": "session_d8bf7d9dd31d",
+        "version": 1,
+        "opportunity_id": "asu_library_games_demo",
+        "title": "ASU Library board-game experience \u00e2\u20ac\u201d DEMO schedule",
+        "member_refs": [
+          "stu_alex",
+          "stu_maya",
+          "stu_jordan",
+          "stu_taylor"
+        ],
+        "start_at": "2026-10-26T12:00:00-07:00",
+        "end_at": "2026-10-26T14:00:00-07:00",
+        "activities": [
+          "Visit sourced synthetic opportunity"
+        ],
+        "estimate_disclaimer": "Synthetic estimates only; not live prices or travel quotes",
+        "synthetic": true,
+        "activity_kind": "group_activity",
+        "overnight": false,
+        "nights": 0,
+        "logistics": {
+          "transport": "not_needed",
+          "lodging": "not_needed"
+        },
+        "unverified_items": [],
+        "estimated_total_cents": 0
+      },
+      "required_count": 4,
+      "error_code": null,
+      "reason_category": null,
+      "candidates_evaluated": 1,
+      "rounds": 1,
+      "revisions": 0,
+      "synthetic": true,
+      "commitments": {
+        "session_id": "session_d8bf7d9dd31d",
+        "plan_id": "plan_001",
+        "version": 1,
+        "proposal_state": "confirmed",
+        "confirmed": true,
+        "validated": true,
+        "presented": true,
+        "required_count": 4,
+        "accepted_count": 4,
+        "counts": {
+          "pending": 0,
+          "interested": 0,
+          "tentative": 0,
+          "conditional": 0,
+          "accepted": 4,
+          "declined": 0,
+          "withdrawn": 0
+        },
+        "members": {
+          "stu_alex": "accepted",
+          "stu_maya": "accepted",
+          "stu_jordan": "accepted",
+          "stu_taylor": "accepted"
+        },
+        "pending_member_refs": [],
+        "error_code": null,
+        "synthetic": true
+      },
+      "mode": "DEMO/SYNTHETIC",
+      "booking_confirmed": false
+    }
+  },
+  "evening": {
+    "pending": [
+      {
+        "event_id": "integrated_00000001",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:01+00:00",
+        "type": "negotiation_started",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "group_size": 4
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000002",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:02+00:00",
+        "type": "candidate_proposed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "version": 1
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000003",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:03+00:00",
+        "type": "proposal_rejected",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "version": 1,
+          "reason_category": "constraint_conflict"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000004",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:04+00:00",
+        "type": "counteroffer_proposed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_002",
+          "version": 2,
+          "summary": "Alternative day"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000005",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:05+00:00",
+        "type": "counteroffer_proposed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "version": 3,
+          "summary": "Alternative day"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000006",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:06+00:00",
+        "type": "fairness_evaluated",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_002",
+          "version": 2,
+          "fairness_category": "balanced"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000007",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:07+00:00",
+        "type": "fairness_evaluated",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "version": 3,
+          "fairness_category": "balanced"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000008",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:08+00:00",
+        "type": "proposal_ready",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_002",
+          "version": 2,
+          "approval_state": "pending"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000009",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:09+00:00",
+        "type": "approval_requested",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_002",
+          "version": 2,
+          "required_count": 4
+        },
+        "synthetic": true
+      }
+    ],
+    "confirmed": [
+      {
+        "event_id": "integrated_00000001",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:01+00:00",
+        "type": "negotiation_started",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "group_size": 4
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000002",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:02+00:00",
+        "type": "candidate_proposed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "version": 1
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000003",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:03+00:00",
+        "type": "proposal_rejected",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "version": 1,
+          "reason_category": "constraint_conflict"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000004",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:04+00:00",
+        "type": "counteroffer_proposed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_002",
+          "version": 2,
+          "summary": "Alternative day"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000005",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:05+00:00",
+        "type": "counteroffer_proposed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "version": 3,
+          "summary": "Alternative day"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000006",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:06+00:00",
+        "type": "fairness_evaluated",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_002",
+          "version": 2,
+          "fairness_category": "balanced"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000007",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:07+00:00",
+        "type": "fairness_evaluated",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "version": 3,
+          "fairness_category": "balanced"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000008",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:08+00:00",
+        "type": "proposal_ready",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_002",
+          "version": 2,
+          "approval_state": "pending"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000009",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:09+00:00",
+        "type": "approval_requested",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_002",
+          "version": 2,
+          "required_count": 4
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000010",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:10+00:00",
+        "type": "member_response_received",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_002",
+          "member_ref": "stu_alex",
+          "version": 2,
+          "state": "accepted"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000011",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:11+00:00",
+        "type": "member_response_received",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_002",
+          "member_ref": "stu_maya",
+          "version": 2,
+          "state": "accepted"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000012",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:12+00:00",
+        "type": "member_response_received",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_002",
+          "member_ref": "stu_jordan",
+          "version": 2,
+          "state": "accepted"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000013",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:13+00:00",
+        "type": "member_response_received",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_002",
+          "member_ref": "stu_taylor",
+          "version": 2,
+          "state": "accepted"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000014",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:14+00:00",
+        "type": "proposal_confirmed",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_002",
+          "version": 2,
+          "required_count": 4,
+          "accepted_count": 4
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000015",
+        "session_id": "session_744f7d76c0ab",
+        "timestamp": "2026-10-24T19:00:15+00:00",
+        "type": "session_completed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {},
+        "synthetic": true
+      }
+    ],
+    "snapshot": {
+      "session_id": "session_744f7d76c0ab",
+      "state": "confirmed",
+      "version": 2,
+      "plan": {
+        "plan_id": "plan_002",
+        "session_id": "session_744f7d76c0ab",
+        "version": 2,
+        "opportunity_id": null,
+        "title": "Dinner and game night (DEMO)",
+        "member_refs": [
+          "stu_alex",
+          "stu_maya",
+          "stu_jordan",
+          "stu_taylor"
+        ],
+        "start_at": "2026-11-07T17:00:00-07:00",
+        "end_at": "2026-11-07T21:00:00-07:00",
+        "activities": [
+          "Dinner",
+          "Game night"
+        ],
+        "estimate_disclaimer": "Synthetic estimates only; not live prices or travel quotes",
+        "synthetic": true,
+        "activity_kind": "dinner_games",
+        "overnight": false,
+        "nights": 0,
+        "logistics": {
+          "transport": "unverified",
+          "lodging": "not_needed"
+        },
+        "unverified_items": [
+          "transport",
+          "venue_hours"
+        ],
+        "estimated_total_cents": 12000
+      },
+      "required_count": 4,
+      "error_code": null,
+      "reason_category": null,
+      "candidates_evaluated": 3,
+      "rounds": 2,
+      "revisions": 0,
+      "synthetic": true,
+      "commitments": {
+        "session_id": "session_744f7d76c0ab",
+        "plan_id": "plan_002",
+        "version": 2,
+        "proposal_state": "confirmed",
+        "confirmed": true,
+        "validated": true,
+        "presented": true,
+        "required_count": 4,
+        "accepted_count": 4,
+        "counts": {
+          "pending": 0,
+          "interested": 0,
+          "tentative": 0,
+          "conditional": 0,
+          "accepted": 4,
+          "declined": 0,
+          "withdrawn": 0
+        },
+        "members": {
+          "stu_alex": "accepted",
+          "stu_maya": "accepted",
+          "stu_jordan": "accepted",
+          "stu_taylor": "accepted"
+        },
+        "pending_member_refs": [],
+        "error_code": null,
+        "synthetic": true
+      },
+      "mode": "DEMO/SYNTHETIC",
+      "booking_confirmed": false
+    }
+  },
+  "weekend": {
+    "pending": [
+      {
+        "event_id": "integrated_00000001",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:01+00:00",
+        "type": "negotiation_started",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "group_size": 4
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000002",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:02+00:00",
+        "type": "candidate_proposed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "version": 1
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000003",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:03+00:00",
+        "type": "proposal_rejected",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "version": 1,
+          "reason_category": "constraint_conflict"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000004",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:04+00:00",
+        "type": "counteroffer_proposed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_002",
+          "version": 2,
+          "summary": "Alternative day and reduced estimated cost"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000005",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:05+00:00",
+        "type": "proposal_rejected",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_002",
+          "version": 2,
+          "reason_category": "constraint_conflict"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000006",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:06+00:00",
+        "type": "counteroffer_proposed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "version": 3,
+          "summary": "Alternative day and reduced estimated cost"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000007",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:07+00:00",
+        "type": "fairness_evaluated",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "version": 3,
+          "fairness_category": "balanced"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000008",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:08+00:00",
+        "type": "proposal_ready",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "version": 3,
+          "approval_state": "pending"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000009",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:09+00:00",
+        "type": "approval_requested",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "version": 3,
+          "required_count": 4
+        },
+        "synthetic": true
+      }
+    ],
+    "confirmed": [
+      {
+        "event_id": "integrated_00000001",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:01+00:00",
+        "type": "negotiation_started",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "group_size": 4
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000002",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:02+00:00",
+        "type": "candidate_proposed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "version": 1
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000003",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:03+00:00",
+        "type": "proposal_rejected",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "version": 1,
+          "reason_category": "constraint_conflict"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000004",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:04+00:00",
+        "type": "counteroffer_proposed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_002",
+          "version": 2,
+          "summary": "Alternative day and reduced estimated cost"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000005",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:05+00:00",
+        "type": "proposal_rejected",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_002",
+          "version": 2,
+          "reason_category": "constraint_conflict"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000006",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:06+00:00",
+        "type": "counteroffer_proposed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "version": 3,
+          "summary": "Alternative day and reduced estimated cost"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000007",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:07+00:00",
+        "type": "fairness_evaluated",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "version": 3,
+          "fairness_category": "balanced"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000008",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:08+00:00",
+        "type": "proposal_ready",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "version": 3,
+          "approval_state": "pending"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000009",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:09+00:00",
+        "type": "approval_requested",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "version": 3,
+          "required_count": 4
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000010",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:10+00:00",
+        "type": "member_response_received",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "member_ref": "stu_alex",
+          "version": 3,
+          "state": "accepted"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000011",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:11+00:00",
+        "type": "member_response_received",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "member_ref": "stu_maya",
+          "version": 3,
+          "state": "accepted"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000012",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:12+00:00",
+        "type": "member_response_received",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "member_ref": "stu_jordan",
+          "version": 3,
+          "state": "accepted"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000013",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:13+00:00",
+        "type": "member_response_received",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "member_ref": "stu_taylor",
+          "version": 3,
+          "state": "accepted"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000014",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:14+00:00",
+        "type": "proposal_confirmed",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "version": 3,
+          "required_count": 4,
+          "accepted_count": 4
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000015",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:15+00:00",
+        "type": "session_completed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {},
+        "synthetic": true
+      }
+    ],
+    "snapshot": {
+      "session_id": "session_72d7673484cf",
+      "state": "confirmed",
+      "version": 3,
+      "plan": {
+        "plan_id": "plan_003",
+        "session_id": "session_72d7673484cf",
+        "version": 3,
+        "opportunity_id": null,
+        "title": "Two-day trip (DEMO)",
+        "member_refs": [
+          "stu_alex",
+          "stu_maya",
+          "stu_jordan",
+          "stu_taylor"
+        ],
+        "start_at": "2026-11-15T08:00:00-07:00",
+        "end_at": "2026-11-16T14:00:00-07:00",
+        "activities": [
+          "Outbound trip",
+          "Main activity",
+          "Overnight stay",
+          "Return trip"
+        ],
+        "estimate_disclaimer": "Synthetic estimates only; not live prices or travel quotes",
+        "synthetic": true,
+        "activity_kind": "weekend_trip",
+        "overnight": true,
+        "nights": 1,
+        "logistics": {
+          "transport": "unverified",
+          "lodging": "unverified"
+        },
+        "unverified_items": [
+          "transport",
+          "lodging"
+        ],
+        "estimated_total_cents": 12000
+      },
+      "required_count": 4,
+      "error_code": null,
+      "reason_category": null,
+      "candidates_evaluated": 3,
+      "rounds": 2,
+      "revisions": 0,
+      "synthetic": true,
+      "commitments": {
+        "session_id": "session_72d7673484cf",
+        "plan_id": "plan_003",
+        "version": 3,
+        "proposal_state": "confirmed",
+        "confirmed": true,
+        "validated": true,
+        "presented": true,
+        "required_count": 4,
+        "accepted_count": 4,
+        "counts": {
+          "pending": 0,
+          "interested": 0,
+          "tentative": 0,
+          "conditional": 0,
+          "accepted": 4,
+          "declined": 0,
+          "withdrawn": 0
+        },
+        "members": {
+          "stu_alex": "accepted",
+          "stu_maya": "accepted",
+          "stu_jordan": "accepted",
+          "stu_taylor": "accepted"
+        },
+        "pending_member_refs": [],
+        "error_code": null,
+        "synthetic": true
+      },
+      "mode": "DEMO/SYNTHETIC",
+      "booking_confirmed": false
+    },
+    "replanned": [
+      {
+        "event_id": "integrated_00000001",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:01+00:00",
+        "type": "negotiation_started",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "group_size": 4
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000002",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:02+00:00",
+        "type": "candidate_proposed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "version": 1
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000003",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:03+00:00",
+        "type": "proposal_rejected",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_001",
+          "version": 1,
+          "reason_category": "constraint_conflict"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000004",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:04+00:00",
+        "type": "counteroffer_proposed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_002",
+          "version": 2,
+          "summary": "Alternative day and reduced estimated cost"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000005",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:05+00:00",
+        "type": "proposal_rejected",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_002",
+          "version": 2,
+          "reason_category": "constraint_conflict"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000006",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:06+00:00",
+        "type": "counteroffer_proposed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "version": 3,
+          "summary": "Alternative day and reduced estimated cost"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000007",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:07+00:00",
+        "type": "fairness_evaluated",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "version": 3,
+          "fairness_category": "balanced"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000008",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:08+00:00",
+        "type": "proposal_ready",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "version": 3,
+          "approval_state": "pending"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000009",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:09+00:00",
+        "type": "approval_requested",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "version": 3,
+          "required_count": 4
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000010",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:10+00:00",
+        "type": "member_response_received",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "member_ref": "stu_alex",
+          "version": 3,
+          "state": "accepted"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000011",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:11+00:00",
+        "type": "member_response_received",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "member_ref": "stu_maya",
+          "version": 3,
+          "state": "accepted"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000012",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:12+00:00",
+        "type": "member_response_received",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "member_ref": "stu_jordan",
+          "version": 3,
+          "state": "accepted"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000013",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:13+00:00",
+        "type": "member_response_received",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "member_ref": "stu_taylor",
+          "version": 3,
+          "state": "accepted"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000014",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:14+00:00",
+        "type": "proposal_confirmed",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_003",
+          "version": 3,
+          "required_count": 4,
+          "accepted_count": 4
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000015",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:15+00:00",
+        "type": "session_completed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {},
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000016",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:16+00:00",
+        "type": "proposal_revised",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "request_id": "constraint_change",
+          "version": 4,
+          "reason_category": "constraint_changed",
+          "summary": "Proposal invalidated; fresh approvals required"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000017",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:17+00:00",
+        "type": "candidate_proposed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_004",
+          "request_id": "constraint_change",
+          "version": 4
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000018",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:18+00:00",
+        "type": "proposal_rejected",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_004",
+          "request_id": "constraint_change",
+          "version": 4,
+          "reason_category": "constraint_conflict"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000019",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:19+00:00",
+        "type": "counteroffer_proposed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_005",
+          "request_id": "constraint_change",
+          "version": 5,
+          "summary": "Reduced estimated cost"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000020",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:20+00:00",
+        "type": "counteroffer_proposed",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_006",
+          "request_id": "constraint_change",
+          "version": 6,
+          "summary": "Reduced estimated cost"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000021",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:21+00:00",
+        "type": "fairness_evaluated",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_006",
+          "request_id": "constraint_change",
+          "version": 6,
+          "fairness_category": "balanced"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000022",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:22+00:00",
+        "type": "fairness_evaluated",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_005",
+          "request_id": "constraint_change",
+          "version": 5,
+          "fairness_category": "balanced"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000023",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:23+00:00",
+        "type": "proposal_ready",
+        "actor_ref": "coordination_engine",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_006",
+          "request_id": "constraint_change",
+          "version": 6,
+          "approval_state": "pending"
+        },
+        "synthetic": true
+      },
+      {
+        "event_id": "integrated_00000024",
+        "session_id": "session_72d7673484cf",
+        "timestamp": "2026-10-24T19:00:24+00:00",
+        "type": "approval_requested",
+        "actor_ref": "group_host",
+        "visibility": "group_safe",
+        "payload": {
+          "plan_id": "plan_006",
+          "request_id": "constraint_change",
+          "version": 6,
+          "required_count": 4
+        },
+        "synthetic": true
+      }
+    ],
+    "replanned_snapshot": {
+      "session_id": "session_72d7673484cf",
+      "state": "approval_pending",
+      "version": 6,
+      "plan": {
+        "plan_id": "plan_006",
+        "session_id": "session_72d7673484cf",
+        "version": 6,
+        "opportunity_id": null,
+        "title": "Two-day trip (DEMO)",
+        "member_refs": [
+          "stu_alex",
+          "stu_maya",
+          "stu_jordan",
+          "stu_taylor"
+        ],
+        "start_at": "2026-11-15T08:00:00-07:00",
+        "end_at": "2026-11-16T14:00:00-07:00",
+        "activities": [
+          "Outbound trip",
+          "Main activity",
+          "Overnight stay",
+          "Return trip"
+        ],
+        "estimate_disclaimer": "Synthetic estimates only; not live prices or travel quotes",
+        "synthetic": true,
+        "activity_kind": "weekend_trip",
+        "overnight": true,
+        "nights": 1,
+        "logistics": {
+          "transport": "unverified",
+          "lodging": "unverified"
+        },
+        "unverified_items": [
+          "transport",
+          "lodging"
+        ],
+        "estimated_total_cents": 4000
+      },
+      "required_count": 4,
+      "error_code": null,
+      "reason_category": null,
+      "candidates_evaluated": 6,
+      "rounds": 4,
+      "revisions": 1,
+      "synthetic": true,
+      "commitments": {
+        "session_id": "session_72d7673484cf",
+        "plan_id": "plan_006",
+        "version": 6,
+        "proposal_state": "approval_pending",
+        "confirmed": false,
+        "validated": true,
+        "presented": true,
+        "required_count": 4,
+        "accepted_count": 0,
+        "counts": {
+          "pending": 4,
+          "interested": 0,
+          "tentative": 0,
+          "conditional": 0,
+          "accepted": 0,
+          "declined": 0,
+          "withdrawn": 0
+        },
+        "members": {
+          "stu_alex": "pending",
+          "stu_maya": "pending",
+          "stu_jordan": "pending",
+          "stu_taylor": "pending"
+        },
+        "pending_member_refs": [
+          "stu_alex",
+          "stu_maya",
+          "stu_jordan",
+          "stu_taylor"
+        ],
+        "error_code": "APPROVAL_INCOMPLETE",
+        "synthetic": true
+      },
+      "mode": "DEMO/SYNTHETIC",
+      "booking_confirmed": false
+    }
+  }
+}

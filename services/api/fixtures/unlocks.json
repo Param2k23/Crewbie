@@ -1,0 +1,22 @@
+{
+  "notice": "Public ASU resource description; all proposed dates, participants and availability are DEMO/SYNTHETIC. No inventory or reservation verified.",
+  "opportunities": [{
+    "opportunity_id": "asu_library_games_demo",
+    "title": "ASU Library board-game experience — DEMO schedule",
+    "campus": "Tempe",
+    "start_at": "2026-10-26T12:00:00-07:00",
+    "end_at": "2026-10-26T14:00:00-07:00",
+    "location_label": "ASU Library; exact venue and opening hours need checking",
+    "food_status": "unknown",
+    "food_detail": "Food is not included in this resource description",
+    "dietary_suitability": "unknown",
+    "access_status": "public",
+    "rsvp_required": null,
+    "source_url": "https://lib.asu.edu/services/undergraduate-students",
+    "checked_at": "2026-10-24T19:00:00Z",
+    "synthetic": true,
+    "evidence": {"description_quote": "Check out card games and board games available to play on site or at home."},
+    "warnings": ["Proposed slot is synthetic, not published library availability", "Borrowing eligibility, inventory, costs and opening hours need verification"],
+    "activity": {"kind": "event", "categories": ["games"], "interests": ["social"], "duration_minutes": [120, 120], "price_cents": null, "location_context": "local"}
+  }]
+}

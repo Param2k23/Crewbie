@@ -1,0 +1,39 @@
+﻿{
+  "synthetic": true,
+  "notice": "DEMO ONLY; private evaluations remain on trusted server",
+  "matches": [
+    {
+      "student_ref": "stu_maya",
+      "shared_interests": [],
+      "synthetic": true
+    }
+  ],
+  "introduction_before_pair_approval": "CONSENT_REQUIRED",
+  "introduction": {
+    "member_refs": [
+      "stu_alex",
+      "stu_maya"
+    ],
+    "synthetic": true
+  },
+  "plans": [
+    {
+      "version": 1,
+      "all_feasible": false,
+      "public": {
+        "reason_category": "constraint_conflict",
+        "synthetic": true
+      }
+    },
+    {
+      "version": 2,
+      "all_feasible": true,
+      "public": {
+        "reason_category": "constraints_satisfied",
+        "synthetic": true
+      }
+    }
+  ],
+  "owner_approved_exception_feasible": true,
+  "after_withdrawal": "CONSENT_REQUIRED"
+}
