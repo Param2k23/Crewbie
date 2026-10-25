@@ -19,6 +19,23 @@ export function MissionControlApp({ initialMode = "quick", initialView }: { init
   const [api, setApi] = useState(ENV_API || "http://127.0.0.1:8787");
   const [session, setSession] = useState("session_trip_001");
   const [applied, setApplied] = useState<{ api: string; session: string } | null>(null);
+  const [creating, setCreating] = useState(false);
+  const [createError, setCreateError] = useState("");
+
+  async function createSession(scenario: "evening" | "weekend" | "unlocks") {
+    setCreating(true); setCreateError("");
+    try {
+      const response = await fetch(`${api.replace(/\/$/, "")}/v1/demo/sessions`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ scenario, request_id: `demo_${Date.now()}`, synthetic_confirmed: true,
+          matching_opt_in: true, sharing_opt_in: true, introduction_opt_in: true }),
+      });
+      if (!response.ok) throw new Error();
+      const s = await response.json();
+      setSession(s.session_id); setApplied({ api, session: s.session_id });
+    } catch { setCreateError("Backend unavailable. No session success assumed."); }
+    finally { setCreating(false); }
+  }
 
   const adapter: MissionAdapter | null = useMemo(() => {
     if (mode === "quick" || mode === "weekend") return new DemoAdapter(SCENARIOS[mode]);
@@ -44,6 +61,9 @@ export function MissionControlApp({ initialMode = "quick", initialView }: { init
           <label style={{ fontSize: "0.85rem" }}>API base URL <input type="text" value={api} onChange={(e) => setApi(e.target.value)} style={{ font: "inherit", width: 260 }} /></label>
           <label style={{ fontSize: "0.85rem" }}>Session id <input type="text" value={session} onChange={(e) => setSession(e.target.value)} style={{ font: "inherit", width: 200 }} /></label>
           <button className="btn btn-primary" type="submit">Connect</button>
+          <span>Backend scenarios · synthetic students, scripted consent</span>
+          {(["evening", "weekend", "unlocks"] as const).map((s) => <button key={s} className="btn" type="button" disabled={creating} onClick={() => void createSession(s)}>Start {s}</button>)}
+          {createError && <span role="alert">{createError}</span>}
           {applied && !adapter && <span className="pill pill-bad" role="alert">Invalid URL or session id</span>}
         </form>
       )}

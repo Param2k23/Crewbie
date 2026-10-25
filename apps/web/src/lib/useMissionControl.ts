@@ -27,6 +27,7 @@ export function useMissionControl(adapter: MissionAdapter) {
     setJudgeState({ phase: "idle" });
     setMalformed(0);
     const stop = adapter.connect({
+      onSnapshot: (snapshot) => dispatch({ type: "snapshot", snapshot }),
       onEvent: (raw) => dispatch({ type: "ingest", raw }),
       onReset: () => {
         dispatch({ type: "reset" });

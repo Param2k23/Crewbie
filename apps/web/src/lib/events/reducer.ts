@@ -104,6 +104,9 @@ export function deriveView(log: AgentEvent[], snapshot: PublicSnapshot | null): 
   const warnings: SyncWarning[] = [];
   const timeline: TimelineEntry[] = [];
   let phase: Phase = "idle";
+  // A4 versions identify candidates; the selected winner need not be the highest.
+  let selectedVersion: number | null = null;
+  let revisionFloor = 0;
   /** Members who withdrew stay withdrawn on later versions unless they respond again. */
   const withdrawnAt = new Map<string, number>();
 
@@ -134,6 +137,7 @@ export function deriveView(log: AgentEvent[], snapshot: PublicSnapshot | null): 
     }
   };
   const current = (): PlanVersion | undefined => {
+    if (selectedVersion !== null) return versions.get(selectedVersion);
     let best: PlanVersion | undefined;
     for (const pv of versions.values()) if (!best || pv.version > best.version) best = pv;
     return best;
@@ -171,6 +175,10 @@ export function deriveView(log: AgentEvent[], snapshot: PublicSnapshot | null): 
       case "counteroffer_proposed":
       case "proposal_revised": {
         if (p.version === undefined) break;
+        if (e.type === "proposal_revised") {
+          revisionFloor = Math.max(revisionFloor, p.version);
+          selectedVersion = null;
+        }
         const pv = ensure(p.version, p.plan_id, e.event_id, "proposed");
         if (p.summary) pv.summary = p.summary;
         supersede(p.version);
@@ -196,8 +204,14 @@ export function deriveView(log: AgentEvent[], snapshot: PublicSnapshot | null): 
       }
       case "proposal_ready": {
         if (targetVersion === undefined) break;
+        if (targetVersion < revisionFloor) break;
         const pv = ensure(targetVersion, p.plan_id, e.event_id, "ready");
-        if (pv.status === "proposed") pv.status = "ready";
+        if (pv.status === "rejected" || pv.status === "failed") break;
+        selectedVersion = targetVersion;
+        pv.status = "ready";
+        for (const other of versions.values()) {
+          if (other.version !== targetVersion && ["proposed", "ready", "awaiting_approval", "confirmed"].includes(other.status)) other.status = "superseded";
+        }
         supersede(targetVersion);
         break;
       }
@@ -224,6 +238,10 @@ export function deriveView(log: AgentEvent[], snapshot: PublicSnapshot | null): 
           break;
         }
         (view.commitmentsByVersion[p.version] ??= {})[ref] = state;
+        if (pv.status === "confirmed" && state !== "accepted") {
+          pv.status = "awaiting_approval";
+          phase = "awaiting_approval";
+        }
         if (state === "withdrawn") withdrawnAt.set(ref, p.version);
         else withdrawnAt.delete(ref);
         if (!view.members.includes(ref)) view.members.push(ref);

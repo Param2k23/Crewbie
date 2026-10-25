@@ -1,0 +1,12 @@
+# Remaining blockers
+
+1. **Real Cubbie evidence:** PM-published `skills/crewbie-unlocks` needs installation and the manual main-flow/scheduling checklist on an authorized account. No real account action has been performed.
+2. **Real group-chat rehearsal:** Discord adapter is implemented and fake-transport tested; PM must configure an invited bot, permitted channel, Message Content Intent and four authorized tester mappings. No token was supplied; no external message was sent.
+3. **Production identity and storage:** current app is a loopback synthetic sandbox. A3 explicitly accepts synthetic profiles only. No production auth, session-level SSE authorization, persistent private store, durable idempotency, encrypted data lifecycle or restart recovery exists. Do not expose it publicly or populate real student data.
+4. **Native-to-backend bridge:** no approved HTTPS deployment host or per-student auth/consent protocol. Native discovery is independent and works without this bridge; integration scenario A mocks only this handoff and external inventory/schedule.
+5. **Live sources and logistics:** A2 normalization/import is real; continuous ASU/venue inventory is not. Scenario A links to a real ASU Library resource description but proposes a synthetic time, unverified inventory/eligibility and synthetic participants. B/C prices, venue, travel and lodging remain estimates requiring verification. Group confirmation never books or enrolls anyone.
+6. **Repeated changes/probing:** the A3 eight-probe lifetime cap is preserved. Excessive replanning may terminate with an unavailable evaluator or no feasible plan; creating new sessions is not a way to reset a student's scope. Production needs a reviewed privacy/inference policy.
+7. **Minimal Discord limitations:** only one authorized channel; no DMs, stranger introductions or live private-constraint editing. Receipt and inbound dedupe caches are in memory; ambiguous provider timeout may need manual reconciliation. Natural-language coarse change requests cannot supply private numeric limits or exact dates; use synthetic judge controls for actual constraint updates.
+8. **Homepage discovery:** original Discover screen remains explicitly fixture-driven; the integrated A2 API and backend scenario buttons are available. Production catalog and consent UX remain work.
+
+The integration branch is committed locally only. No integration code has been pushed, deployed or merged into master by Agent 07. The project manager's preexisting A1 merge/rename was incorporated into integration after inspection.

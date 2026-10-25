@@ -1,0 +1,8 @@
+{
+  "mode": "DEMO/SYNTHETIC; actual modules and HTTP/SSE; mock chat delivery",
+  "session_id": "session_e687dcde0472",
+  "final_state": "approval_pending",
+  "final_version": 6,
+  "accepted_count": 0,
+  "page_errors": []
+}

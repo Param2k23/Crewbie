@@ -1,0 +1,90 @@
+# Windows setup
+
+Run in PowerShell. Validated environment: Windows, Python 3.9.5, Node 22.23.2, npm 10.9.8. The local core uses only Python's standard library. Python 3.12+ is the project target, but was not available for this verification. No database initialization is needed.
+
+```powershell
+Set-Location D:\VS\crewbie-integration
+git branch --show-current  # integration/crewbie
+python --version
+node --version
+npm --version
+Copy-Item .env.example .env
+```
+
+`.env` is a reference template; the stdlib entrypoints do not load dotenv. Set values in the relevant PowerShell terminal. Never commit tokens or personal identifiers.
+
+## Backend and synthetic seeding
+
+```powershell
+Set-Location D:\VS\crewbie-integration
+python -B -m services.api.main --seed evening
+# Alternative starting scenario:
+# python -B -m services.api.main --seed weekend
+# python -B -m services.api.main --seed unlocks
+```
+
+This binds only `127.0.0.1:8787`, prints the initial session ID, and uses mock group delivery. Initial evening ID: `session_744f7d76c0ab`; weekend: `session_72d7673484cf`; Unlocks: `session_d8bf7d9dd31d`. Restart resets all in-memory data. Do not run the separate A6 replay server on the same port.
+
+## Frontend (second terminal)
+
+```powershell
+Set-Location D:\VS\crewbie-integration\apps\web
+npm ci
+$env:NEXT_PUBLIC_CREWBIE_API_URL = 'http://127.0.0.1:8787'
+npm run dev
+```
+
+Open `http://localhost:3000/arena?mode=live&view=2d`. Choose **Start evening**, **Start weekend** or **Start unlocks** to create and connect a new backend session. These controls explicitly simulate all four students' consent; they do not collect real-student authorization. Live judge controls call the actual backend. Switch to 3D to use the existing arena. Quick Plan/Weekend Plan tabs are separate, labeled simulator modes; Fixture replay is recorded synthetic data. The Discover homepage retains the original fixture catalog; the integrated A2 catalog is exposed through the API.
+
+## Approval and replan commands (third terminal)
+
+```powershell
+Set-Location D:\VS\crewbie-integration
+$crewbieBase = 'http://127.0.0.1:8787'
+$crewbieSession = 'session_744f7d76c0ab' # or copy the connected session ID
+$crewbieSnapshot = Invoke-RestMethod "$crewbieBase/v1/sessions/$crewbieSession/snapshot"
+Invoke-RestMethod -Method Post -Uri "$crewbieBase/v1/sessions/$crewbieSession/messages" -ContentType 'application/json' -Body (@{
+  member_ref='stu_alex'; text='maybe'; request_id='demo_maybe'; synthetic_confirmed=$true
+} | ConvertTo-Json)
+foreach ($crewbieMember in @('stu_alex','stu_maya','stu_jordan','stu_taylor')) {
+  Invoke-RestMethod -Method Post -Uri "$crewbieBase/v1/sessions/$crewbieSession/messages" -ContentType 'application/json' -Body (@{
+    member_ref=$crewbieMember; text="I accept version $($crewbieSnapshot.version)"
+    version=$crewbieSnapshot.version; request_id="demo_accept_$crewbieMember"; synthetic_confirmed=$true
+  } | ConvertTo-Json)
+}
+Invoke-RestMethod "$crewbieBase/v1/sessions/$crewbieSession/snapshot"
+```
+
+Use new request IDs after a revision; stale IDs are intentionally deduplicated. Changing a hard budget or blocking a window through the judge panel invalidates approvals. No confirmed group plan is a booking.
+
+## Verification
+
+```powershell
+Set-Location D:\VS\crewbie-integration
+.\scripts\test.ps1
+python -B -m services.api.demo
+python -B scripts/export_traces.py
+python -B -m integrations.cubbie.validate_skill skills/crewbie-unlocks
+Set-Location apps\web
+npm test
+npm run typecheck
+npm run build
+npm audit
+```
+
+## Optional real Discord transport
+
+Create/invite a bot in your authorized test server using the Discord Developer Portal. Enable Message Content Intent and permit View Channel, Send Messages and Read Message History in the single test channel. Have all four testers explicitly authorize their participation and mapping to synthetic students. Do not create student accounts or invite/contact strangers. See the [official gateway documentation](https://docs.discord.com/developers/events/gateway) and [SDK quickstart](https://discordpy.readthedocs.io/en/stable/quickstart.html).
+
+```powershell
+Set-Location D:\VS\crewbie-integration
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements-discord.txt
+# Populate these locally from the authorized bot setup; never paste them into Git.
+$env:DISCORD_BOT_TOKEN = '<bot token from developer portal>'
+$env:DISCORD_CHANNEL_ID = '<authorized test channel ID>'
+$env:CREWBIE_DISCORD_MEMBERS = '{"<tester1 ID>":"stu_alex","<tester2 ID>":"stu_maya","<tester3 ID>":"stu_jordan","<tester4 ID>":"stu_taylor"}'
+.\.venv\Scripts\python.exe -B -m apps.chat_bot.discord_live
+```
+
+Stop the mock backend before starting Discord: this command runs the same integrated API on port 8787. In the authorized channel, a mapped tester sends `!crewbie evening` or `!crewbie weekend`; the bot posts a real, redacted proposal generated by the integrated engine. Each tester replies `I accept version N` using the posted version. `maybe` remains tentative; planning revisions and withdrawal use the Host protocol. Tokens are read only from environment variables. All constraints remain synthetic and every outbound proposal is labeled DEMO/SYNTHETIC. No real-account run has been performed. Restart loses state, approvals, inbound dedupe and outbound receipt cache; production persistence and ambiguous-send recovery remain release blockers.

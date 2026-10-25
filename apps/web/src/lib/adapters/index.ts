@@ -5,8 +5,10 @@ import type { PlanPreview, PlanningIntent, ScenarioDef, WindowPreset } from "../
 import { ReplayController } from "../replay/controller";
 import { HttpJudgeAdapter, JudgeAdapter } from "./judge";
 import { ConnectionStatus, connectSse, normalizeBaseUrl } from "./sse";
+import type { PublicSnapshot } from "../events/types";
 
 export interface AdapterHandlers {
+  onSnapshot?: (snapshot: PublicSnapshot) => void;
   onEvent: (raw: unknown) => void;
   onReset: () => void;
   onStatus: (s: ConnectionStatus) => void;
@@ -143,7 +145,8 @@ export class NetworkAdapter implements MissionAdapter {
     members: [],
     windows: [{ id: "blocks_current_day", label: "Member becomes unavailable on the planned day" }, { id: "blocks_all_days", label: "Member becomes unavailable on every candidate day" }],
   };
-  previews() { return {}; }
+  private plans: Record<number, PlanPreview> = {};
+  previews() { return this.plans; }
   readonly localSynthetic = false;
   private constructor(readonly baseUrl: string, readonly sessionId: string) {
     this.description = `GET ${baseUrl}/v1/sessions/${sessionId}/events (read-only)`;
@@ -156,6 +159,33 @@ export class NetworkAdapter implements MissionAdapter {
   }
   connect(h: AdapterHandlers) {
     h.onReset();
-    return connectSse(this.baseUrl, this.sessionId, { onEvent: h.onEvent, onStatus: h.onStatus, onMalformed: h.onMalformed });
+    let disposed = false;
+    let generation = 0;
+    const refresh = async () => {
+      const mine = ++generation;
+      try {
+        const response = await fetch(`${this.baseUrl}/v1/sessions/${encodeURIComponent(this.sessionId)}/snapshot`);
+        if (!response.ok) return;
+        const s = await response.json();
+        if (disposed || mine !== generation || s.session_id !== this.sessionId) return;
+        const p = s.plan;
+        if (p && Number.isInteger(p.version) && typeof p.title === "string" && typeof p.start_at === "string" && typeof p.end_at === "string") {
+          this.plans[p.version] = { title: p.title, start: p.start_at, end: p.end_at,
+            activities: [], budgetNote: "Synthetic estimates; individual amounts withheld.",
+            notes: `${Array.isArray(p.activities) ? p.activities.filter((a: unknown) => typeof a === "string").join(" · ") : ""}. No booking. Transport and admission need checking.` };
+          if (Array.isArray(p.member_refs)) this.judgeOptions.members = p.member_refs.filter((r: unknown) => typeof r === "string" && /^[A-Za-z0-9_.:-]{1,64}$/.test(r));
+        }
+        const status = s.state === "approval_pending" ? "awaiting_approval" : s.state === "cancelled" ? "completed" : s.state;
+        if (["negotiating", "awaiting_approval", "confirmed", "failed", "completed"].includes(status)) {
+          h.onSnapshot?.({ session_id: s.session_id, current_version: s.version, status,
+            accepted_count: s.commitments?.accepted_count, required_count: s.required_count });
+        }
+      } catch { /* The event stream remains authoritative; no success is inferred. */ }
+    };
+    const close = connectSse(this.baseUrl, this.sessionId, {
+      onEvent: (raw) => { h.onEvent(raw); void refresh(); }, onStatus: h.onStatus, onMalformed: h.onMalformed,
+    });
+    void refresh();
+    return () => { disposed = true; close(); };
   }
 }
