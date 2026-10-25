@@ -46,7 +46,8 @@ cover a later acceptance reaching the 2D rendering and shared 3D scene model.
 ## Public site (Vercel)
 
 The landing page is deployed as the Vercel project `crewbie`:
-`https://crewbie-sepia.vercel.app` (also `https://crewbie-devils-ghost.vercel.app`).
+`https://crewbie-cubbie.vercel.app` (also `https://cubbie-crewbie.vercel.app`, `https://crewbie-sepia.vercel.app`
+and `https://crewbie-devils-ghost.vercel.app`).
 `/` redirects to `/unlocks`; the Mission Control demo is at `/demo` and `/arena`.
 
 Deploy from this folder after `vercel login` (the repo owner has not installed Vercel's GitHub app, so
