@@ -91,7 +91,7 @@ Pending (needs the owner and test accounts):
 
 Open questions: none.
 
-## Phase 5: Deployment on AWS EC2 (done, committed 9acabf4; docs update uncommitted)
+## Phase 5: Deployment on AWS EC2 (done, committed 7e817e9)
 
 Done:
 - Part A with the owner (A2 skipped, region Ohio `us-east-2`; see DECISIONS.md). `crewbie-ops` profile works.
@@ -114,3 +114,19 @@ Pending: Part F teardown after the hackathon (release the Elastic IP, terminate 
 `crewbie-ops` keys). The instance is left running.
 
 Open questions: none.
+
+## Phase 6: Skill update and live Cubbie test (SKILL.md and tests done; live test pending)
+
+Done:
+- `SKILL.md` updated in exactly three places: the header sentence, one optional "Going" line on the Unlock
+  Card, and the "Find a crew" section (disclosure, steps, check-in, leave, failure handling). The tone setup
+  (Chill, Playful, Roast Me), the personality rules and all student-exclusive-first sections are untouched.
+- Tests pin what must never be lost: tone options and consent, the student-exclusive ranking and the
+  "Student unlock if you're flexible" rule, the consent disclosure against what `crew.py` sends, and every
+  `crew.py` command in the Skill against the real CLI.
+- Official Cubbie kit validator (`validate_cubbie_skill.py`) passes with no warnings. The old
+  `legacy/integrations/cubbie/validate_skill.py` no longer applies: it rejects any bundled script.
+- `docs/spec/LIVE_TEST.md` is the checklist and results sheet.
+
+Pending: the live checklist with two Cubbie students (needs I-06), then the owner's approval to merge
+`crewbie-v2` into `master`.

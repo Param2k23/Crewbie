@@ -211,6 +211,7 @@ def test_help_documents_the_intent_file_format(cli: Cli) -> None:
 
 
 def load_crew_module() -> Any:
+    sys.dont_write_bytecode = True  # never leave a __pycache__ inside the Skill folder
     spec = importlib.util.spec_from_file_location("crew_under_test", CREW)
     assert spec and spec.loader
     module = importlib.util.module_from_spec(spec)
