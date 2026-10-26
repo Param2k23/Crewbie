@@ -159,3 +159,10 @@ summarises what is live, what is safe to claim and a suggested 3-minute shape fo
 ## Multilingual Skill (2026-10-26)
 Added the language section to `SKILL.md`, Unicode-aware event matching on the server and UTF-8-safe `crew.py`.
 Not yet tried with a real non-English Cubbie conversation. Discord bot messages are still English only.
+
+## Wrap-up (2026-10-26)
+
+Hackathon finished. Root `README.md` and `docs/REBUILD.md` added (rebuild steps, teardown steps, what survives).
+The AWS server is being torn down; the Skill's `DEFAULT_API_URL` points at a dead address until a rebuild, which
+is safe because Cubbie falls back to a solo plan. Left (optional): LLM agent layer on its own branch, Discord
+message localisation, the deferred live tests listed in `LIVE_TEST.md`.
